@@ -71,7 +71,7 @@ class Utilities {
         
         //Para ello vamos a crear un boton, para que en cualquier parte se pulse sea en un texto o en otro
         //Este boton tiene dos textos: el "Tienes una cuenta?" que es la primera parte y el Sing in
-        let btn = UIButton()
+        let btn = UIButton(type: .system)
         
         //Asi que creamos un atributed Title del boton, con las dos partes
         let attributedTitle = NSMutableAttributedString(string: first, attributes: [.font: UIFont.systemFont(ofSize: 16),.foregroundColor:  UIColor.white])

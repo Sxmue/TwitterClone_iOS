@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 //En este proyecto vamos a crear un clon de twitter usando MVVM y haciendo toda la interfaz de manera programatica
 
@@ -41,6 +42,9 @@ class MainTabController: UITabBarController {
         self.tabBar.barTintColor = .blue
         
         self.tabBar.backgroundColor = .white
+        
+        //logout()
+        authenticateUserAndConfigureUI()
 
         //Con este metodo, configuramos e instanciamos todos los ViewControllers para cada tabBar que tengamos
         configureViewControllers()
@@ -49,6 +53,47 @@ class MainTabController: UITabBarController {
         
     }
     
+    //MARK: - API
+    
+    /**
+     Funcion encargada de mosrtrar una pantalla o otra dependiendo de si estas logueado o no
+     */
+    func authenticateUserAndConfigureUI (){
+
+    //En apple, cuando quieres cambiar de vista sobre la root tienes que hacerlo en el hilo main
+        //Si el usuario no esta logueado, auth nos da este metodo para comprobarlo
+        if Auth.auth().currentUser == nil {
+            DispatchQueue.main.async {
+                
+                //De esta manera cambiamos de vista pero obligamos a que la nueva aparezca en full screen, sino aparece como una modal
+                //La instancia de nav es muy importante, hay que hacerla asi si o si porque necesitas el navigation controller para que cambie de ventanas una vez estes en el login, si solo presentas el login no se podra cambiar de ventana
+                let nav = UINavigationController(rootViewController: LoginController())
+                nav.modalPresentationStyle = .fullScreen //El fix para que se vaya al login y ocupe toda la pantalla
+                
+                self.navigationController?.present(nav, animated: true)
+
+            }
+            print("DEBUG: No hay nadie logueado")
+        }else {
+            
+            
+        }
+        
+        
+    }
+    
+    //Vamos a hacer una funcion rapida para desloguearnos hasta que añadamos el boton y poder probar bien la funcion de arriba
+    func logout() {
+        //Firebase loguea al ultimo usuario añadido en la bbdd automaticamente
+        do {
+            try Auth.auth().signOut() //Con ese metodo deslogueamos
+        }catch let error {
+            
+            print("DEBUG: Error deslogueando")
+        }
+        
+    }
+
     //MARK: - Selectors
     @objc func actionButtonTap(){
        

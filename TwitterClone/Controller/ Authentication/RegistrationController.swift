@@ -156,7 +156,15 @@ class RegistrationController: UIViewController{
         let credentials = AuthCredentials.init(email: email, password: password, fullname: fullName, username: username, profileImage: image)
         
         //Gestionamos el guardado en la bbdd
-        AuthService.shared.registerUser(credentials: credentials)
+        AuthService.shared.registerUser(credentials: credentials){ error,dbRef in
+            
+            guard let error = error else { return }
+            
+            print("DEBUG: Registro completadop directamente")
+            
+            self.navigationController?.present(MainTabController(), animated: true)
+            
+        }
         
         print("Debug: Email is \(email)")
         print("Debug: Password is \(password)")
