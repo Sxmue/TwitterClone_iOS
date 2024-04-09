@@ -106,13 +106,34 @@ class LoginController: UIViewController {
                 return
             }
             
-            DispatchQueue.main.async {
-                let nav = UINavigationController(rootViewController: MainTabController())
-                self.navigationController?.present(nav, animated: true)
-            }
-         
+            
+            //Ahora si quieres cambiar de vista de vuelta a la mainTab una vez el usuario esta logueado, tenemos un dilema
+            
+            //-------IMPORTANTE------
+            
+            //Nuestro flujo es cargar la MainTab y si el usuario no esta logueado, saltar directamente a la pantalla de Login
+            //En MainTab llamamos al metodo de inicializar la vista solo SI hay alguien logueado, y no es adecuado llamarlo en el viewdid load porque se va a llamar cada vez que se presente la vista
+            //Entonces, como nuestro Main Tab esta justo DETRAS  de nuestra vista de login debido al flujo que tenemos, vamos a volver con un dismiss para no tener que Volver a cargarla
+            //Pero claro, si has entrado sin loguearte de 0 esa vista NO esta cargada, asi qeu vamos a hacer este truco para llamar a los metodos de MainTab
+            
+            //Sacamos la escena de esta manera
+            // Verificamos si la keyWindow es válida
+            
+            guard let window = UIApplication.shared.connectedScenes.map({ $0
+            as? UIWindowScene }).compactMap({ $0 }).first?.windows.first else { return }
+            
+         //Casteamos la escena del rootViewController casteada a MainTab
+            guard let nav = window.rootViewController as? UINavigationController else {return }
+            
+            guard let tab = nav.viewControllers.first as? MainTabController else {return }
+
+            tab.authenticateUserAndConfigureUI() //llamamos al metodo de inicializar la vista
+            
+            self.dismiss(animated: true,completion: nil)
+            
             print("DEBUG: Login Successful")
         }
+        
     }
     
     @objc func toSingUpView(){
