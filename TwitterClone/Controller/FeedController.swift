@@ -42,7 +42,7 @@ class FeedController: UIViewController{
         let imageView = UIImageView(image: UIImage(named: "twitter_logo_blue"))
         
         imageView.contentMode = .scaleAspectFit //ajusta la imagen al imageview pero manteniendo el aspect ratio
-        
+        imageView.setDimensions(width: 44, height: 44) //De esta manera le damos un tamaño fijo, lo que hara que no se mueva a la derecha cuando aparezca la imagen del usuario
         navigationItem.titleView = imageView //La propiedad titleView añade al centro de la barrita de navegacion una vista que hayamos creado, en este caso nuestra imagen
         
     }

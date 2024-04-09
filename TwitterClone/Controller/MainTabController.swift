@@ -46,8 +46,6 @@ class MainTabController: UITabBarController {
         button.tintColor = .white
         button.backgroundColor = .twitterBlue //twitter blue añadido desde extensions
         button.setImage(UIImage(named: "new_tweet"), for: .normal)
-        
-        button.addTarget(MainTabController.self, action: #selector(actionButtonTap), for: .touchUpInside) //Manualmente le añadimos el listener al boton el target, con su metodo que esta mas abajo
         return button
         
     }()
@@ -136,10 +134,14 @@ class MainTabController: UITabBarController {
     }
 
     //MARK: - Selectors
+    /**
+     Funcion encargada de abrir la pantalla de escribir un twit
+     */
     @objc func actionButtonTap(){
-       
-        
-        
+       //Necesitamos que sea un navigation controller, para volver atras cuando se escriba el twit
+        let nav = UINavigationController(rootViewController: UploadTwitController())
+        nav.modalPresentationStyle = .fullScreen
+        present(nav,animated: true)
     }
 
     
@@ -219,6 +221,9 @@ class MainTabController: UITabBarController {
         
         //Para hacer el boton redondeado perfecto es el ancho partido 2, en este caso 56
         actionButton.layer.cornerRadius = 56/2
+        
+        actionButton.addTarget(self, action: #selector(actionButtonTap), for: .touchUpInside) //Manualmente le añadimos el listener al boton el target, con su metodo que esta mas abajo
+
                 
         
     }
