@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FeedController: UIViewController{
     
@@ -14,6 +15,8 @@ class FeedController: UIViewController{
     var user:  User?{
         didSet {
             print("DEBUG: Usuario asignado en FeedController")
+            //Cuando se haya asignado correctamente, podemos llamar al metodo que pone la imagen de la izquierda
+            configureLeftProfileImage()
         }
         
     }
@@ -42,11 +45,24 @@ class FeedController: UIViewController{
         
         navigationItem.titleView = imageView //La propiedad titleView añade al centro de la barrita de navegacion una vista que hayamos creado, en este caso nuestra imagen
         
+    }
+    
+    /**
+     Metodo que se encarga de configurar la imagen de arriba a la izquierda
+     */
+    func configureLeftProfileImage(){
+        
+        guard let user = user else {return } //Comprobamos que el usuario ha sido traido primero
+        
+        //Configuramos la imagen
         let profileImageView = UIImageView()
-        profileImageView.backgroundColor = .twitterBlue
         profileImageView.setDimensions(width: 32, height: 32) //Con esta linea se le da a los image view un tamaño concreto
         profileImageView.layer.cornerRadius = 32/2
-        profileImageView.image = UIImage()
+        profileImageView.layer.masksToBounds = true //Indicamos que la imagen se quede de la forma del imageview
+        //Ahora con la libreria que hemos añadido SDWEBIMAGE podemos asignar la imagen y hacer el fetch en el momento
+        profileImageView.sd_setImage(with: URL(string: user.profileImage), completed: nil)
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
+
     }
 }
