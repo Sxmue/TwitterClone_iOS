@@ -94,6 +94,25 @@ class LoginController: UIViewController {
 
     @objc func login(){
         
+        guard let email = emailTextField.text else {return }
+        guard let password = passwordTextField.text else {return }
+
+        AuthService.shared.logUserIn(withemail: email, withpassword: password){ dataResult, error in
+            
+            if let error = error {
+                
+                print("DEBUG: Error Loggin in \(error.localizedDescription)")
+                
+                return
+            }
+            
+            DispatchQueue.main.async {
+                let nav = UINavigationController(rootViewController: MainTabController())
+                self.navigationController?.present(nav, animated: true)
+            }
+         
+            print("DEBUG: Login Successful")
+        }
     }
     
     @objc func toSingUpView(){
@@ -114,6 +133,8 @@ class LoginController: UIViewController {
         logoImageView.centerX(inView: self.view, topAnchor: self.view.safeAreaLayoutGuide.topAnchor) //Este es un metodo de la extension añadida por el muchacho, en el que te centra la view que quieras con el pading top que quieras ponerle
         
         logoImageView.setDimensions(width: 150, height: 150) //Este tambien es un metodo del extension el cual cambia el tamaño de una view al que le pongas, lo bajamos un poquito porque era enorme sino
+        
+        loginButton.addTarget(self, action: #selector(login), for: .touchUpInside) //Target para el boton de login
         
         //Para añadir los dos textInput vamos a usar algo nuevo, un StackView
         //Ya sabes que stackview coge todo lo que le metas y te lo centra automaticamente una cosa encima de la otra

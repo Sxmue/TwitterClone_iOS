@@ -42,31 +42,29 @@ class MainTabController: UITabBarController {
         self.tabBar.barTintColor = .blue
         
         self.tabBar.backgroundColor = .white
+        self.view.backgroundColor = .twitterBlue
         
         //logout()
         authenticateUserAndConfigureUI()
 
-        //Con este metodo, configuramos e instanciamos todos los ViewControllers para cada tabBar que tengamos
-        configureViewControllers()
-        
-        configureUI()
         
     }
     
     //MARK: - API
     
     /**
-     Funcion encargada de mosrtrar una pantalla o otra dependiendo de si estas logueado o no
+     Funcion encargada de authenticar a un usuario
      */
     func authenticateUserAndConfigureUI (){
 
-    //En apple, cuando quieres cambiar de vista sobre la root tienes que hacerlo en el hilo main
         //Si el usuario no esta logueado, auth nos da este metodo para comprobarlo
         if Auth.auth().currentUser == nil {
+            
+            //En apple, cuando quieres cambiar de vista sobre la root tienes que hacerlo en el hilo main
             DispatchQueue.main.async {
                 
-                //De esta manera cambiamos de vista pero obligamos a que la nueva aparezca en full screen, sino aparece como una modal
-                //La instancia de nav es muy importante, hay que hacerla asi si o si porque necesitas el navigation controller para que cambie de ventanas una vez estes en el login, si solo presentas el login no se podra cambiar de ventana
+                //De esta manera cambiamos de vista pero obligamos a que la nueva aparezca en full screen, sino aparece como una modal (que tampoco esta mal segun el caso)
+                //La instancia de nav es muy importante, hay que hacerla asi si o si porque necesitas el navigation controller para que cambie de ventanas una vez estes en el login, si solo presentas el login no se podra cambiar de ventana por ejemplo a la de sign in
                 let nav = UINavigationController(rootViewController: LoginController())
                 nav.modalPresentationStyle = .fullScreen //El fix para que se vaya al login y ocupe toda la pantalla
                 
@@ -75,8 +73,12 @@ class MainTabController: UITabBarController {
             }
             print("DEBUG: No hay nadie logueado")
         }else {
+            //En cambio, si el usuario esta logueado
             
+            //Con este metodo, configuramos e instanciamos todos los ViewControllers para cada tabBar que tengamos
+            configureViewControllers()
             
+            configureUI()
         }
         
         

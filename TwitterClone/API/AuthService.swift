@@ -7,6 +7,7 @@
 
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
 /**
  
@@ -43,6 +44,20 @@ struct AuthService {
         
     }
     
+    /**
+     Metodo que se encarga de hacer login a un usuario
+     
+     Una vez mas a una funcion le hemos añadido el closure de la funcion interna como parametros, para poder llamarla en el metodo principal y poder gestionar el completion en la llamada al LogUserIn
+     */
+    func logUserIn(withemail email: String,withpassword password: String,completion: @escaping(AuthDataResult?, Error?) -> Void){
+        print("DEBUG: El email es \(email), la contraseña es \(password)")
+        
+        //Ahora con el metodo signIn que nos proporciona Auth podemos loguear a un usuario, cogemos la version con email, password y completition
+        Auth.auth().signIn(withEmail: email, password: password,completion: completion)
+        
+        
+    }
+    
     
     //MARK: - Funciones auxiliares
 
@@ -68,7 +83,7 @@ struct AuthService {
         
         path.putData(imgData) { metadata,error in
             
-            //Ahora que los datos estsan guardados, firebase le asigna a la imagen una URL con la que puedes obtener la imagen
+            //Ahora que los datos estan guardados, firebase le asigna a la imagen una URL con la que puedes obtener la imagen
             //Necesitamos ponersela al usuario en la bbdd, asi que vamos a obtenerla
             path.downloadURL {url, error in
                 
