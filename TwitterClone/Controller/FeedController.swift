@@ -11,6 +11,13 @@ class FeedController: UIViewController{
     
     //MARK: - Propiedades
     
+    var user:  User?{
+        didSet {
+            print("DEBUG: Usuario asignado en FeedController")
+        }
+        
+    }
+    
     
     //MARK: -Lifecycle
 
@@ -34,6 +41,12 @@ class FeedController: UIViewController{
         imageView.contentMode = .scaleAspectFit //ajusta la imagen al imageview pero manteniendo el aspect ratio
         
         navigationItem.titleView = imageView //La propiedad titleView añade al centro de la barrita de navegacion una vista que hayamos creado, en este caso nuestra imagen
-
+        
+        let profileImageView = UIImageView()
+        profileImageView.backgroundColor = .twitterBlue
+        profileImageView.setDimensions(width: 32, height: 32) //Con esta linea se le da a los image view un tamaño concreto
+        profileImageView.layer.cornerRadius = 32/2
+        profileImageView.image = UIImage()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
     }
 }

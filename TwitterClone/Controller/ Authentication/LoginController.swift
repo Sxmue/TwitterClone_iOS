@@ -132,6 +132,7 @@ class LoginController: UIViewController {
             self.dismiss(animated: true,completion: nil)
             
             print("DEBUG: Login Successful")
+            
         }
         
     }

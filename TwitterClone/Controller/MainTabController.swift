@@ -20,6 +20,25 @@ class MainTabController: UITabBarController {
     
     //MARK: - Propiedades
     
+    var user:  User?{
+        didSet {
+            
+            print("DEBUG: Usuario asignado a MainTab")
+            
+            //Lo que haya en este bloque, se seteara UNA VEZ este usuario haya sido asignado y se haya completado el fetch
+            //Asi que aqui dentro, pasaremos al usuario a los distintos controllers en los que necesitaremos sus datos
+            
+            guard let nav1 = viewControllers?[0] as? UINavigationController else {return } //sacamos del tab bar, el primer view controller
+            guard let feed = nav1.viewControllers.first as? FeedController else {return }//Sacamos su rootview
+            feed.user = user //Una vez lo tenemos, entramos a su propiedad user y asignamos
+            
+            //Asi compartimos las informacion del usuario en las distintas vistas
+            
+        }
+        
+    }
+    
+    
     //Esta es una nueva manera de instanciar un elemento de manera programatica, añadiendole llaves despues del igual como las propiedades calculadas
     let actionButton: UIButton = {
         
@@ -79,10 +98,30 @@ class MainTabController: UITabBarController {
             configureViewControllers()
             
             configureUI()
+            
+            fetchUser()
         }
         
         
     }
+    
+    /**
+     Funcion encargada de traer los datos del usuario logueado
+     */
+    func fetchUser(){
+        
+        //Consumo del servicio de usuario para el fetch de datos
+        UserService.shared.fetchUser{ user in
+            
+            print("DEBUG: Main user tab is \(user.username)")
+            
+            //Asignacion a variable de clase para poder usar los datos
+            self.user = user
+            
+        }
+        
+    }
+    
     
     //Vamos a hacer una funcion rapida para desloguearnos hasta que añadamos el boton y poder probar bien la funcion de arriba
     func logout() {
@@ -91,7 +130,7 @@ class MainTabController: UITabBarController {
             try Auth.auth().signOut() //Con ese metodo deslogueamos
         }catch let error {
             
-            print("DEBUG: Error deslogueando")
+            print("DEBUG: Error deslogueando \(error.localizedDescription)")
         }
         
     }
@@ -122,10 +161,12 @@ class MainTabController: UITabBarController {
         //Acto seguido, vamos a meter cada controlador en un Navigation controller, para que en cada vista se pueda navegar dentro y volver
         
         let feed = FeedController()
-        
+                
         let nav1 = UINavigationController(rootViewController: feed) //De esta manera hacemos "Embeed" a cada vista con el navigationController
         
         nav1.tabBarItem.image = UIImage(named: "home_unselected") //Como ahora a nuestra vista la agrupa un navigationController, es la vista "root", le ponemos al navigation el icono, igual en los demas
+        
+        
         
        
         //Los demas los hacemos con la funcion que nos hemos creado
