@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class FeedController: UIViewController{
+class FeedController: UICollectionViewController{
     
     //MARK: - Propiedades
     
@@ -26,10 +26,14 @@ class FeedController: UIViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         //Lo primero que vamos a hacer es llamar a un metodo que configure la UI
         configureUI()
         fetchTweets()
+        
+        collectionView.register(TweetCollectionViewCell.self, forCellWithReuseIdentifier: "TweetCell")
+        
+        collectionView.delegate = self
+        
     }
     //MARK: - API
     
@@ -46,6 +50,8 @@ class FeedController: UIViewController{
     func configureUI(){
         
         view.backgroundColor = .white //Fondito blanco
+                
+        collectionView.backgroundColor = .white
         
         //Lo primero que vamos a hacer es poner el loguito de twitter arriba
         //Esto lo vamos a hacer instanciando un IMAGEVIEW con un UIIMAGE dentro, que son cosas distintas
@@ -75,4 +81,38 @@ class FeedController: UIViewController{
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
 
     }
+    
+
+}
+
+/**
+ Extension para los metodos del collection view
+ */
+extension FeedController {
+   
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionViewCell
+        
+        return cell
+    }
+        
+}
+
+/**
+ Este delegado implementa los metodos para modificar las dimensiones de los objetos en el collection view, los metodos vienen en dos delegados distintos
+ 
+ Las vistas pueden tener mas de un delegado
+ */
+extension FeedController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        //Con view.frame accedes a las dimensiones de la vista completa, asi ocuparan las celdas todo el ancho y 200 de alto
+        return CGSize(width: view.frame.width, height: 100)
+    }
+    
 }

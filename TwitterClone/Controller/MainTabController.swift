@@ -56,10 +56,11 @@ class MainTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tabBar.barTintColor = .blue
+        self.tabBar.tintColor = .twitterBlue
         
         self.tabBar.backgroundColor = .white
-        self.view.backgroundColor = .twitterBlue
+        self.view.backgroundColor = .white
+  
         
 //        logout()
         authenticateUserAndConfigureUI()
@@ -164,7 +165,7 @@ class MainTabController: UITabBarController {
         
         //Acto seguido, vamos a meter cada controlador en un Navigation controller, para que en cada vista se pueda navegar dentro y volver
         
-        let feed = FeedController()
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout()) //Muy importante ya que va a ser un colecction view
                 
         let nav1 = UINavigationController(rootViewController: feed) //De esta manera hacemos "Embeed" a cada vista con el navigationController
         

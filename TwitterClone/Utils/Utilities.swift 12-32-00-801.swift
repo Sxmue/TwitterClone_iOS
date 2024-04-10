@@ -84,5 +84,13 @@ class Utilities {
         return btn
     }
     
+    func createCellImageButton(imgName: String) -> UIButton{
+        let btn = UIButton(type: .system)
+        btn.setImage(UIImage(named: imgName), for: .normal)
+        btn.tintColor = .darkGray
+        btn.setDimensions(width: 20, height: 20)
+        return btn
+    }
+    
     
 }

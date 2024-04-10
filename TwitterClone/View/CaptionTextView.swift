@@ -41,6 +41,7 @@ class CaptionTextView: UITextView {
         
         
         
+        
         //Placeholder
         addSubview(placeholder)
         //En este caso, al ajustar un elemento a dentro del textview no se usa view. sino directamente topAnchor
@@ -59,7 +60,12 @@ class CaptionTextView: UITextView {
     }
     
     //MARK: - Selectors
-
+    /**
+     Recomendable añadir este dealloc cuando haya un observer, limpiara la vista de observer
+     */
+    deinit{
+        NotificationCenter.default.removeObserver(UITextView.textDidChangeNotification)
+    }
     @objc func handleInputChange(){
         //Como la vista es un textField, podemos acceder a la propiedad texto de los textFields
         //Si igualamos el hidden del placeholder de esta manera, siempre estara al contrario de si hay texto o no
