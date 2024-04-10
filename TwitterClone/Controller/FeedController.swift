@@ -29,7 +29,17 @@ class FeedController: UIViewController{
 
         //Lo primero que vamos a hacer es llamar a un metodo que configure la UI
         configureUI()
+        fetchTweets()
     }
+    //MARK: - API
+    
+    func fetchTweets(){
+        TweetService.shared.fetchTweets { tweets in
+            
+            print("DEBUG: Los tweets traidos son: \(tweets)")
+        }
+    }
+
 
     //MARK: - Funciones de ayuda
     
