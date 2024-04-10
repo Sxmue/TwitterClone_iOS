@@ -138,8 +138,10 @@ class MainTabController: UITabBarController {
      Funcion encargada de abrir la pantalla de escribir un twit
      */
     @objc func actionButtonTap(){
+        guard let user = user else { return } //Hacemos unwrap del user que esta optional
+        
        //Necesitamos que sea un navigation controller, para volver atras cuando se escriba el twit
-        let nav = UINavigationController(rootViewController: UploadTwitController())
+        let nav = UINavigationController(rootViewController: UploadTwitController(user: user))
         nav.modalPresentationStyle = .fullScreen
         present(nav,animated: true)
     }
