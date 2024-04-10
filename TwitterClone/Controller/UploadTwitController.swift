@@ -32,7 +32,9 @@ class UploadTwitController: UIViewController {
         button.addTarget(self, action: #selector(handleTweet), for: .touchUpInside)
         return button
     }()
-    
+    /**
+     Imagen de perfil del usuario
+     */
     private  let profileImageView: UIImageView = {
         let imv = UIImageView()
         imv.contentMode = .scaleToFill
@@ -43,6 +45,11 @@ class UploadTwitController: UIViewController {
         //la imagen se le asigna en el lifecyrcle
         return imv
     }()
+    
+    /**
+     Text Field para escribir un tweet
+     */
+    private let captionTextView = CaptionTextView()
     
     //MARK: - Lifecyrcle
 
@@ -84,11 +91,21 @@ class UploadTwitController: UIViewController {
         view.backgroundColor = .white
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: tweetButton)
-        view.addSubview(profileImageView)
-        profileImageView.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.leftAnchor,paddingTop: 16,paddingLeft: 16)
+        
+        
+        //Vamos a cread una stack view con la imagen y al lado el textField
+         let stack = UIStackView(arrangedSubviews: [profileImageView,captionTextView])
+        stack.axis = .horizontal
+        stack.spacing = 12
+        
+        
+        view.addSubview(stack)
+        stack.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.leftAnchor,right: view.rightAnchor,paddingTop: 16,paddingLeft: 16)
         
         profileImageView.sd_setImage(with: URL(string: user.profileImage), completed: nil) //asignamos la imagen al perfil
         
+        
+    
     }
     
 }
