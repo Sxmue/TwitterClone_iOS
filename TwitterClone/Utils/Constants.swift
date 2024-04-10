@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import FirebaseDatabase
+import Firebase
 import FirebaseStorage
 
 //Nuestra clase de constantes
@@ -14,6 +14,8 @@ import FirebaseStorage
 let DB_REF = Database.database().reference()//con nuestra referencia a la base de datos
 
 let DB_USERS = DB_REF.child("users") //Y nuestra referencia directa a la parte de usuarios
+
+let DB_TWEETS = DB_REF.child("tweets") //Y nuestra referencia directa a la parte de usuarios
 
 let STORAGE_REF = Storage.storage().reference() //Referencia directa a storage
 

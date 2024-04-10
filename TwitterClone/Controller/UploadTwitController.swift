@@ -77,8 +77,23 @@ class UploadTwitController: UIViewController {
 
     }
     
+    /**
+     Metodo que se encarga de subir el tweet
+     */
     @objc func handleTweet(){
-        print("DEBUG: tweet button action...")
+        guard let text = captionTextView.text else {return }
+        
+        //Consumo del servicio de la API para subir tweets
+        TweetService.shared.uploadTweet(caption: text){ error, ref in
+            
+            if let error = error {
+                
+                print("DEBUG: Error uploading tweet \(error.localizedDescription)")
+            }
+            
+            self.dismiss(animated: true)
+            
+        }
     }
     
     //MARK: - Functions
