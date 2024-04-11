@@ -7,6 +7,33 @@
 
 import UIKit
 
+//ESTO ES MUY MUY IMPORTANTE
+
+//Necesitamos que cuando pulsemos en un elemento concreto de la celda se vaya al perfil del usuario en este caso el imageview cambie de vista, pero claro queremos que sea el Navigation controller que esta en la vista padre de este elemento el que te lleve a la vista
+
+//Si no eres una clase Controller, ViewController, UICollectionController... NO PUEDES PRESENTAR UN NUEVO NAVIGATION CONTROLLER, no puedes llamar a present
+
+//Y necesitas que esa imagen cambie de vista, entonces necesitas usar el navigation controller de tu vista PADRE
+
+//Para ello vamos a crear un DELEGADO con el metodo target que estamos poniendo en el listener de la foto, eso implicara que las vistas que se conformen a ese protocolo obtendran ese metodo. Conformando haciendose el delegado de esta vista en la vista padre tendremos acceso a ese metodo, es una abstraccion complicada
+
+
+//La estructura de un delegado es un poco complicada, asi que vamos a ir paso a paso
+
+//De esta manera creamos un protocolo, una interfaz, lo de despues de los dos puntos significa que cualquier clase puede adoptarlo
+protocol TweetCellDelegate: AnyObject {
+    
+    func toUserProfile(_ cell: TweetCollectionViewCell) //Tenemos este protocolo, con este metodo que recibe una celda, sin mas
+    
+    //Ahora pasamos a la propiedad
+}
+
+
+
+
+
+
+
 /**
  Clase que representa una celda para el tweet
  */
@@ -14,6 +41,14 @@ class TweetCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
+    //Esta variable es la que usaremos para comunicarnos con el delegado, con la clase que sea nuestro Delegado
+    weak var delegate: TweetCellDelegate? //Literalmente es nuestro delegado TweetCellDelegate, desde aqui accederemos a la version del metodo que se implante EN LA CLASE QUE NOS ADOPTE
+    
+    
+    
+    
+    
+
     var tweet: Tweet? {
         
         didSet{
@@ -26,7 +61,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
     /**
      Imagen de perfil del usuario
      */
-    private  let profileImageView: UIImageView = {
+    private lazy var profileImageView: UIImageView = {
         let imv = UIImageView()
         imv.contentMode = .scaleToFill
         imv.clipsToBounds = true
@@ -34,6 +69,19 @@ class TweetCollectionViewCell: UICollectionViewCell {
         imv.layer.cornerRadius = 48/2
         imv.backgroundColor = .twitterBlue
         //la imagen se le asigna en el lifecyrcle
+        
+    //Queremos añadir un listener a la imagen para que cuando cliques se vaya a la vista del perfil, pero el imageView no tiene un add tarjet como tal, asi que las opciones serian poner un boton con imagen O poner un listener de gestos de esta manera:
+        
+        //Si quieres añadir target o gestures aqui tiene que ser lazy asi ya te deja poner self
+        
+        //Asi creamos un "reconocedor de gestos" con su target
+        let tap = UITapGestureRecognizer(target: self, action: #selector(toProfileView))
+        
+        //Y aqui lo añadimos al image view
+        imv.addGestureRecognizer(tap) //listo
+        
+        imv.isUserInteractionEnabled = true //importante para que funcione nuestro reconocimiento de gestos
+        
         return imv
     }()
     
@@ -141,6 +189,19 @@ class TweetCollectionViewCell: UICollectionViewCell {
         
         
     }
+    
+    // EN EL METODO DE VERDAD EN EL QUE SE GESTION EL LISTENER
+    @objc func toProfileView(){
+        
+       //Se hace dentro una llamada al metodo del delegado, para ejecutar el codigo que se ponga en la otra clase
+        delegate?.toUserProfile(self)
+        
+        //Esto nos va a permitir ejecutar este metodo, en una clase EXTERIOR, teniendo acceso a las propiedades y metodos de la OTRA CLASE
+        //En este caso, necesitamos el NavigationController de la CLASE PADRE EXTERIOR
+
+        
+    }
+    
     
     
     //MARK: - Helpers

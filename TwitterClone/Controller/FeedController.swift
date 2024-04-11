@@ -118,7 +118,7 @@ extension FeedController {
         
         cell.tweet = tweet // al asignar a una variable optional un valor no optional no uses el "?" o no se asignara
         
-        
+        cell.delegate = self // Nos hacemos delegados de la celda
         
         return cell
     }
@@ -137,6 +137,22 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         //Con view.frame accedes a las dimensiones de la vista completa, asi ocuparan las celdas todo el ancho y 200 de alto
         return CGSize(width: view.frame.width, height: 120)
+    }
+    
+    
+}
+
+
+//MARK: - TweetCollectionViewCell Delegate
+
+//A Traves de la adopcion de este protocolo, abstraigo el metodo que quiero ejecutar de la celda a esta vista, lo que me permite usar el NavigationController que tengo aqui
+extension FeedController: TweetCellDelegate {
+    
+    
+    func toUserProfile(_ cell: TweetCollectionViewCell) {
+        
+        navigationController?.pushViewController(UserProfileController(collectionViewLayout: UICollectionViewLayout()), animated: true)
+        
     }
     
 }
