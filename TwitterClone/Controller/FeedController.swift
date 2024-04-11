@@ -21,6 +21,13 @@ class FeedController: UICollectionViewController{
         
     }
     
+    var tweets = [Tweet]() {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+        
+        
     
     //MARK: -Lifecycle
 
@@ -40,7 +47,7 @@ class FeedController: UICollectionViewController{
     func fetchTweets(){
         TweetService.shared.fetchTweets { tweets in
             
-            print("DEBUG: Los tweets traidos son: \(tweets)")
+            self.tweets = tweets
         }
     }
 
@@ -52,6 +59,13 @@ class FeedController: UICollectionViewController{
         view.backgroundColor = .white //Fondito blanco
                 
         collectionView.backgroundColor = .white
+        
+        
+        let underline = UIView()
+        underline.backgroundColor = .lightGray
+        view.addSubview(underline)
+        underline.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.safeAreaLayoutGuide.leftAnchor
+                         ,right: view.safeAreaLayoutGuide.rightAnchor,height: 0.3)
         
         //Lo primero que vamos a hacer es poner el loguito de twitter arriba
         //Esto lo vamos a hacer instanciando un IMAGEVIEW con un UIIMAGE dentro, que son cosas distintas
@@ -85,23 +99,33 @@ class FeedController: UICollectionViewController{
 
 }
 
+//MARK: - UICollectionView Delegate/DataSource
 /**
  Extension para los metodos del collection view
  */
 extension FeedController {
    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return tweets.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionViewCell
         
+        //Pasamos el tweet completo a la celda
+        let tweet = tweets[indexPath.item]
+        
+        cell.tweet = tweet // al asignar a una variable optional un valor no optional no uses el "?" o no se asignara
+        
+        
+        
         return cell
     }
         
 }
+
+//MARK: - UICollectionView DelegateFlowLayout
 
 /**
  Este delegado implementa los metodos para modificar las dimensiones de los objetos en el collection view, los metodos vienen en dos delegados distintos
@@ -112,7 +136,7 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         //Con view.frame accedes a las dimensiones de la vista completa, asi ocuparan las celdas todo el ancho y 200 de alto
-        return CGSize(width: view.frame.width, height: 100)
+        return CGSize(width: view.frame.width, height: 120)
     }
     
 }

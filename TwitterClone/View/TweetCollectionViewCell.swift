@@ -14,6 +14,15 @@ class TweetCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Properties
     
+    var tweet: Tweet? {
+        
+        didSet{
+            //Este metodo setea los valores internamente en la celda cuando este variable cambie
+            configure()
+        }
+    }
+        
+    
     /**
      Imagen de perfil del usuario
      */
@@ -73,7 +82,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
         //Añadimos la imagen de perfil del usuario a la celda
         addSubview(profileImageView)
         profileImageView.anchor(top: topAnchor,left: leftAnchor,
-                                paddingTop: 12 ,paddingLeft: 8)
+                                paddingTop: 8 ,paddingLeft: 8)
         
         //Ahora los dos textos de la celda vamos a meterlos en una stack view
         let stack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
@@ -96,11 +105,11 @@ class TweetCollectionViewCell: UICollectionViewCell {
         
         let actionStack = UIStackView(arrangedSubviews: [commentButton,retweetButton,likeButton,shareButton])
         actionStack.axis = .horizontal
-        actionStack.spacing = 72
+        actionStack.spacing = 72 //Espacio de 72, el cual se ajusta dependiendo de la pantalla en la que se ejecuta
         addSubview(actionStack)
-        actionStack.centerX(inView: self)
+        actionStack.centerX(inView: self) //con el metodo de la extension que creamos al principio, se centra facilmente
 
-        actionStack.anchor(bottom: underline.topAnchor)
+        actionStack.anchor(bottom: underline.topAnchor,paddingBottom: 8)
         
 
         
@@ -136,4 +145,24 @@ class TweetCollectionViewCell: UICollectionViewCell {
     
     //MARK: - Helpers
 
+    func configure() {
+        
+        guard let tweet = tweet else {return }
+        
+        captionLabel.text = tweet.caption
+        
+        //Vamos a aplicar el ViewModel por primera vez
+        let viewModel = TweetViewModel(tweet: tweet)
+
+        //como estamos creando un objeto URL a traves de la imagen del usuario que tiene el twit, eso ya es logica que aqui NO deberia estar
+        //Asi que vamos a hacerlo a traves del viewModel
+        //NO puede haber LOGICA en los componentes por minima que sea
+        profileImageView.sd_setImage(with: viewModel.profileImageURL)
+        
+        //Ahora nuestro infolabel necesita un attributed String, y vamos a realizarlo con su ViewModel
+        //Recuerda que para asignar attributed string no se usa text sino attributed text
+        infoLabel.attributedText = viewModel.userInfoText
+
+
+    }
 }

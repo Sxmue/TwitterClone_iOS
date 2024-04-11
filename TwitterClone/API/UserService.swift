@@ -17,9 +17,7 @@ struct UserService {
     /**
      Funcion para traer a un usuario de la bbdd
      */
-    func fetchUser(completion: @escaping(User) -> Void ){
-        //Lo primero necesitamos el identificador unico del usuario que tenemos logueado, asi que lo sacamos de firebase de esta manera sencilla
-        guard let uid = Auth.auth().currentUser?.uid else {return }
+    func fetchUser(uid: String,completion: @escaping(User) -> Void ){
         
         //De esta manera se hace un fetch de datos de manera sencilla a traves de un observador
         DB_USERS.child(uid).observeSingleEvent(of: .value) { snapshot in

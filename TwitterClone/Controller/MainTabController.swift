@@ -109,8 +109,11 @@ class MainTabController: UITabBarController {
      */
     func fetchUser(){
         
+        guard let uid = Auth.auth().currentUser?.uid else {return }
+
+        
         //Consumo del servicio de usuario para el fetch de datos
-        UserService.shared.fetchUser{ user in
+        UserService.shared.fetchUser(uid: uid){ user in
             
             print("DEBUG: Main user tab is \(user.username)")
             

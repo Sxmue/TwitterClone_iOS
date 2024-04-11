@@ -18,8 +18,9 @@ struct Tweet {
     let retweets: Int
     let uid: String
     var timestamp: Date! //hay que inicializarlo asi sino dara ruido al ser campo calculado
+    let user: User
     
-    init(tweetID: String, dictionary: [String: Any]){
+    init(user: User,tweetID: String, dictionary: [String: Any]){
         
         self.tweetID = tweetID //necesitamos el id por separado
         
@@ -33,6 +34,7 @@ struct Tweet {
             //Como ves muy facilito
             self.timestamp = Date(timeIntervalSince1970: timestamp)
         }
+        self.user = user
         
     }
 }

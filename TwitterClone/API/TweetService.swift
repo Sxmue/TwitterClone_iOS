@@ -50,7 +50,7 @@ struct TweetService {
         
         //De esta manera te traes los datos con un observe, este metodo trae los datos una vez y automaticamente los vuelve a traer cuando haya un cambio, se ejecuta en la db ref directamente
         //El observe monitoriza una ref de la base de datos, y .childaded es un Data event el cual le indica al observe que mire cuando se añada a esa referencia
-        DB_TWEETS.observe(.childAdded) { snapshot in
+        DB_TWEETS.observe(.childAdded) { snapshot  in
           
             //En snapshot.key obtenemos el id unico del objeto que nos hayamos traido, en este caso el id que la bbdd ha puesto automaticamente a nuestro tweet
             
@@ -58,13 +58,19 @@ struct TweetService {
                 
                 //Casteamos el array de valores de vuelta a diccionario
                 guard let dictionary = snapshot.value as? [String: Any] else {return }
-                
-                let tweet = Tweet(tweetID: snapshot.key, dictionary: dictionary) //con la key y con el diccionario inicializamos
-                
-                tweets.append(tweet) //añadimos a nuestro array
             
-            completion(tweets) //llamamos al completion
-            
+            //consumimos el servicio de usuarios,para traer el user al que pertenece el tweet y traerlo de la bbdd
+            guard let uid = dictionary["uid"] as? String else {return }
+
+            UserService.shared.fetchUser(uid: uid) { user in
+                
+                let tweet = Tweet(user: user, tweetID: snapshot.key, dictionary: dictionary) //con la key y con el diccionario inicializamos
+                    
+                    tweets.append(tweet) //añadimos a nuestro array
+                
+                completion(tweets) //llamamos al completion
+            }
+          
         }
     }
     
