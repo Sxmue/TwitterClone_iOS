@@ -151,7 +151,7 @@ extension FeedController: TweetCellDelegate {
     
     func toUserProfile(_ cell: TweetCollectionViewCell) {
         
-        navigationController?.pushViewController(UserProfileController(collectionViewLayout: UICollectionViewLayout()), animated: true)
+        navigationController?.pushViewController(UserProfileController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
         
     }
     
