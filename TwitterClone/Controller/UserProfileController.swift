@@ -7,7 +7,7 @@
 
 import UIKit
 
-class UserProfileController: UICollectionViewController {
+class UserProfileController: UICollectionViewController{
     
    //MARK: - Properties
     
@@ -17,20 +17,34 @@ class UserProfileController: UICollectionViewController {
         }
     }
     
+    
     //MARK: - Lifecyrcle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView.backgroundColor = .white
-        
+
         
         configureCollectionView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController!.navigationBar.barStyle = .black
+        
+
         navigationController?.navigationBar.isHidden = true
+
+        
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+          return .lightContent
+      }
+    
+
     
     //MARK: - Selectors
     
@@ -43,12 +57,14 @@ class UserProfileController: UICollectionViewController {
         
         //Registramos nuestra celda personalizada
         collectionView.register(TweetCollectionViewCell.self, forCellWithReuseIdentifier: "TweetCell")
-
+        
         //Registramos la vista personalizada del header, que se hace de esta manera lo cual es completamente nuevo, tambien puedes tener un footer
         collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "ProfileHeader")
         
         //Para que el collection view ocupe toda la pantalla y no se quede en el safelayout, hay que usar esto
         collectionView.contentInsetAdjustmentBehavior = .never
+        
+        
         
     }
 
@@ -92,7 +108,7 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
     //Este delegado tiene una cosa nueva, y es que los Collection view tienen un header el cual nos permite hacer la parte de arriba de una vista, de esta manera se implementa
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 300)
+        return CGSize(width: view.frame.width, height: 350)
     }
     
     

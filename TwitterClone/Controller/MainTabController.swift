@@ -175,7 +175,6 @@ class MainTabController: UITabBarController {
         nav1.tabBarItem.image = UIImage(named: "home_unselected") //Como ahora a nuestra vista la agrupa un navigationController, es la vista "root", le ponemos al navigation el icono, igual en los demas
         
         
-        
        
         //Los demas los hacemos con la funcion que nos hemos creado
         

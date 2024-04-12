@@ -27,7 +27,6 @@ class FeedController: UICollectionViewController{
         }
     }
         
-        
     
     //MARK: -Lifecycle
 
@@ -36,6 +35,8 @@ class FeedController: UICollectionViewController{
         //Lo primero que vamos a hacer es llamar a un metodo que configure la UI
         configureUI()
         fetchTweets()
+        
+        
         
         collectionView.register(TweetCollectionViewCell.self, forCellWithReuseIdentifier: "TweetCell")
         
@@ -156,3 +157,4 @@ extension FeedController: TweetCellDelegate {
     }
     
 }
+
