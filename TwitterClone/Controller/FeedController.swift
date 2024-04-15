@@ -91,7 +91,7 @@ class FeedController: UICollectionViewController{
         profileImageView.layer.cornerRadius = 32/2
         profileImageView.layer.masksToBounds = true //Indicamos que la imagen se quede de la forma del imageview
         //Ahora con la libreria que hemos añadido SDWEBIMAGE podemos asignar la imagen y hacer el fetch en el momento
-        profileImageView.sd_setImage(with: URL(string: user.profileImage), completed: nil)
+        profileImageView.sd_setImage(with: user.profileImageURL, completed: nil)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
 
@@ -152,7 +152,9 @@ extension FeedController: TweetCellDelegate {
     
     func toUserProfile(_ cell: TweetCollectionViewCell) {
         
-        navigationController?.pushViewController(UserProfileController(collectionViewLayout: UICollectionViewFlowLayout()), animated: true)
+        guard let user = user else {return }
+        
+        navigationController?.pushViewController(UserProfileController(user: user), animated: true)
         
     }
     

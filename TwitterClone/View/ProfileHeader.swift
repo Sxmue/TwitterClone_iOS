@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 /**
  Componente personalizado que sera el header de el collection controller del usuario
  */
@@ -15,6 +16,14 @@ class ProfileHeader: UICollectionReusableView {
     //Con UICollectionReusableView creamos una vista rehusable para el resto del colection view que podemos usar de header o de footer
     
     //MARK: - Properties
+    //Necesitamos los datos del usuario para setear ciertas cosas de la vista, pues asi es la manera mas limpia y correcta de hacerlo
+    //Al asignar esta propiedad
+     var user: User? {
+        didSet {
+            //Se llama automaticamente a este metodo
+            configure()
+        }
+    }
     
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -51,7 +60,7 @@ class ProfileHeader: UICollectionReusableView {
     
     private let profileImage: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         iv.layer.backgroundColor = UIColor.white.cgColor
         iv.layer.borderWidth = 4
@@ -97,7 +106,38 @@ class ProfileHeader: UICollectionReusableView {
         return username
     }()
     
-    var filter = ProfileFilterView()
+    var filter = ProfileFilterView() //La vista que contiene los 3 botones de filtro dentro
+    
+    private lazy var followingLabel: UILabel = {
+        
+        let label = UILabel()
+        
+        //añadimos un gesture tap para que detecte al pulsar sobre el, y ir a la vista de a quien sigo
+        let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowingTapped))
+        label.isUserInteractionEnabled = true //Necesario para que reconozca el gesto
+        label.addGestureRecognizer(followTap)
+        
+        //añadimos texto
+        label.text = "2 Following"
+        
+        return label
+    }()
+    
+    private lazy var followersLabel: UILabel = {
+        
+        let label = UILabel()
+        
+        //añadimos un gesture tap para que detecte al pulsar sobre el, y ir a la vista de a quien sigo
+        let followTap = UITapGestureRecognizer(target: self, action: #selector(handleFollowersTapped))
+        label.isUserInteractionEnabled = true //Necesario para que reconozca el gesto
+        label.addGestureRecognizer(followTap)
+        
+        //añadimos texto
+        label.text = "0 Followers"
+        return label
+    }()
+    
+    
 
     
     //MARK: - Lifecyrcle
@@ -135,6 +175,15 @@ class ProfileHeader: UICollectionReusableView {
         //Barrita para el filtro seleccionado
         addSubview(barSelection)
         barSelection.anchor(left: leftAnchor,bottom: bottomAnchor,width: frame.width/3,height: 1)
+        
+        //stack para los seguidores/siguiente
+        let followStack = UIStackView(arrangedSubviews: [followingLabel,followersLabel])
+        followStack.axis = .horizontal
+        followStack.spacing = 8
+        addSubview(followStack)
+        followStack.anchor(top: stack.bottomAnchor,left: leftAnchor,paddingTop: 4,paddingLeft: 12)
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -153,9 +202,35 @@ class ProfileHeader: UICollectionReusableView {
         print("DEBUG: Pulsado boton follow")
     }
     
+    @objc func handleFollowingTapped(){
+        
+    }
+    
+    @objc func handleFollowersTapped(){
+        
+        
+    }
+    
     
     //MARK: - Helpers
-
+    /**
+     Metodo encargado de instanciar un viewmodel y settear todos los campos que necesiten del usuario
+     */
+    func configure(){
+        
+        guard let user = user else {return }
+        
+        let viewModel = ProfileHeaderViewModel(user: user)
+        
+        followersLabel.attributedText = viewModel.followersString
+        
+        followingLabel.attributedText = viewModel.followingString
+        
+        profileImage.sd_setImage(with: user.profileImageURL)
+        
+        ProfileFollowButton.setTitle(viewModel.buttonTittle, for: .normal)
+        
+    }
 
     
     

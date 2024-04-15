@@ -64,6 +64,7 @@
 		6EAC89792BBC0FC900AA1E25 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAC89782BBC0FC900AA1E25 /* Extensions.swift */; };
 		6EAC897D2BBC19A700AA1E25 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAC897C2BBC19A700AA1E25 /* LoginController.swift */; };
 		6EAC897F2BBC1ACC00AA1E25 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAC897E2BBC1ACC00AA1E25 /* RegistrationController.swift */; };
+		6EC400FB2BCD039D008FF251 /* ProfileHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC400FA2BCD039D008FF251 /* ProfileHeaderViewModel.swift */; };
 		6EE38E482BBD326600B7EF02 /* Utilities.swift 12-32-00-801.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE38E472BBD326600B7EF02 /* Utilities.swift 12-32-00-801.swift */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +99,7 @@
 		6EAC89782BBC0FC900AA1E25 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6EAC897C2BBC19A700AA1E25 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		6EAC897E2BBC1ACC00AA1E25 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
+		6EC400FA2BCD039D008FF251 /* ProfileHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewModel.swift; sourceTree = "<group>"; };
 		6EE38E472BBD326600B7EF02 /* Utilities.swift 12-32-00-801.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Utilities.swift 12-32-00-801.swift"; path = "/Users/sleivaal/proyects/TwitterClone/TwitterClone/Utils/Utilities.swift 12-32-00-801.swift"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -224,6 +226,7 @@
 			isa = PBXGroup;
 			children = (
 				6E21B0F22BC7D794005B68EF /* TweetViewModel.swift */,
+				6EC400FA2BCD039D008FF251 /* ProfileHeaderViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 				6EAC896F2BBBE40800AA1E25 /* MainTabController.swift in Sources */,
 				6E21B0FB2BC94417005B68EF /* ProfileFilterView.swift in Sources */,
 				6E21B0F92BC81370005B68EF /* ProfileHeader.swift in Sources */,
+				6EC400FB2BCD039D008FF251 /* ProfileHeaderViewModel.swift in Sources */,
 				6E4367832BC67948009848C2 /* CaptionTextView.swift in Sources */,
 				6EAC897F2BBC1ACC00AA1E25 /* RegistrationController.swift in Sources */,
 				6EE38E482BBD326600B7EF02 /* Utilities.swift 12-32-00-801.swift in Sources */,

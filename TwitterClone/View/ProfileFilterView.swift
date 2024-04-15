@@ -41,7 +41,14 @@ class ProfileFilterView: UIView{
         
         collectionView.register(ProfileFilterCell.self, forCellWithReuseIdentifier: "FilterCell")
         addSubview(collectionView)
+        
         collectionView.addConstraintsToFillView(self) //Importante que existe esto, para que te añada automaticamente las constraints para que la vista ocupe todo el disponible
+        
+        //Ahora queremos que se seleccione siempre por defecto la primera opcion, eso se hace de esta manera
+        //Tienen esta pripiedad los collection view para dejar seleccionado el que quieras
+        collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .left)
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -67,13 +74,22 @@ class ProfileFilterView: UIView{
 extension ProfileFilterView: UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        3
+        return ProfileFilterOptions.allCases.count //De cada caso del enum creara una celda
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FilterCell", for: indexPath) as! ProfileFilterCell
         
+        //Usamos nuestro enum creado en el ProfileHeaderViewModel
+        //Como hemos usado el parametro integer y la interfaz CaseIterable en el enum, a traves del index path itera los posibles casos
+        let option = ProfileFilterOptions(rawValue: indexPath.row) //Instancia del enum con el indexpath 0,1,2
+        
+        //Si accedemos a la variable description de cada enum, segun lo seleccionado devolvera el titulo que queramos
+        //Esto permitira que si añadimos en el futuro nuevas pestañas al filtro sera muy facil mapearlas
+        
+        
+        cell.labelCell.text = option?.description
         
         return cell
     }
@@ -100,8 +116,8 @@ extension ProfileFilterView: UICollectionViewDelegate{
 extension ProfileFilterView: UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //Vamos a tener 3 zeldas asi que es importante dividir el ancho entre 3
-        return CGSize(width: frame.width/3, height: frame.height)
+        //Vamos a dividir el ancho de las celdas entre el ancho de las posibilidades que tengamos
+        return CGSize(width: frame.width/CGFloat(ProfileFilterOptions.allCases.count), height: frame.height)
     }
     
     //Las celdas tienen un espacio por defecto en los collection view, de esta manera lo eliminamos

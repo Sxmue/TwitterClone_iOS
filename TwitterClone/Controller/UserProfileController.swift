@@ -11,15 +11,24 @@ class UserProfileController: UICollectionViewController{
     
    //MARK: - Properties
     
-    var tweets = [Tweet]() {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    private let user: User?
+        
+    
     
     
     //MARK: - Lifecyrcle
+    
+    init(user: User) {
+        self.user = user
+        
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
 
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -95,6 +104,8 @@ extension UserProfileController {
         
         //Al igual que con una celda, hay un metodo para añadir una vista supplementaria con identificador, el cual hemos implementado antes, ahora y simplemente se personaliza igual que si fuera una celd
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind , withReuseIdentifier: "ProfileHeader", for: indexPath) as! ProfileHeader
+        
+        header.user = user
         
         return header
     }
