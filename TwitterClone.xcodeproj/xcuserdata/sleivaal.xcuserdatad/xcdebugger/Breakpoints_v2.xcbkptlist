@@ -3,4 +3,85 @@
    uuid = "2EFB4F0F-AA00-403C-A8A0-27F71AB17B75"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3FCC194D-46EF-458E-ABDB-938CDF25C741"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/View/ProfileHeader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "handleBack(sender:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6F86AD8E-5302-4A5C-A986-B13A4235B49F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/View/ProfileHeader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
+            landmarkName = "init(frame:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6F86AD8E-5302-4A5C-A986-B13A4235B49F - 9fd971c86ecf84eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.ProfileHeader.init(frame: __C.CGRect) -&gt; TwitterClone.ProfileHeader"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "2044">
+               </Location>
+               <Location
+                  uuid = "6F86AD8E-5302-4A5C-A986-B13A4235B49F - 9fd971c86ecf84eb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.ProfileHeader.init(frame: __C.CGRect) -&gt; TwitterClone.ProfileHeader"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "162"
+                  endingLineNumber = "162"
+                  offsetFromSymbolStart = "2056">
+               </Location>
+               <Location
+                  uuid = "6F86AD8E-5302-4A5C-A986-B13A4235B49F - 9fd971c86ecf84a9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.ProfileHeader.init(frame: __C.CGRect) -&gt; TwitterClone.ProfileHeader"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "164"
+                  endingLineNumber = "164"
+                  offsetFromSymbolStart = "1895">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -32,6 +32,8 @@ class UserProfileController: UICollectionViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        collectionView.isUserInteractionEnabled = true
+        
         collectionView.backgroundColor = .white
 
         
@@ -105,6 +107,9 @@ extension UserProfileController {
         //Al igual que con una celda, hay un metodo para añadir una vista supplementaria con identificador, el cual hemos implementado antes, ahora y simplemente se personaliza igual que si fuera una celd
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind , withReuseIdentifier: "ProfileHeader", for: indexPath) as! ProfileHeader
         
+        header.delegate = self
+        
+        header.isUserInteractionEnabled = true
         header.user = user
         
         return header
@@ -130,3 +135,13 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
     
     
 }
+
+//MARK: - ProfileHeaderDelegate
+extension UserProfileController: ProfileHeaderDelegate {
+    func dismissView(_ header: ProfileHeader) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    
+}
+

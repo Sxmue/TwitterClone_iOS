@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol ProfileHeaderDelegate: AnyObject {
+    func dismissView(_ header: ProfileHeader)
+        
+    
+}
 
 /**
  Componente personalizado que sera el header de el collection controller del usuario
@@ -16,6 +21,9 @@ class ProfileHeader: UICollectionReusableView {
     //Con UICollectionReusableView creamos una vista rehusable para el resto del colection view que podemos usar de header o de footer
     
     //MARK: - Properties
+    
+    weak var delegate: ProfileHeaderDelegate?
+    
     //Necesitamos los datos del usuario para setear ciertas cosas de la vista, pues asi es la manera mas limpia y correcta de hacerlo
     //Al asignar esta propiedad
      var user: User? {
@@ -29,12 +37,9 @@ class ProfileHeader: UICollectionReusableView {
         let view = UIView()
         
         view.backgroundColor = .twitterBlue
-                
-        view.addSubview(backButton)
         
-        backButton.anchor(top: view.topAnchor,left: view.leftAnchor,paddingTop: 42,paddingLeft: 16)
+        view.isUserInteractionEnabled = true
         
-        backButton.setDimensions(width: 30, height: 30)
         
         return view
     }()
@@ -51,9 +56,10 @@ class ProfileHeader: UICollectionReusableView {
     }()
     
     private lazy var backButton: UIButton = {
-        let button = UIButton(type: .custom)
+        let button = UIButton(type: .system)
+        button.tintColor = .white
         button.setImage(UIImage(named: "baseline_arrow_back_white_24dp"), for: .normal)
-        button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+
         return button
     }()
     
@@ -144,16 +150,26 @@ class ProfileHeader: UICollectionReusableView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
+        isUserInteractionEnabled = true
+        
+                
+        backButton.setDimensions(width: 30, height: 30)
         
         filter.delegate = self
         
         //Contenedor azul arriba
         addSubview(containerView)
         containerView.anchor(top: topAnchor,left: leftAnchor,right: rightAnchor,height: 108)
+        print(containerView.isUserInteractionEnabled)
+    
         
         //Imagen perfil
         addSubview(profileImage)
         profileImage.anchor(top: containerView.bottomAnchor,left: leftAnchor,paddingTop: -24,paddingLeft: 8)
+        
+        addSubview(backButton)
+        backButton.anchor(top: topAnchor,left: leftAnchor,paddingTop: 60,paddingLeft: 16)
+        backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         
         //Botton de Follow
         addSubview(ProfileFollowButton)
@@ -192,9 +208,10 @@ class ProfileHeader: UICollectionReusableView {
     
     //MARK: - Selectors
 
-    @objc func handleBack(){
+    @objc func handleBack(sender : UIButton){
         
-        print("DEBUG: Pulsado hacia atras")
+        print("Boton pulsado")
+        delegate?.dismissView(self)
     }
     
     @objc func handleProfileFollowButton(){
