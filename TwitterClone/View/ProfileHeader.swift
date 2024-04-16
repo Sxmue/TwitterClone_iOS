@@ -35,8 +35,10 @@ class ProfileHeader: UICollectionReusableView {
     
     private lazy var containerView: UIView = {
         let view = UIView()
-        
+        view.clipsToBounds = true
         view.backgroundColor = .twitterBlue
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         view.isUserInteractionEnabled = true
         
@@ -59,6 +61,10 @@ class ProfileHeader: UICollectionReusableView {
         let button = UIButton(type: .system)
         button.tintColor = .white
         button.setImage(UIImage(named: "baseline_arrow_back_white_24dp"), for: .normal)
+        
+        button.setDimensions(width: 30, height: 90)
+
+        button.clipsToBounds = true
 
         return button
     }()
@@ -152,25 +158,19 @@ class ProfileHeader: UICollectionReusableView {
         backgroundColor = .white
         isUserInteractionEnabled = true
         
-                
-        backButton.setDimensions(width: 30, height: 30)
-        
+                        
         filter.delegate = self
         
         //Contenedor azul arriba
         addSubview(containerView)
         containerView.anchor(top: topAnchor,left: leftAnchor,right: rightAnchor,height: 108)
-        print(containerView.isUserInteractionEnabled)
-    
         
         //Imagen perfil
         addSubview(profileImage)
+        profileImage.isUserInteractionEnabled = true
         profileImage.anchor(top: containerView.bottomAnchor,left: leftAnchor,paddingTop: -24,paddingLeft: 8)
         
-        addSubview(backButton)
-        backButton.anchor(top: topAnchor,left: leftAnchor,paddingTop: 60,paddingLeft: 16)
-        backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-        
+     
         //Botton de Follow
         addSubview(ProfileFollowButton)
         ProfileFollowButton.setDimensions(width: 100, height: 36)
@@ -198,6 +198,12 @@ class ProfileHeader: UICollectionReusableView {
         followStack.spacing = 8
         addSubview(followStack)
         followStack.anchor(top: stack.bottomAnchor,left: leftAnchor,paddingTop: 4,paddingLeft: 12)
+        
+        
+        addSubview(backButton)
+        backButton.anchor(top: topAnchor,left: leftAnchor,paddingTop: 10,paddingLeft: 16)
+        backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+        
         
         
     }

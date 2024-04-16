@@ -43,10 +43,12 @@ class UserProfileController: UICollectionViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.navigationBar.isHidden = true
+        
+        
         navigationController!.navigationBar.barStyle = .black
         
 
-        navigationController?.navigationBar.isHidden = true
 
         
     }
