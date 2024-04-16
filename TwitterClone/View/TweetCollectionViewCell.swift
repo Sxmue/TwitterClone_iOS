@@ -136,6 +136,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
         let stack = UIStackView(arrangedSubviews: [infoLabel,captionLabel])
         stack.axis = .vertical
         stack.spacing = 4
+        stack.distribution = .fillProportionally
         infoLabel.text = "Leonel Messi @messi"
         
         addSubview(stack)

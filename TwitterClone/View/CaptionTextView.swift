@@ -42,6 +42,7 @@ class CaptionTextView: UITextView {
         
         
         
+        
         //Placeholder
         addSubview(placeholder)
         //En este caso, al ajustar un elemento a dentro del textview no se usa view. sino directamente topAnchor

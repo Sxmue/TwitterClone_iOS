@@ -13,6 +13,11 @@ class UserProfileController: UICollectionViewController{
     
     private let user: User?
         
+    private var tweets = [Tweet](){
+        didSet{
+            collectionView.reloadData()
+        }
+    }
     
     
     
@@ -38,6 +43,8 @@ class UserProfileController: UICollectionViewController{
 
         
         configureCollectionView()
+        
+        fetchUserTweets()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +67,21 @@ class UserProfileController: UICollectionViewController{
 
     
     //MARK: - Selectors
+    
+    
+    
+    
+    //MARK: - API
+    
+    func fetchUserTweets(){
+        guard let user = user else {return }
+        
+        TweetService.shared.fetchUserTweets(forUser: user) { tweet in
+            print(tweet)
+            self.tweets = tweet
+        }
+    }
+
     
     
     
@@ -87,12 +109,18 @@ class UserProfileController: UICollectionViewController{
 extension UserProfileController {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return tweets.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionViewCell
+        
+        //Pasamos el tweet completo a la celda
+        let tweet = tweets[indexPath.item]
+        
+        cell.tweet = tweet // al asignar a una variable optional un valor no optional no uses el "?" o no se asignara
+        
     
         return cell
     }
@@ -113,6 +141,8 @@ extension UserProfileController {
         
         header.isUserInteractionEnabled = true
         header.user = user
+        
+        
         
         return header
     }

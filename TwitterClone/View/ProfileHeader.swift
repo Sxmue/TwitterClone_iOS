@@ -243,7 +243,11 @@ class ProfileHeader: UICollectionReusableView {
         
         guard let user = user else {return }
         
+        fullnameLabel.text = user.fullname
+        
         let viewModel = ProfileHeaderViewModel(user: user)
+        
+        usernameLabel.text = viewModel.usernameText
         
         followersLabel.attributedText = viewModel.followersString
         

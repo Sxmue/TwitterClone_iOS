@@ -35,7 +35,22 @@ struct TweetService {
         
         //De esta manera guardamos en la database con un ID automatico
         //Esto significa guardame con un id automatico, y ponle esos valores
-        DB_TWEETS.childByAutoId().updateChildValues(values, withCompletionBlock: completion)
+        //Vamos a sacar el idAutomatico a una variable para usarlo dentro, pero esta llamada normalmente se encadenaria
+        let tweetID = DB_TWEETS.childByAutoId() //asi tenemos el id que le ha puesto la bbdd automaticamente
+        tweetID.updateChildValues(values) { error, ref in
+            
+            //Ahora queremos que cuando el tweet se suba, se guarde tambien en la parte de tweets del usuario, asi que en lugar de usar el completion aqui, vamos a encadenarlo con el siguiente metodo
+            
+            //Nos vamos a la referencia de user-tweets, creamos un nuevo child con el uid del USER y le añadimos el uid del tweet que acabamos de escribir, que lo tenemos en ref
+            
+            guard let tweetID =  ref.key else {return } //guard let al id del twit para guardarlo
+            
+            //Asi siempre tendremos en user tweets, el uid del user con los uid de sus tweets dentro guardados
+            //El 1 es simplemente porque hay que poner un valor, lo que importa es el tweet id
+
+            DB_USER_TWEETS.child(uid).updateChildValues([tweetID: 1], withCompletionBlock: completion)
+
+        }
         
     }
     
@@ -72,6 +87,37 @@ struct TweetService {
             }
           
         }
+    }
+    
+    /**
+     Funcion que se va a encargar de traer todos los tweets de un usuario en concreto
+     */
+    func fetchUserTweets(forUser user: User, completion: @escaping ([Tweet])-> Void){
+        
+        var tweets = [Tweet]()
+        
+        //Vamos a la referencia de user tweets del usuario logueado con su uid
+        //Añadimos un listener
+        DB_USER_TWEETS.child(user.uid).observe(.childAdded) { snapshot in
+            
+            //Ahora aqui en snapshot tenemos todas las claves de los tweets
+            //Para cada uno vamos y traemos su info
+            
+            let tweetID = snapshot.key //en key lo tenemos
+            
+            //De esta manera, con el sigle event y el evento .value, se hace fetch al tweet una vez y cada vez que cambie lo actualiza solo
+            DB_TWEETS.child(tweetID).observeSingleEvent(of: .value) { snapshot in
+                
+                guard let dictionary = snapshot.value as? [String: Any] else {return }
+                
+                let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
+                tweets.append(tweet)
+                
+                completion(tweets)
+            }
+            
+        }
+        
     }
     
     

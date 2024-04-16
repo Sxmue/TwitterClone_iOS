@@ -112,6 +112,8 @@ class UploadTwitController: UIViewController {
          let stack = UIStackView(arrangedSubviews: [profileImageView,captionTextView])
         stack.axis = .horizontal
         stack.spacing = 12
+        stack.layer.borderColor = UIColor.red.cgColor
+        stack.layer.borderWidth = 3
         
         
         view.addSubview(stack)

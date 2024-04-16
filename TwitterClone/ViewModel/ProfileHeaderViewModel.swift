@@ -47,6 +47,9 @@ struct ProfileHeaderViewModel {
 
     }
     
+    var usernameText:  String
+    
+    
     /**
      Cambiara dependiendo de si estamos viendo el perfil del usuario logueado o no
      */
@@ -58,6 +61,7 @@ struct ProfileHeaderViewModel {
     
     init(user: User) {
         self.user = user
+        self.usernameText = "@\(user.username)"
     }
     
     /**
