@@ -162,7 +162,9 @@ extension FeedController: TweetCellDelegate {
         
         guard let user = user else {return }
         
+
         navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+        navigationController?.toolbar.isUserInteractionEnabled = true
         
     }
     

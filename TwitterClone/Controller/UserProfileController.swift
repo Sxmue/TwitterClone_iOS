@@ -41,6 +41,8 @@ class UserProfileController: UICollectionViewController{
         
         collectionView.backgroundColor = .white
 
+        definesPresentationContext = false
+
         
         configureCollectionView()
         
@@ -54,6 +56,7 @@ class UserProfileController: UICollectionViewController{
         
         
         navigationController!.navigationBar.barStyle = .black
+    
         
 
 

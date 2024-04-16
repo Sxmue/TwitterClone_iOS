@@ -62,6 +62,7 @@ class MainTabController: UITabBarController {
         self.view.backgroundColor = .white
   
         
+        
 //        logout()
         authenticateUserAndConfigureUI()
 
@@ -147,6 +148,7 @@ class MainTabController: UITabBarController {
        //Necesitamos que sea un navigation controller, para volver atras cuando se escriba el twit
         let nav = UINavigationController(rootViewController: UploadTwitController(user: user))
         nav.modalPresentationStyle = .fullScreen
+        nav.navigationBar.isUserInteractionEnabled = true
         present(nav,animated: true)
     }
 
@@ -174,6 +176,8 @@ class MainTabController: UITabBarController {
         
         nav1.tabBarItem.image = UIImage(named: "home_unselected") //Como ahora a nuestra vista la agrupa un navigationController, es la vista "root", le ponemos al navigation el icono, igual en los demas
         
+        nav1.navigationBar.isUserInteractionEnabled = true
+        
         
        
         //Los demas los hacemos con la funcion que nos hemos creado
@@ -197,6 +201,8 @@ class MainTabController: UITabBarController {
         let nav = UINavigationController(rootViewController: root)
         nav.tabBarItem.image = image
         nav.navigationBar.tintColor = .white
+        
+        nav.navigationBar.isUserInteractionEnabled = true
         return nav
     }
     

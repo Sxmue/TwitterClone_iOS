@@ -84,6 +84,7 @@ class LoginController: UIViewController {
         dontHaveAccountButton.addTarget(self, action: #selector(toSingUpView), for: .touchUpInside)
 
         navigationController?.navigationBar.isHidden = true //Forzamos ocultar la barra de navegacion superior ya que en esta vista no la queremos, pero si queremos navegar entre login y sing in
+        navigationController?.navigationBar.isUserInteractionEnabled = true
         navigationController?.navigationBar.barStyle = .black //Asi cambiamos como se ve la hora y la cobertura arriba
         configureUI()
         

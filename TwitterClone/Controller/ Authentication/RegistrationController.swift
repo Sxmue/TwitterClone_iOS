@@ -115,7 +115,7 @@ class RegistrationController: UIViewController{
     //MARK: - Lifecyrcle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.navigationBar.isHidden = true
         configureUI()
         
     }

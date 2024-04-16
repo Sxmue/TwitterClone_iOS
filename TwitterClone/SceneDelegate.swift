@@ -19,6 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = scene as? UIWindowScene else { return }
         window = UIWindow(windowScene: scene)
         window?.rootViewController = UINavigationController(rootViewController: MainTabController())//El controller que pongas aqui se abrira de primeras
+        window?.rootViewController?.navigationController?.navigationBar.isHidden = true
+        window?.rootViewController?.navigationController?.navigationBar.isUserInteractionEnabled = true
+        window?.isUserInteractionEnabled = true
         window?.makeKeyAndVisible()
     }
 
