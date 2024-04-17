@@ -85,8 +85,8 @@ class MainTabController: UITabBarController {
                 //De esta manera cambiamos de vista pero obligamos a que la nueva aparezca en full screen, sino aparece como una modal (que tampoco esta mal segun el caso)
                 //La instancia de nav es muy importante, hay que hacerla asi si o si porque necesitas el navigation controller para que cambie de ventanas una vez estes en el login, si solo presentas el login no se podra cambiar de ventana por ejemplo a la de sign in
                 let nav = UINavigationController(rootViewController: LoginController())
+                nav.navigationBar.backgroundColor = UIColor.red
                 nav.modalPresentationStyle = .fullScreen //El fix para que se vaya al login y ocupe toda la pantalla
-                
                 self.navigationController?.present(nav, animated: true)
 
             }
@@ -148,7 +148,6 @@ class MainTabController: UITabBarController {
        //Necesitamos que sea un navigation controller, para volver atras cuando se escriba el twit
         let nav = UINavigationController(rootViewController: UploadTwitController(user: user))
         nav.modalPresentationStyle = .fullScreen
-        nav.navigationBar.isUserInteractionEnabled = true
         present(nav,animated: true)
     }
 
@@ -173,7 +172,7 @@ class MainTabController: UITabBarController {
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout()) //Muy importante ya que va a ser un colecction view
                 
         let nav1 = UINavigationController(rootViewController: feed) //De esta manera hacemos "Embeed" a cada vista con el navigationController
-        
+                
         nav1.tabBarItem.image = UIImage(named: "home_unselected") //Como ahora a nuestra vista la agrupa un navigationController, es la vista "root", le ponemos al navigation el icono, igual en los demas
         
         nav1.navigationBar.isUserInteractionEnabled = true

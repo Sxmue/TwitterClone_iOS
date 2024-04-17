@@ -17,6 +17,18 @@ class ExploreController: UITableViewController{
         }
     }
     
+    // Array suplementario para almacenar el filtro de los usuarios
+    private var filteredUsers = [User](){
+        didSet{
+            tableView.reloadData()
+        }
+    }
+    
+    //Con eso sabremos si la barra esta activada y si NO tiene texto, la usaremos abajo
+    var inSearchMode: Bool {
+        return searchController.isActive && ((searchController.searchBar.text?.isEmpty) != nil)
+    }
+    
     //Esto es nuevo completamente, vamos a necesitar buscar entre los usuarios que nos traigamos, asi que vamos a usar el componente SearchController
     private let searchController = UISearchController(searchResultsController: nil)
     
@@ -37,6 +49,12 @@ class ExploreController: UITableViewController{
         
         configureSearchController()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.isHidden = false
+    }
 
     //MARK: - Funciones de ayuda
     
@@ -53,6 +71,11 @@ class ExploreController: UITableViewController{
      Metodo que se encarga de configurar la barra de navegacion
      */
     func configureSearchController(){
+        
+        //Con esto le decimos en que clase debemos aplicar el update de lo que se busque,
+        //hay que adoptar su protocolo para que lo identifique
+        searchController.searchResultsUpdater = self
+        
         //Esta propiedad evita que se oscurezca la vista cuando el usuario clicke en la barrita de busqueda
         searchController.obscuresBackgroundDuringPresentation = false
         
@@ -92,7 +115,9 @@ class ExploreController: UITableViewController{
 extension ExploreController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return users.count
+        //Aqui basicamente, con nuestro boolean de ayuda, si es true devolvemos la lista filtrada y sino devolvemos la de usuarios original
+        //Asi cuando cliques en la barrita desaparecera lo que haya abajo y hace ese efecto tan chulo ademas de simplificar el filtrado
+        return inSearchMode ? filteredUsers.count : users.count
         
     }
     
@@ -101,12 +126,49 @@ extension ExploreController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserTableViewCell
         cell.awakeFromNib()
         
-        cell.user = users[indexPath.row] //asignamos la propiedad usuario a la celda
+        //Aqui igual, si estamos en search mode coge los datos de un array o de otro, con el operador elvis es muy facil hacer esto
+        cell.user = inSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row] //asignamos la propiedad usuario a la celda
         
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //Tenemos el usuario en la row del index path asi que copiamos la linea de arriba
+        let user = inSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
+        navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+    }
 }
 
+
+//MARK: - SearchBarUpdating
+
+/**
+ Este protocolo te permite adoptar el metodo necesario para trabajar con la search bar
+ */
+extension ExploreController: UISearchResultsUpdating {
+    
+    /**
+     Y este metodo del protocolo aplica el resultado de la busqueda, te da el texto de la barra de busqueda en tiempo real
+     */
+    func updateSearchResults(for searchController: UISearchController) {
+        //obviamente desde search controller sacamos el texto y lo aplicamos
+        tableView.reloadData()
+
+        guard let searchText = searchController.searchBar.text?.lowercased() else {return }
+                
+        //tenemos este metodo en los array para filtrar facilmente
+        //De esta manera cuando coincida alguno en la busqueda en el filter array habra datos, sino no los habra
+        filteredUsers = users.filter({ user in
+            
+            user.username.lowercased().contains(searchText)
+        })
+        
+        
+
+    }
+    
+    
+}
 
 
 

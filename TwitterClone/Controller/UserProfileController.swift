@@ -55,6 +55,7 @@ class UserProfileController: UICollectionViewController{
         navigationController?.navigationBar.isHidden = true
         
         
+        
         navigationController!.navigationBar.barStyle = .black
     
         
@@ -101,10 +102,10 @@ class UserProfileController: UICollectionViewController{
         
         //Para que el collection view ocupe toda la pantalla y no se quede en el safelayout, hay que usar esto
         collectionView.contentInsetAdjustmentBehavior = .never
-        
-        
+
         
     }
+    
 
 }
 
