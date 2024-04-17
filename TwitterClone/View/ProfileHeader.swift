@@ -9,7 +9,7 @@ import UIKit
 
 protocol ProfileHeaderDelegate: AnyObject {
     func dismissView(_ header: ProfileHeader)
-        
+    func handleEditProfileFollow(_ header: ProfileHeader)
     
 }
 
@@ -222,7 +222,7 @@ class ProfileHeader: UICollectionReusableView {
     
     @objc func handleProfileFollowButton(){
         
-        print("DEBUG: Pulsado boton follow")
+        delegate?.handleEditProfileFollow(self)
     }
     
     @objc func handleFollowingTapped(){

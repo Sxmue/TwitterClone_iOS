@@ -160,7 +160,7 @@ extension FeedController: TweetCellDelegate {
     
     func toUserProfile(_ cell: TweetCollectionViewCell) {
         
-        guard let user = user else {return }
+        guard let user = cell.tweet?.user else {return }
         
 
         navigationController?.pushViewController(UserProfileController(user: user), animated: true)

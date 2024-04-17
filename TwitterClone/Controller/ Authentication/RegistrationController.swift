@@ -26,6 +26,7 @@ class RegistrationController: UIViewController{
         let btn = UIButton()
         btn.setImage(UIImage(named: "plus_photo")?.withRenderingMode(.alwaysTemplate), for: .normal)
         btn.tintColor = .white
+        btn.imageView?.contentMode = .scaleAspectFill
         
         return btn
         

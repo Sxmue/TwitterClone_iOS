@@ -11,7 +11,7 @@ class UserProfileController: UICollectionViewController{
     
    //MARK: - Properties
     
-    private let user: User?
+    private let user: User
         
     private var tweets = [Tweet](){
         didSet{
@@ -78,7 +78,6 @@ class UserProfileController: UICollectionViewController{
     //MARK: - API
     
     func fetchUserTweets(){
-        guard let user = user else {return }
         
         TweetService.shared.fetchUserTweets(forUser: user) { tweet in
             print(tweet)
@@ -174,6 +173,16 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
 
 //MARK: - ProfileHeaderDelegate
 extension UserProfileController: ProfileHeaderDelegate {
+    func handleEditProfileFollow(_ header: ProfileHeader) {
+        
+        //Ya tenemos el usuario en userProfile, porque para acceder a esta vista hay que pasarle el usuario en el que se ha hecho click en la declaracion, en el init
+        //asi que lo cogemos de ahi directamente
+        UserService.shared.followUser(uid: user.uid) { db, error in
+            
+        }
+        
+    }
+    
     func dismissView(_ header: ProfileHeader) {
         navigationController?.popViewController(animated: true)
     }

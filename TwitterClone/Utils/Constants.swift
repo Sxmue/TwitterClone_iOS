@@ -23,3 +23,8 @@ let STORAGE_REF = Storage.storage().reference() //Referencia directa a storage
 
 let STORAGE_PROFILE_IMAGES = STORAGE_REF.child("profile_images") //Referencia directa a las images de usuario
 
+let DB_USER_FOLLOWERS = DB_REF.child("user-followers") //Referencia directa a user followers
+
+let DB_USER_FOLLOWING = DB_REF.child("user-following") //referencia directa a user following
+
+
