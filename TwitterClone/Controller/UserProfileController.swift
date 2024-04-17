@@ -11,7 +11,7 @@ class UserProfileController: UICollectionViewController{
     
    //MARK: - Properties
     
-    private let user: User
+    private var user: User
         
     private var tweets = [Tweet](){
         didSet{
@@ -47,6 +47,10 @@ class UserProfileController: UICollectionViewController{
         configureCollectionView()
         
         fetchUserTweets()
+        
+        checkIfUserIsFollowed()
+        
+        fetchUserStats()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -83,6 +87,23 @@ class UserProfileController: UICollectionViewController{
             print(tweet)
             self.tweets = tweet
         }
+    }
+    
+    func checkIfUserIsFollowed(){
+        
+        UserService.shared.checkIfUserIsFollowed(uid: user.uid) { bool in
+            self.user.isFollowed = bool
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func fetchUserStats(){
+        UserService.shared.fetchUserStats(uid: user.uid) { data in
+            
+            self.user.stats = data
+            self.collectionView.reloadData()
+        }
+        
     }
 
     
@@ -175,9 +196,32 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
 extension UserProfileController: ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
         
+        
+        if user.isCurrentUser {
+            
+            print("Aun hay que implementar la vista de editar usuario")
+            return
+        }
+        
         //Ya tenemos el usuario en userProfile, porque para acceder a esta vista hay que pasarle el usuario en el que se ha hecho click en la declaracion, en el init
         //asi que lo cogemos de ahi directamente
-        UserService.shared.followUser(uid: user.uid) { db, error in
+        
+        if user.isFollowed {
+            UserService.shared.unfollowUser(uid: user.uid) { error, db in
+                
+                //Cuando cambiamos alguna de las propiedades del usuario, hay que recargar el collection view, eso permitira llamar a las funciones de nuevo y que el boton cambie
+                self.user.isFollowed = false
+                self.collectionView.reloadData()
+                
+            }
+            
+        }else{
+            
+            UserService.shared.followUser(uid: user.uid) { error,db in
+                //Cuando cambiamos alguna de las propiedades del usuario, hay que recargar el collection view, eso permitira llamar a las funciones de nuevo y que el boton cambie
+                self.user.isFollowed = true
+                self.collectionView.reloadData()
+            }
             
         }
         

@@ -38,12 +38,12 @@ struct ProfileHeaderViewModel {
     
     var followingString: NSAttributedString? {
         
-        return attributedText(withValue: 2, text: " following")
+        return attributedText(withValue: user.stats?.following ?? 0, text: " following")
     }
     
     var followersString: NSAttributedString? {
         
-        return attributedText(withValue: 0, text: " followers")
+        return attributedText(withValue: user.stats?.followers ?? 0, text: " followers")
 
     }
     
@@ -54,8 +54,8 @@ struct ProfileHeaderViewModel {
      Cambiara dependiendo de si estamos viendo el perfil del usuario logueado o no
      */
      var buttonTittle: String {
-        
-        return user.isCurrentUser ? "Edit Profile" : "Follow"
+         
+         return user.isCurrentUser ? "Edit Profile" :  user.isFollowed ? "Following" : "Follow"
         
     }
     

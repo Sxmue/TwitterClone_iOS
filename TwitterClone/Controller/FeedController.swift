@@ -131,6 +131,10 @@ extension FeedController {
         
         return cell
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        navigationController?.pushViewController(DetailsTweetController(tweet: tweets[indexPath.row]), animated: true)
+    }
         
 }
 

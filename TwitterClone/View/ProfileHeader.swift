@@ -83,7 +83,7 @@ class ProfileHeader: UICollectionReusableView {
         return iv
     }()
     
-    private lazy var ProfileFollowButton: UIButton = {
+        lazy var ProfileFollowButton: UIButton = {
         let button = UIButton(type: .system)
         
         button.setTitle("Loading", for: .normal)
@@ -130,7 +130,7 @@ class ProfileHeader: UICollectionReusableView {
         label.addGestureRecognizer(followTap)
         
         //añadimos texto
-        label.text = "2 Following"
+        label.text = "0 Following"
         
         return label
     }()
@@ -256,6 +256,7 @@ class ProfileHeader: UICollectionReusableView {
         profileImage.sd_setImage(with: user.profileImageURL)
         
         ProfileFollowButton.setTitle(viewModel.buttonTittle, for: .normal)
+        
         
     }
 

@@ -15,6 +15,8 @@ struct User {
     let profileImage: String
     var profileImageURL: URL?
     let uid: String
+    var isFollowed = false
+    var stats: userFollowFollowingStats?
     var isCurrentUser: Bool {
         return uid == Auth.auth().currentUser?.uid
     }
@@ -37,4 +39,12 @@ struct User {
 
     }
 
+}
+
+/**
+ Estructura para almacenar el numero de seguidores y seguidos
+ */
+struct userFollowFollowingStats{
+    let followers : Int
+    let following: Int
 }

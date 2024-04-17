@@ -69,9 +69,64 @@ struct UserService {
         DB_USER_FOLLOWING.child(currentUserUid).updateChildValues([uid: 1]) { error, database in
             
             DB_USER_FOLLOWERS.child(uid).updateChildValues([currentUserUid: 1], withCompletionBlock: completion)
+        }
+    }
+    
+    /**
+     Funcion encargada de hacer que el usuario haga unfollow a otro
+     */
+    func unfollowUser(uid: String, completion: @escaping (Error?,DatabaseReference) -> Void){
+        
+        guard let currentUserUid = Auth.auth().currentUser?.uid else { return }
+        
+        guard currentUserUid != uid else {return }
+        
+        DB_USER_FOLLOWING.child(currentUserUid).removeValue { error, db in
             
-
+            DB_USER_FOLLOWERS.child(uid).child(currentUserUid).removeValue(completionBlock: completion)
         }
         
     }
+    
+    /**
+     Funcion que comprueba si el usuario logueado sigue a otro
+     */
+    func checkIfUserIsFollowed(uid: String, completion: @escaping (Bool) -> Void){
+        
+        guard let currentUserUid = Auth.auth().currentUser?.uid else { return }
+        
+        guard currentUserUid != uid else {return }
+
+        //De esta manera se comprueba si en la base de datos existe un valor
+        DB_USER_FOLLOWING.child(currentUserUid).child(uid).observeSingleEvent(of: .value) { snapshot in
+            
+            //Con snapshot .exist sabremos si existe en la ruta o no, lo que nos permitira saber si lo seguimos
+            completion(snapshot.exists())
+        }
+        
+    }
+    
+    /**
+     Llamada a la API que se va a encargar de traer las stats del usuario
+     */
+    func fetchUserStats(uid:String,completion: @escaping (userFollowFollowingStats) -> Void){
+        
+        //Vamos a obtener cuandos seguidores tiene nuestro usuario, y a cuantos siguen
+        DB_USER_FOLLOWERS.child(uid).observeSingleEvent(of: .value) { snapshot in
+            
+            //de esta manera se accede a todos los resultados del snapshot en array, y cogemos el count
+            let followers = snapshot.children.allObjects.count
+            print("DEBUG: followers: \(followers)")
+
+            DB_USER_FOLLOWING.child(uid).observeSingleEvent(of: .value) { snapshot in
+                let following = snapshot.children.allObjects.count
+                print("DEBUG: following: \(following)")
+                completion(userFollowFollowingStats(followers: followers, following: following))
+                
+            }
+            
+        }
+        
+    }
+    
 }

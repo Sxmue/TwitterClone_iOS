@@ -80,6 +80,21 @@
                   endingLineNumber = "164"
                   offsetFromSymbolStart = "1895">
                </Location>
+               <Location
+                  uuid = "6F86AD8E-5302-4A5C-A986-B13A4235B49F - 9fd971c86ecf846f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.ProfileHeader.init(frame: __C.CGRect) -&gt; TwitterClone.ProfileHeader"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "166"
+                  endingLineNumber = "166"
+                  offsetFromSymbolStart = "2254">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
