@@ -17,6 +17,10 @@ class TweetViewModel {
         return  URL(string: self.tweet.user.profileImage)
     }()
     
+     var usernameText: String {
+        return "@\(tweet.user.username)"
+    }
+    
     var timestamp: String {
         //Para trabajar con timestamps hay que crear un Formatter
         let formatter = DateComponentsFormatter()
@@ -27,6 +31,27 @@ class TweetViewModel {
         formatter.unitsStyle = .abbreviated //estilo abreviado
         
         return formatter.string(from: tweet.timestamp, to: Date()) ?? "0s" //Este metodo devuelve la diferencia entre dos fechas
+    }
+    
+    var detailsHeaderTimestamp: String {
+        let formatter = DateFormatter()
+        formatter.locale = .current
+        formatter.timeZone = .current
+        //Esto es nuevo, y de esta manera le podemos dar formato
+        formatter.dateFormat = "h:mm﹒dd/MM/yyyy"
+        
+        return formatter.string(from: tweet.timestamp)
+    }
+    
+    var retweetAttributedString: NSAttributedString? {
+        return attributedText(withValue: tweet.retweets, text: " Retweets")
+        
+    }
+    
+    var likesAttributedString: NSAttributedString? {
+        
+        return attributedText(withValue: tweet.likes, text: " Likes")
+
     }
     
     lazy var userInfoText: NSAttributedString = {
@@ -43,4 +68,38 @@ class TweetViewModel {
         self.tweet = tweet
     }
     
+    /**
+     Funcion que nos va a crear un attributedText con el valor que pongamos y el texto que queramos
+     
+     Sera de uso interno ya que con esta funcion setearemos las dos propiedades mas arriba
+     */
+    fileprivate func attributedText(withValue value: Int, text: String) -> NSAttributedString{
+        
+        let attributedTitle = NSMutableAttributedString(string: "\(value)", attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
+        
+        attributedTitle.append(NSAttributedString(string: text, attributes: [.font: UIFont.systemFont(ofSize: 14),
+                                                                               .foregroundColor: UIColor.lightGray]))
+        
+        return attributedTitle
+    }
+    
+    /**
+     Funcion que se va a encargar de asignar el alto a la celda del tweet dependiendo de cuandos caracteres tenga
+     */
+    func size(forWidth width: CGFloat) -> CGSize {
+        //Creamos un label de pruebas en el que vamos a calcular ls cosas, primero seteamos varias propiedades
+        let testLabel = UILabel()
+        testLabel.text = tweet.caption //le ponemo la caption del tweet
+        testLabel.numberOfLines = 0
+        testLabel.lineBreakMode = .byWordWrapping //Le decimos que corte por palabras cuando haya un salto de linea no por letras
+        
+        testLabel.translatesAutoresizingMaskIntoConstraints = false //Hay que quitar las constranits para que la siguiente linea de bien el valor
+        testLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        
+        //El metodo systemLayoytSizeFitting se encarga de devolver el valor optimo de tamaño que deberia de tener la vista
+        //Y el argumento es, es valor minimo para que vista? Pues para un UIView con esa llamada, que se encarga de decir que sea para que ocupe lo minimo posible
+        //Asi el sistema te da el valor optimo para ocupar el minimo posible
+        //La verdad, es complicado hablarlo con fernando
+        return testLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    }
 }

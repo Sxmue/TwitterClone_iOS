@@ -25,6 +25,7 @@ protocol TweetCellDelegate: AnyObject {
     
     func toUserProfile(_ cell: TweetCollectionViewCell) //Tenemos este protocolo, con este metodo que recibe una celda, sin mas
     
+    func commentTapped(_ cell: TweetCollectionViewCell) //para cuando le demos retweet desde dentro
     //Ahora pasamos a la propiedad
 }
 
@@ -173,11 +174,12 @@ class TweetCollectionViewCell: UICollectionViewCell {
 
     @objc func handleCommentTapped(){
         
+        delegate?.commentTapped(self)
+
         
     }
     
     @objc func handleRetweetTapped(){
-        
         
     }
     

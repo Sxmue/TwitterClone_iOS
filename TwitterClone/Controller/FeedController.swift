@@ -147,9 +147,16 @@ extension FeedController {
  */
 extension FeedController: UICollectionViewDelegateFlowLayout {
     
+    /**
+     Esta funcion cambia el alto de las celdas
+     */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //Con view.frame accedes a las dimensiones de la vista completa, asi ocuparan las celdas todo el ancho y 200 de alto
-        return CGSize(width: view.frame.width, height: 120)
+        let tweet = tweets[indexPath.row] //sacamos el tweet por el que va asignando a la lista
+        let viewModel = TweetViewModel(tweet: tweet) //instanciamos nuestro view model con el tweet
+        let height = viewModel.size(forWidth: view.frame.width).height //Devuelve un CGSize, pues solo el width
+        print(height)
+        //Ahora tenemos el valor minimo indispensable para que ocupe de manera optima el caption, ahora a ese tamaño hay que sumarle 80, pera tener 40 de espacio por arriba y 40 por abajo, el caption esta centrado asi que dejara espacio arriba y abajo
+        return CGSize(width: view.frame.width, height: height + 80)
     }
     
     
@@ -160,6 +167,17 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 
 //A Traves de la adopcion de este protocolo, abstraigo el metodo que quiero ejecutar de la celda a esta vista, lo que me permite usar el NavigationController que tengo aqui
 extension FeedController: TweetCellDelegate {
+    func commentTapped(_ cell: TweetCollectionViewCell) {
+        guard let user = cell.tweet?.user else { return }
+        
+        guard let tweet = cell.tweet else {return }
+        
+        let nav = UINavigationController(rootViewController: UploadTwitController(user: user, config: .reply(tweet)))
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
+         
+    }
+    
     
     
     func toUserProfile(_ cell: TweetCollectionViewCell) {
@@ -168,7 +186,6 @@ extension FeedController: TweetCellDelegate {
         
 
         navigationController?.pushViewController(UserProfileController(user: user), animated: true)
-        navigationController?.toolbar.isUserInteractionEnabled = true
         
     }
     

@@ -10,6 +10,11 @@ import UIKit
 class UploadTwitController: UIViewController {
     
     //MARK: - Properties
+    
+    //Nos creamos esta propiedad, la cual almacenara en que modo va a estar la vista
+    private let config: UploadTweetConfiguration
+    
+    private lazy var viewModel = UploadTweetViewModel(config: config) //Ahora con nuestro config configurado, instanciamos el viewmodel
     /**
      Usuario del que vamos a coger los datos
      
@@ -46,6 +51,14 @@ class UploadTwitController: UIViewController {
         return imv
     }()
     
+    private let replyLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .lightGray
+        label.text = "Probando cosas"
+        return label
+    }()
+    
     /**
      Text Field para escribir un tweet
      */
@@ -56,8 +69,9 @@ class UploadTwitController: UIViewController {
     /**
      Inicializador de la vista con el usuario recibido por parametros, asi nos aseguramos de que el usuario esta si o si
      */
-    init(user: User) {
+    init(user: User, config: UploadTweetConfiguration) {
         self.user = user
+        self.config = config //Añadido a posteriori, para decir en que modo iniciamos la vista
         super.init(nibName: nil, bundle: nil) //esta linea es importante, con otro init no funciona
     }
     
@@ -67,6 +81,15 @@ class UploadTwitController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       configureUI()
+        
+        switch config {
+        case .tweet:
+            print("DEBUG: poniendo un tweet nuevo")
+            
+        case .reply(let tweet):
+            print("Respondiendo a \(tweet.caption)")
+
+        }
     }
     
     //MARK: - Selectors
@@ -82,6 +105,11 @@ class UploadTwitController: UIViewController {
      */
     @objc func handleTweet(){
         guard let text = captionTextView.text else {return }
+        
+        guard !text.isEmpty else {
+            print("DEBUG: el texto esta vacio, saliendo...")
+            self.dismiss(animated: true)
+            return }
         
         //Consumo del servicio de la API para subir tweets
         TweetService.shared.uploadTweet(caption: text){ error, ref in
@@ -109,17 +137,39 @@ class UploadTwitController: UIViewController {
         
         
         //Vamos a cread una stack view con la imagen y al lado el textField
-         let stack = UIStackView(arrangedSubviews: [profileImageView,captionTextView])
-        stack.axis = .horizontal
+         let imageCaptionStack = UIStackView(arrangedSubviews: [profileImageView,captionTextView])
+        imageCaptionStack.axis = .horizontal
+        imageCaptionStack.spacing = 12
+        
+        //Preguntar a Fernando
+        imageCaptionStack.alignment = .leading
+        
+        
+//        view.addSubview(imageCaptionStack)
+//        imageCaptionStack.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.leftAnchor,right: view.rightAnchor,paddingTop: 16,paddingLeft: 16)
+        
+        //stack vertical para almacenar la foto y el caption por un lado, y arriba el reply label
+    
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionStack])
+        stack.axis = .vertical
         stack.spacing = 12
-        stack.layer.borderColor = UIColor.red.cgColor
-        stack.layer.borderWidth = 3
-        
-        
+//        stack.alignment = .leading
+//        stack.layer.borderWidth = 3
+//        stack.layer.borderColor = UIColor.red.cgColor
         view.addSubview(stack)
+////
         stack.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.leftAnchor,right: view.rightAnchor,paddingTop: 16,paddingLeft: 16)
         
+        replyLabel.isHidden = !viewModel.shouldShowReplyLabel //segun el booleano se enseña o no el mensaje de reply
+        
+        captionTextView.placeholder.text = viewModel.placeHolderText
+        
         profileImageView.sd_setImage(with: URL(string: user.profileImage), completed: nil) //asignamos la imagen al perfil
+
+        guard let replytext = viewModel.replyLabelText else { return}
+        
+        replyLabel.text = replytext
+        
         
         
     

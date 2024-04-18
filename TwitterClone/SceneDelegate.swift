@@ -20,7 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: scene)
         window?.rootViewController = UINavigationController(rootViewController: MainTabController())//El controller que pongas aqui se abrira de primeras
         window?.rootViewController?.navigationController?.navigationBar.isHidden = true
+        window?.rootViewController?.navigationController?.navigationBar.isUserInteractionEnabled = false
         window?.isUserInteractionEnabled = true
+       
         window?.makeKeyAndVisible()
     }
 
@@ -54,4 +56,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
+
+
 

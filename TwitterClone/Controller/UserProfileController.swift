@@ -60,6 +60,7 @@ class UserProfileController: UICollectionViewController{
         
         
         
+        
         navigationController!.navigationBar.barStyle = .black
     
         

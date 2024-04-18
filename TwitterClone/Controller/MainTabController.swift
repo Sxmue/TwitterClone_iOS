@@ -60,7 +60,7 @@ class MainTabController: UITabBarController {
         
         self.tabBar.backgroundColor = .white
         self.view.backgroundColor = .white
-  
+
         
         
 //        logout()
@@ -146,7 +146,7 @@ class MainTabController: UITabBarController {
         guard let user = user else { return } //Hacemos unwrap del user que esta optional
         
        //Necesitamos que sea un navigation controller, para volver atras cuando se escriba el twit
-        let nav = UINavigationController(rootViewController: UploadTwitController(user: user))
+        let nav = UINavigationController(rootViewController: UploadTwitController(user: user,config: .tweet))
         nav.modalPresentationStyle = .fullScreen
         present(nav,animated: true)
     }

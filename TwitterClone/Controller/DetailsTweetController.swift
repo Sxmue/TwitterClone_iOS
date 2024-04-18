@@ -80,7 +80,10 @@ extension DetailsTweetController: UICollectionViewDelegateFlowLayout {
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 350)
+        let viewModel = TweetViewModel(tweet: tweet) //instanciamos nuestro view model con el tweet
+        let height = viewModel.size(forWidth: view.frame.width).height //Devuelve un CGSize, pues solo el width
+        //Ahora tenemos el valor minimo indispensable para que ocupe de manera optima el caption, ahora a ese tamaño hay que sumarle 80, pera tener 40 de espacio por arriba y 40 por abajo, el caption esta centrado asi que dejara espacio arriba y abajo
+        return CGSize(width: view.frame.width, height: height + 260)
     }
     
     
@@ -92,6 +95,8 @@ extension DetailsTweetController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "TweetDetailsHeader", for: indexPath) as! TweetDetailsHeader
+        
+        header.tweet = tweet
         
         return header
     }
