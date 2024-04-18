@@ -112,7 +112,7 @@ class UploadTwitController: UIViewController {
             return }
         
         //Consumo del servicio de la API para subir tweets
-        TweetService.shared.uploadTweet(caption: text){ error, ref in
+        TweetService.shared.uploadTweet(caption: text,type: config){ error, ref in
             
             if let error = error {
                 
