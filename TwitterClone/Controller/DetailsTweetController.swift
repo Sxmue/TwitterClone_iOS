@@ -17,13 +17,19 @@ class DetailsTweetController: UICollectionViewController {
     //MARK: - Properties
     let tweet: Tweet
     
-    let tweets = [Tweet]()
+    var tweets = [Tweet](){
+        didSet {
+            collectionView.reloadData()
+        }
+    }
     
     //MARK: - Lifecyrcle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureCollectionView()
+        fetchTweetReplies()
+        
     }
     
     //Inicializador para almacenar el tweet que necesitamos en la vista
@@ -53,20 +59,27 @@ class DetailsTweetController: UICollectionViewController {
     
     //MARK: - API
     
+    func fetchTweetReplies(){
+        TweetService.shared.fetchReplies(forTweet: tweet) { tweets in
+            self.tweets = tweets
+            print("DEBUG: Replies traidos correctamente, \(tweets.count)")
+        }
+    }
+    
 }
     //MARK: - UICollectionView Datasource
     
     extension DetailsTweetController {
         
         override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return 4
+            return tweets.count
             
         }
         override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionViewCell
             
-            
+            cell.tweet = tweets[indexPath.row]
             
             return cell
         }
