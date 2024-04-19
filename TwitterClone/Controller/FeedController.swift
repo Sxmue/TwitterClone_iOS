@@ -154,7 +154,6 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
         let tweet = tweets[indexPath.row] //sacamos el tweet por el que va asignando a la lista
         let viewModel = TweetViewModel(tweet: tweet) //instanciamos nuestro view model con el tweet
         let height = viewModel.size(forWidth: view.frame.width).height //Devuelve un CGSize, pues solo el width
-        print(height)
         //Ahora tenemos el valor minimo indispensable para que ocupe de manera optima el caption, ahora a ese tamaño hay que sumarle 80, pera tener 40 de espacio por arriba y 40 por abajo, el caption esta centrado asi que dejara espacio arriba y abajo
         return CGSize(width: view.frame.width, height: height + 80)
     }

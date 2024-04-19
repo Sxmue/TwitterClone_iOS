@@ -59,7 +59,7 @@ struct TweetService {
         case .reply(let tweet):
             
             //Igual que arriba pero en otra ruta, ese tweet existira solo en la seccion de replies
-            DB_TWEET_REPLIES.child(tweet.uid).childByAutoId().updateChildValues(values, withCompletionBlock: completion)
+            DB_TWEET_REPLIES.child(tweet.tweetID).childByAutoId().updateChildValues(values, withCompletionBlock: completion)
             
         }
         
@@ -134,7 +134,7 @@ struct TweetService {
     func fetchReplies(forTweet tweet: Tweet, completion: @escaping ([Tweet]) -> Void){
         var tweets = [Tweet]()
         
-        DB_TWEET_REPLIES.child(tweet.uid).observe(.childAdded) { snapshot in
+        DB_TWEET_REPLIES.child(tweet.tweetID).observe(.childAdded) { snapshot in
             
             guard let dictionary = snapshot.value as? [String: Any] else {return }
             
@@ -153,7 +153,7 @@ struct TweetService {
                 completion(tweets)
             }
             
-
+            
         }
         
     }

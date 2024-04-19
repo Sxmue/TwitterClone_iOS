@@ -54,6 +54,8 @@ class ExploreController: UITableViewController{
         super.viewWillAppear(animated)
         
         navigationController?.navigationBar.isHidden = false
+        
+   
     }
 
     //MARK: - Funciones de ayuda

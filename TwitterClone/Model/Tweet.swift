@@ -18,7 +18,7 @@ struct Tweet {
     let retweets: Int
     let uid: String
     var timestamp: Date! //hay que inicializarlo asi sino dara ruido al ser campo calculado
-    let user: User
+    var user: User
     
     init(user: User,tweetID: String, dictionary: [String: Any]){
         

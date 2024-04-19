@@ -58,20 +58,7 @@ class UserProfileController: UICollectionViewController{
         
         navigationController?.navigationBar.isHidden = true
         
-        
-        
-        
-        navigationController!.navigationBar.barStyle = .black
-    
-        
-
-
-        
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-          return .lightContent
-      }
     
 
     

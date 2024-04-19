@@ -7,8 +7,17 @@
 
 import UIKit
 
+protocol TweetDetailsDelegate: AnyObject {
+    
+    func showActionSheet()
+    func handleComment()
+        
+}
+
 class TweetDetailsHeader: UICollectionReusableView {
     //MARK: - Properties
+    
+    weak var delegate: TweetDetailsDelegate?
     
     var tweet: Tweet? {
         didSet{
@@ -94,7 +103,7 @@ class TweetDetailsHeader: UICollectionReusableView {
         let button = UIButton(type: .system)
         button.tintColor = .lightGray
         button.setImage(UIImage(named: "down_arrow_24pt"), for: .normal)
-        button.addTarget(self, action: #selector(handleArrow), for: .touchUpInside)
+        button.addTarget(self, action: #selector(showActionSheet), for: .touchUpInside)
         
         return button
     }()
@@ -215,6 +224,7 @@ class TweetDetailsHeader: UICollectionReusableView {
     
     @objc func handleCommentTapped(){
         
+        delegate?.handleComment()
        
     }
     
@@ -232,9 +242,9 @@ class TweetDetailsHeader: UICollectionReusableView {
         
     }
     
-    @objc func handleArrow(){
+    @objc func showActionSheet(){
+        delegate?.showActionSheet()
         
-        print("DEBUG: Arrow pulsada")
     }
 
 }

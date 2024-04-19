@@ -15,13 +15,15 @@ import UIKit
 class DetailsTweetController: UICollectionViewController {
     
     //MARK: - Properties
-    let tweet: Tweet
+    var tweet: Tweet
     
     var tweets = [Tweet](){
         didSet {
             collectionView.reloadData()
         }
     }
+    
+    var actionSheet: ActionSheetLauncher!
     
     //MARK: - Lifecyrcle
     override func viewDidLoad() {
@@ -67,27 +69,27 @@ class DetailsTweetController: UICollectionViewController {
     }
     
 }
-    //MARK: - UICollectionView Datasource
+//MARK: - UICollectionView Datasource
+
+extension DetailsTweetController {
     
-    extension DetailsTweetController {
-        
-        override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            return tweets.count
-            
-        }
-        override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-            
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionViewCell
-            
-            cell.tweet = tweets[indexPath.row]
-            
-            return cell
-        }
-    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return tweets.count
         
     }
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionViewCell
+        
+        cell.tweet = tweets[indexPath.row]
+        
+        return cell
+    }
     
-    //MARK: - CollectionViewFlowDelegate
+    
+}
+
+//MARK: - CollectionViewFlowDelegate
 
 extension DetailsTweetController: UICollectionViewDelegateFlowLayout {
     
@@ -111,12 +113,51 @@ extension DetailsTweetController: UICollectionViewDelegateFlowLayout {
         
         header.tweet = tweet
         
+        header.delegate = self
+        
         return header
     }
     
     
     
 }
+
+
+//MARK: - TweetDetailsHeaderDelegate
+
+extension DetailsTweetController: TweetDetailsDelegate {
+    func handleComment() {
+        let nav = UINavigationController(rootViewController: UploadTwitController(user: tweet.user, config: .reply(tweet)))
+        nav.modalPresentationStyle = .fullScreen
+        present(nav,animated: true)
+    }
+    
+    
+    func showActionSheet() {
+        
+        //Si el usuario es el current user lo iniciamos normal
+        if tweet.user.isCurrentUser {
+            self.actionSheet = ActionSheetLauncher(user: tweet.user)
+            actionSheet.show()
+            
+        }else {
+            //Si no lo es chekeamos si lo seguimos con el servicio, para hacer la distincion en el action sheet
+            UserService.shared.checkIfUserIsFollowed(uid: tweet.uid) { bool in
+                if bool {
+                    self.tweet.user.isFollowed = true
+                    self.actionSheet = ActionSheetLauncher(user: self.tweet.user)
+                    self.actionSheet.show()
+                }
+            }
+        }
+        
+    }
+    
+    
+}
+
+
+
 
 
 
