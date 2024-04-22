@@ -7,6 +7,15 @@
 
 import UIKit
 
+/**
+   Protocolo para el delegado de la clase
+ */
+
+protocol ActionSheetLauncherDelegate: AnyObject {
+    
+    func didSelect(option: ActionSheetOptions)
+    
+}
 
 /**
  Clase que gestiona la action sheet que hay en DetailsViewController
@@ -14,12 +23,18 @@ import UIKit
 class ActionSheetLauncher: NSObject {
     
     let ROW_HEIGHT = 60
+    
+    
     //MARK: - Properties
     var user: User
     
     lazy var viewModel = ActionSheetViewModel(user: user)
     
     let tableView = UITableView()
+    
+    weak var delegate: ActionSheetLauncherDelegate? //variable del delegado
+    
+    
     
     //Este black view va a ser el efecto de oscurecerse detras de la ventana modal
     lazy var blackView: UIView = {
@@ -74,13 +89,11 @@ class ActionSheetLauncher: NSObject {
     
     
     
-    //MARK: - Lyfercircle
+    //MARK: - Lifecycle
 
 
     func show(){
-        
-        print("DEBUG: deberia mostrarse el blackview")
-        
+                
         //Sacamos una instancia de la pantalla completa
         let scenes = UIApplication.shared.connectedScenes
         
@@ -146,7 +159,8 @@ class ActionSheetLauncher: NSObject {
         }
         
     }
-
+    
+ 
 }
 
 //MARK: - TableViewDataSourceDelegate
@@ -181,5 +195,21 @@ extension ActionSheetLauncher: UITableViewDelegate {
         CGFloat(ROW_HEIGHT)
     }
     
+    //Llamamos al didselect
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        //El viewModel tiene el array con las opciones que tenemos, asi que a traves de el sacamos la opcion seleccionada
+        
+        let option = viewModel.options[indexPath.row] //ya sabemos que opcion ha sido
+        
+        delegate?.didSelect(option: option) //llamada al delegado con la opcion seleccionada
+        
+        handleDismiss()
+        
+    }
+    
     
 }
+
+
+

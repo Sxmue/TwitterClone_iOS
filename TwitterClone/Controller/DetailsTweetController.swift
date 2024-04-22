@@ -56,6 +56,12 @@ class DetailsTweetController: UICollectionViewController {
         
     }
     
+    fileprivate func showActionSheet(user: User) {
+        self.actionSheet = ActionSheetLauncher(user: user)
+        actionSheet.delegate = self
+        actionSheet.show()
+    }
+    
     
     //MARK: - Selectors
     
@@ -137,17 +143,18 @@ extension DetailsTweetController: TweetDetailsDelegate {
         
         //Si el usuario es el current user lo iniciamos normal
         if tweet.user.isCurrentUser {
-            self.actionSheet = ActionSheetLauncher(user: tweet.user)
-            actionSheet.show()
+            showActionSheet(user: tweet.user)
             
         }else {
+            
             //Si no lo es chekeamos si lo seguimos con el servicio, para hacer la distincion en el action sheet
             UserService.shared.checkIfUserIsFollowed(uid: tweet.uid) { bool in
+                
                 if bool {
                     self.tweet.user.isFollowed = true
-                    self.actionSheet = ActionSheetLauncher(user: self.tweet.user)
-                    self.actionSheet.show()
                 }
+                    self.showActionSheet(user: self.tweet.user)
+                
             }
         }
         
@@ -155,6 +162,43 @@ extension DetailsTweetController: TweetDetailsDelegate {
     
     
 }
+
+
+//MARK: - ActionSheetDelegate
+
+extension DetailsTweetController: ActionSheetLauncherDelegate{
+    
+    func didSelect(option: ActionSheetOptions) {
+        
+        //A traves del option que tenemos nos permite hacer la distincion de los anumerados muy facilmente
+        switch option {
+        case .follow(let user):
+            UserService.shared.followUser(uid: user.uid) { error, ref in
+                
+                print("Usuario @\(user.username) SEGUIDO con exito")
+                
+            }
+        case .unfollow(let user):
+            
+            UserService.shared.unfollowUser(uid: user.uid) { error, ref in
+                
+                print("Usuario @\(user.username) DEJADO DE SEGUIR con exito")
+                
+            }
+        case .report:
+            
+            print()
+        case .delete:
+            
+            print()
+        }
+        
+    }
+    
+    
+    
+}
+
 
 
 
