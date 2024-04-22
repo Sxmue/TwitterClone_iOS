@@ -28,7 +28,6 @@ class DetailsTweetController: UICollectionViewController {
     //MARK: - Lifecyrcle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureCollectionView()
         fetchTweetReplies()
         
@@ -88,6 +87,8 @@ extension DetailsTweetController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TweetCell", for: indexPath) as! TweetCollectionViewCell
         
         cell.tweet = tweets[indexPath.row]
+        
+        cell.indexPath = indexPath
                 
         return cell
     }

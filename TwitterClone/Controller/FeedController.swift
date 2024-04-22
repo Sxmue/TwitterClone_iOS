@@ -49,9 +49,13 @@ class FeedController: UICollectionViewController{
         
         navigationController?.navigationBar.isHidden = false
         
+        collectionView.reloadData()
+        
         
     }
     //MARK: - API
+    
+   
     
     func fetchTweets(){
         
@@ -60,17 +64,7 @@ class FeedController: UICollectionViewController{
             
             self.tweets = tweets
             
-            //Despues en local, con este for el cual te permite tambien tener el indice por el que va
-            //Comprobamos para cada tweet si se le ha dado me gusta o no
-            //Necesitas este for con el indice porque sino no puedes hacer bien referencia al array desde el completion
-            for (index,tweet) in tweets.enumerated() {
-                TweetService.shared.isTweetLiked(tweet: tweet) { result in
-                    guard result == true else { return }
-                    self.tweets[index].didLike = result
-                    
-                    print("DEBUG: \(self.tweets[index])")
-                }
-            }
+            self.checkIfUserLikedTweets(tweets)
         }
     }
     
@@ -80,6 +74,22 @@ class FeedController: UICollectionViewController{
             
         }
         
+    }
+    
+    fileprivate func checkIfUserLikedTweets(_ tweets: [Tweet]) {
+        
+        //Despues en local, con este for el cual te permite tambien tener el indice por el que va
+        //Comprobamos para cada tweet si se le ha dado me gusta o no
+        //Necesitas este for con el indice porque sino no puedes hacer bien referencia al array desde el completion
+        
+        for (index,tweet) in tweets.enumerated() {
+            TweetService.shared.isTweetLiked(tweet: tweet) { result in
+                guard result == true else { return }
+                self.tweets[index].didLike = result
+                
+                print("DEBUG: \(self.tweets[index])")
+            }
+        }
     }
     
     
@@ -219,6 +229,10 @@ extension FeedController: TweetCellDelegate {
         tweets[indexPath.row] = tweet
         
         cell.tweet = tweets[indexPath.row]
+        
+        self.tweets.forEach { tweet in
+            print(tweet.didLike)
+        }
         
         
         collectionView.reloadData()

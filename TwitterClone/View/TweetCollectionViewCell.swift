@@ -177,7 +177,6 @@ class TweetCollectionViewCell: UICollectionViewCell {
     @objc func handleCommentTapped(){
         
         delegate?.commentTapped(self)
-
         
     }
     
@@ -186,6 +185,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func handleLikeTapped(){
+        
         delegate?.likeTapped(self,self.indexPath)
         
     }
@@ -232,8 +232,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
         
         likeButton.tintColor = viewModel.likeTintColor //Con tint color se cambia el fondo de un boton
         
-        likeButton.imageView?.image = viewModel.likeButtonImage
-
+        likeButton.setImage(viewModel.likeButtonImage, for: .normal)
 
     }
 }

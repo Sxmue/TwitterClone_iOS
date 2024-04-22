@@ -122,6 +122,7 @@ struct TweetService {
                 guard let dictionary = snapshot.value as? [String: Any] else {return }
                 
                 let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
+                
                 tweets.append(tweet)
                 
                 completion(tweets)

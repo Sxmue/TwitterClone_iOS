@@ -212,6 +212,11 @@ class TweetDetailsHeader: UICollectionReusableView {
         retweetsLabel.attributedText = viewModel.retweetAttributedString
         likesLabel.attributedText = viewModel.likesAttributedString
         
+        
+        likeButton.tintColor = viewModel.likeTintColor //Con tint color se cambia el fondo de un boton
+        
+        likeButton.imageView?.image = viewModel.likeButtonImage
+        
     }
     
     
