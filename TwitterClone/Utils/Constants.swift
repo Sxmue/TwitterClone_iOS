@@ -19,6 +19,10 @@ let DB_TWEETS = DB_REF.child("tweets") //Y nuestra referencia directa a la parte
 
 let DB_USER_TWEETS = DB_REF.child("user-tweets") //Referencia directa a los tweets del usuario
 
+let DB_USER_LIKES = DB_REF.child("user-likes") //Referencia directa a los likes del usuario
+
+let DB_TWEET_LIKES = DB_REF.child("tweet-likes") //Referencia directa a los likes del tweet
+
 let DB_TWEET_REPLIES = DB_REF.child("tweet-replies") //Referencia directa a las respuestas a los tweet
 
 let STORAGE_REF = Storage.storage().reference() //Referencia directa a storage

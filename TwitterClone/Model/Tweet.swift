@@ -13,12 +13,13 @@ import UIKit
 struct Tweet {
     
     let caption: String
-    let likes: Int
+    var likes: Int
     let tweetID: String //id propio del tweet
     let retweets: Int
     let uid: String
     var timestamp: Date! //hay que inicializarlo asi sino dara ruido al ser campo calculado
     var user: User
+    var didLike: Bool = false //aqui almacenaremos si el usuario le ha dado like al tweet o no 
     
     init(user: User,tweetID: String, dictionary: [String: Any]){
         

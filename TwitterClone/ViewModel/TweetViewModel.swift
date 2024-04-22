@@ -63,6 +63,17 @@ class TweetViewModel {
         return title
     }()
     
+    //Propiedad que nos devolvera el color dependeiendo de su esta lickeado el tweet o no
+    var likeTintColor: UIColor{
+        return tweet.didLike ? .red : .darkGray
+    }
+    
+    //Propiedad que cambia la imagen del boton de like dependiendo de si esta dado mg o no
+    var likeButtonImage: UIImage {
+        let name = tweet.didLike ? "like_filled" : "like"
+        return UIImage(named: name)!
+    }
+    
     
     init(tweet: Tweet) {
         self.tweet = tweet

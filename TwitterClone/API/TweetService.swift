@@ -158,6 +158,58 @@ struct TweetService {
         
     }
     
+    /**
+     Funcion encargada de gestionar los likes de la aplicacion
+     */
+    func likeTweet(tweet: Tweet, completion: @escaping (Error?, DatabaseReference) -> Void){
+        
+        guard let uid = Auth.auth().currentUser?.uid else {return }
+        
+        //Primero vamos a actualizar el numero de likes de nuestro tweet, para eso usamos nuestro boolean
+        //Si el metodo entra aqui, y el boolean era POSITIVO significa que ya estaba dado like, asi que vamos a quitarle uno
+        //Si no pues se lo sumamos
+        let likes = tweet.didLike ? tweet.likes-1 : tweet.likes+1
+        
+        //Actualizamos el numero de likes en la bbdd para ese tweet en concreto
+
+        if likes >= 0 {
+            DB_TWEETS.child(tweet.tweetID).child("likes").setValue(likes)
+        }else {
+            DB_TWEETS.child(tweet.tweetID).child("likes").setValue(0)
+        }
+        
+        
+        
+        //Ahora como vamos a reutilizar el mismo metodo para dar like como para quitarlo, vamos a hacer la distincion
+        //Si el didLike es positivo, ya estaba dado like asi que dentro lo eliminaremos
+        if tweet.didLike{
+            
+            //Quitar like
+            DB_USER_LIKES.child(uid).child(tweet.tweetID).removeValue { error, ref in
+                
+                DB_TWEET_LIKES.child(tweet.tweetID).child(uid).removeValue(completionBlock: completion)
+            }
+
+        }else{
+            //Poner like
+            //Añadimos a la bbdd con este metodo, para añadir el id del tweet con valor
+            DB_USER_LIKES.child(uid).updateChildValues([tweet.tweetID: 1]) { error, ref in
+                
+                //Una vez este añadido a los likes del usuario lo añadimos a los likes del tweet
+                DB_TWEET_LIKES.child(tweet.tweetID).updateChildValues([uid: 1], withCompletionBlock: completion)
+                
+            }
+        }
+        
+    }
+    
+    func isTweetLiked(tweet: Tweet,completion: @escaping (Bool) -> Void ){
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+                DB_USER_LIKES.child(uid).child(tweet.tweetID).observeSingleEvent(of: .value) { snapshot in
+            completion(snapshot.exists())
+        }
+    }
+    
     
 }
 

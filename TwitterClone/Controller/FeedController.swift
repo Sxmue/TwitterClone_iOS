@@ -26,10 +26,10 @@ class FeedController: UICollectionViewController{
             collectionView.reloadData()
         }
     }
-        
+    
     
     //MARK: -Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //Lo primero que vamos a hacer es llamar a un metodo que configure la UI
@@ -54,19 +54,41 @@ class FeedController: UICollectionViewController{
     //MARK: - API
     
     func fetchTweets(){
+        
+        //Primero los traemos
         TweetService.shared.fetchTweets { tweets in
             
             self.tweets = tweets
+            
+            //Despues en local, con este for el cual te permite tambien tener el indice por el que va
+            //Comprobamos para cada tweet si se le ha dado me gusta o no
+            //Necesitas este for con el indice porque sino no puedes hacer bien referencia al array desde el completion
+            for (index,tweet) in tweets.enumerated() {
+                TweetService.shared.isTweetLiked(tweet: tweet) { result in
+                    guard result == true else { return }
+                    self.tweets[index].didLike = result
+                    
+                    print("DEBUG: \(self.tweets[index])")
+                }
+            }
         }
     }
-
-
+    
+    func likeTweets(tweet: Tweet){
+        
+        TweetService.shared.likeTweet(tweet: tweet) { error, ref in
+            
+        }
+        
+    }
+    
+    
     //MARK: - Funciones de ayuda
     
     func configureUI(){
         
         view.backgroundColor = .white //Fondito blanco
-                
+        
         collectionView.backgroundColor = .white
         
         
@@ -102,10 +124,10 @@ class FeedController: UICollectionViewController{
         profileImageView.sd_setImage(with: user.profileImageURL, completed: nil)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
-
+        
     }
     
-
+    
 }
 
 //MARK: - UICollectionView Delegate/DataSource
@@ -113,7 +135,7 @@ class FeedController: UICollectionViewController{
  Extension para los metodos del collection view
  */
 extension FeedController {
-   
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return tweets.count
     }
@@ -127,6 +149,8 @@ extension FeedController {
         
         cell.tweet = tweet // al asignar a una variable optional un valor no optional no uses el "?" o no se asignara
         
+        cell.indexPath = indexPath
+        
         cell.delegate = self // Nos hacemos delegados de la celda
         
         return cell
@@ -135,7 +159,7 @@ extension FeedController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         navigationController?.pushViewController(DetailsTweetController(tweet: tweets[indexPath.row]), animated: true)
     }
-        
+    
 }
 
 //MARK: - UICollectionView DelegateFlowLayout
@@ -161,11 +185,45 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
     
 }
 
-
 //MARK: - TweetCollectionViewCell Delegate
 
 //A Traves de la adopcion de este protocolo, abstraigo el metodo que quiero ejecutar de la celda a esta vista, lo que me permite usar el NavigationController que tengo aqui
 extension FeedController: TweetCellDelegate {
+    
+    
+    func likeTapped(_ cell: TweetCollectionViewCell,_ indexPath: IndexPath?) {
+        
+        guard var tweet = cell.tweet else {return }
+
+        likeTweets(tweet: tweet) //metodo para procesar el like en la api
+
+        cell.tweet?.didLike.toggle() //este metodo cambia el boolean value auto de manera local
+                
+        //hay que cambiar el numero de likes en local tambien porque dentro del metodo solo lo actualizamos en la bbdd
+        
+        if tweet.didLike && tweet.likes > 0 {
+            
+            tweet.likes = tweet.likes-1
+            
+        }else{
+            
+            tweet.likes = tweet.likes+1
+        }
+        
+        tweet.didLike.toggle()
+        
+        guard let indexPath = indexPath else {return }
+        print("Debug: La cosa va bien")
+        
+        
+        tweets[indexPath.row] = tweet
+        
+        cell.tweet = tweets[indexPath.row]
+        
+        
+        collectionView.reloadData()
+    }
+    
     func commentTapped(_ cell: TweetCollectionViewCell) {
         guard let user = cell.tweet?.user else { return }
         
@@ -174,7 +232,7 @@ extension FeedController: TweetCellDelegate {
         let nav = UINavigationController(rootViewController: UploadTwitController(user: user, config: .reply(tweet)))
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
-         
+        
     }
     
     
@@ -183,10 +241,15 @@ extension FeedController: TweetCellDelegate {
         
         guard let user = cell.tweet?.user else {return }
         
-
+        
         navigationController?.pushViewController(UserProfileController(user: user), animated: true)
         
     }
     
 }
+
+
+
+
+
 

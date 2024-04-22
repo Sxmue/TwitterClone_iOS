@@ -27,6 +27,8 @@ protocol TweetCellDelegate: AnyObject {
     
     func commentTapped(_ cell: TweetCollectionViewCell) //para cuando le demos retweet desde dentro
     //Ahora pasamos a la propiedad
+    
+    func likeTapped(_ cell: TweetCollectionViewCell,_ indexPath: IndexPath?)
 }
 
 
@@ -46,7 +48,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
     weak var delegate: TweetCellDelegate? //Literalmente es nuestro delegado TweetCellDelegate, desde aqui accederemos a la version del metodo que se implante EN LA CLASE QUE NOS ADOPTE
     
     
-    
+    var indexPath: IndexPath?
     
     
 
@@ -184,7 +186,7 @@ class TweetCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func handleLikeTapped(){
-        
+        delegate?.likeTapped(self,self.indexPath)
         
     }
     
@@ -223,9 +225,14 @@ class TweetCollectionViewCell: UICollectionViewCell {
         //NO puede haber LOGICA en los componentes por minima que sea
         profileImageView.sd_setImage(with: viewModel.profileImageURL)
         
+        
         //Ahora nuestro infolabel necesita un attributed String, y vamos a realizarlo con su ViewModel
         //Recuerda que para asignar attributed string no se usa text sino attributed text
         infoLabel.attributedText = viewModel.userInfoText
+        
+        likeButton.tintColor = viewModel.likeTintColor //Con tint color se cambia el fondo de un boton
+        
+        likeButton.imageView?.image = viewModel.likeButtonImage
 
 
     }
