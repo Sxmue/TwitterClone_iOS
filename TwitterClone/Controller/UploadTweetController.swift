@@ -114,10 +114,20 @@ class UploadTwitController: UIViewController {
         //Consumo del servicio de la API para subir tweets
         TweetService.shared.uploadTweet(caption: text,type: config){ error, ref in
             
+            //MUY IMPORTANTE,ASI SE HACE REFERENCIA A SI ES UN CASO CONCRETO O OTRO
+            //config es el valor de un anum, pues con case.reply miramos si es un reply, te lo rellena el IDE Automaticamente
+            //Si el caso es una reply, se mandara una notificacion de reply
+            if case .reply(let tweet) = self.config {
+                
+                NotificationService.shared.uploadNotification(tweet: tweet,type: .reply)
+                
+            }
             if let error = error {
                 
                 print("DEBUG: Error uploading tweet \(error.localizedDescription)")
             }
+            
+            
             
             self.dismiss(animated: true)
             

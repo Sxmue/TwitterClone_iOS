@@ -72,6 +72,11 @@ class FeedController: UICollectionViewController{
         
         TweetService.shared.likeTweet(tweet: tweet) { error, ref in
             
+            //Una vez tenemos completada la funcion de like, creamos la notificacion
+            //Pero solo haremos esto si es dandole like, no quitandolo, asi que metemos el guard
+            guard !tweet.didLike else { return } //Solo se hara cuando sea un like
+            NotificationService.shared.uploadNotification(tweet: tweet,type: .like)
+            
         }
         
     }

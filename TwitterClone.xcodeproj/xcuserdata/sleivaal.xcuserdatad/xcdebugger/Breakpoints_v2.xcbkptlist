@@ -108,8 +108,8 @@
             filePath = "TwitterClone/Controller/FeedController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
             landmarkName = "likeTapped(_:_:)"
             landmarkType = "7">
             <Locations>
@@ -143,6 +143,21 @@
                   endingLineNumber = "206"
                   offsetFromSymbolStart = "767">
                </Location>
+               <Location
+                  uuid = "7851BC3D-2975-4E28-AA11-447AFCB4A622 - aa8880a1b16cac0b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.FeedController.likeTapped(TwitterClone.TweetCollectionViewCell, Swift.Optional&lt;Foundation.IndexPath&gt;) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/FeedController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "219"
+                  endingLineNumber = "219"
+                  offsetFromSymbolStart = "767">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -160,22 +175,6 @@
             endingLineNumber = "72"
             landmarkName = "likeButtonImage"
             landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "1D70BA24-46AB-49A2-A7E1-F33D75F188F9"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TwitterClone/Controller/FeedController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "52"
-            endingLineNumber = "52"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -208,6 +208,9 @@ extension UserProfileController: ProfileHeaderDelegate {
             UserService.shared.followUser(uid: user.uid) { error,db in
                 //Cuando cambiamos alguna de las propiedades del usuario, hay que recargar el collection view, eso permitira llamar a las funciones de nuevo y que el boton cambie
                 self.user.isFollowed = true
+                
+                NotificationService.shared.uploadNotification(user: self.user, type: .follow)
+                
                 self.collectionView.reloadData()
             }
             

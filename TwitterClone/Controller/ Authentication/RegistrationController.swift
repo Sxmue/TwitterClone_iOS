@@ -159,7 +159,7 @@ class RegistrationController: UIViewController{
         //Gestionamos el guardado en la bbdd
         AuthService.shared.registerUser(credentials: credentials){ error,dbRef in
             
-            guard let error = error else { return }
+            guard error != nil else { return }
             
             print("DEBUG: Registro completadop directamente")
             
