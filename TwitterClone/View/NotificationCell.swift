@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol NotificationCellDelegate: AnyObject {
+    
+    func didImageTapped(_ cell: NotificationCell)
+}
+
 /**
  clase que representa una celda en la vista de notificaciones
  */
@@ -19,6 +24,8 @@ class NotificationCell: UITableViewCell {
             configure()
         }
     }
+    
+    weak var delegate: NotificationCellDelegate?
     /**
      Imagen de perfil del usuario
      */
@@ -30,9 +37,9 @@ class NotificationCell: UITableViewCell {
         imv.layer.cornerRadius = 48/2
         imv.backgroundColor = .twitterBlue
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTapped))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didImageTapped))
         
-        imv.addGestureRecognizer(tap)
+        imv.addGestureRecognizer(tapGesture)
     
         imv.isUserInteractionEnabled = true
         
@@ -50,21 +57,29 @@ class NotificationCell: UITableViewCell {
     
     //MARK: - Lifecycle
 
-    
-    override func awakeFromNib() {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        
+        isUserInteractionEnabled = true
+
         let stack = UIStackView(arrangedSubviews: [profileImageView,notificationsLabel])
         stack.axis = .horizontal
+        stack.isUserInteractionEnabled = true
         stack.spacing = 8
-        addSubview(stack)
+        stack.alignment = .center
+        
+        //MUY IMPORTANTE, EN LOS TABLE VIEW CELL, SI QUIERES QUE SE RECONOZCA EL TAP GESTURE TIENES QUE AÑADIR EL ELEMENTO AL CONTENT VIEW, NO ADDSUVIEW SIN MAS, SINO NO RECONOCERA EL GESTO PORQUE AL TAP DE LA CELDA ESTARA POR ENCIMA SIEMPRE
+        
+        contentView.addSubview(stack)
         stack.centerY(inView: self)
-        stack.anchor(left: leftAnchor,paddingLeft: 12)
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
+        stack.anchor(top: topAnchor,left: leftAnchor,bottom: bottomAnchor,right: rightAnchor,paddingLeft: 12,paddingRight: 12)
         
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     //MARK: - Helpers
     func configure(){
@@ -80,8 +95,9 @@ class NotificationCell: UITableViewCell {
     
     //MARK: - Selectors
     
-    @objc func handleProfileImageTapped(){
+    @objc func didImageTapped(){
         
+        delegate?.didImageTapped(self)
         
     }
 

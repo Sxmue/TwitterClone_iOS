@@ -122,6 +122,7 @@ class UploadTwitController: UIViewController {
                 NotificationService.shared.uploadNotification(tweet: tweet,type: .reply)
                 
             }
+            
             if let error = error {
                 
                 print("DEBUG: Error uploading tweet \(error.localizedDescription)")

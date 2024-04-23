@@ -58,6 +58,12 @@ class UserProfileController: UICollectionViewController{
         
         navigationController?.navigationBar.isHidden = true
         
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+        navigationController?.navigationBar.standardAppearance = appearance;
+
+        
     }
     
 

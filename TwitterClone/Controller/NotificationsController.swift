@@ -26,6 +26,7 @@ class NotificationsController: UITableViewController{
         
         tableView.register(NotificationCell.self, forCellReuseIdentifier: "NotificationCell")
         
+        
         fetchNotifications()
 
         configureUI()
@@ -68,10 +69,33 @@ class NotificationsController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationCell", for: indexPath) as! NotificationCell
         
         cell.notification = notifications[indexPath.row]
-        cell.awakeFromNib()
         
+        cell.delegate = self
+                
         return cell
     }
+    
+    //MARK: - TableViewDelegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("celda pulsada")
+    }
+    
+}
+
+extension NotificationsController: NotificationCellDelegate {
+    
+    func didImageTapped(_ cell: NotificationCell) {
+        
+        print("DEBUG: Deberiamos ir al perfil del usuario")
+        
+        guard let user = cell.notification?.user else {return }
+        
+        navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+        
+        
+    }
+    
     
 }
 
