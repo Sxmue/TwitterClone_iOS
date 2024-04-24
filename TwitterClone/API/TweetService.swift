@@ -172,7 +172,7 @@ struct TweetService {
         let likes = tweet.didLike ? tweet.likes-1 : tweet.likes+1
         
         //Actualizamos el numero de likes en la bbdd para ese tweet en concreto
-
+        
         if likes >= 0 {
             DB_TWEETS.child(tweet.tweetID).child("likes").setValue(likes)
         }else {
@@ -190,7 +190,7 @@ struct TweetService {
                 
                 DB_TWEET_LIKES.child(tweet.tweetID).child(uid).removeValue(completionBlock: completion)
             }
-
+            
         }else{
             //Poner like
             //Añadimos a la bbdd con este metodo, para añadir el id del tweet con valor
@@ -206,10 +206,29 @@ struct TweetService {
     
     func isTweetLiked(tweet: Tweet,completion: @escaping (Bool) -> Void ){
         guard let uid = Auth.auth().currentUser?.uid else { return }
-                DB_USER_LIKES.child(uid).child(tweet.tweetID).observeSingleEvent(of: .value) { snapshot in
+        DB_USER_LIKES.child(uid).child(tweet.tweetID).observeSingleEvent(of: .value) { snapshot in
             completion(snapshot.exists())
         }
     }
+    
+    func fetchTweet(withTweetID tweetID: String, completion: @escaping(Tweet) -> Void){
+        
+        DB_TWEETS.child(tweetID).observeSingleEvent(of: .value) { snapshot in
+            
+            guard let dictionary = snapshot.value as? [String: Any] else {return }
+            guard let userID = dictionary["uid"] as? String else {return }
+            
+            UserService.shared.fetchUser(uid: userID) { user in
+                            
+                let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
+                 
+                completion(tweet)
+            }
+            
+        }
+        
+    }
+    
     
     
 }

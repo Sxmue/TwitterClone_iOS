@@ -30,7 +30,7 @@ struct Notification {
     
     var tweetID: String? //El id del tweet dependiendo de si es una notificacion sobre un tweet o no, asi que es Optional
     
-    let user: User //El usuario al que pertenece la notificacion
+    var user: User //El usuario al que pertenece la notificacion
     
     var tweet: Tweet? //Igual, optional porque si es un follow seguramente no este
     
@@ -38,7 +38,11 @@ struct Notification {
     
     init(user: User, tweet: Tweet?, dictionary: [String: Any]) {
     
-        self.tweetID = dictionary["tweetID"] as? String ?? ""
+        
+        if let tweetId = dictionary["TweetID"] as? String{
+            self.tweetID = tweetId
+        }
+        
         self.tweet = tweet
         
         self.user = user

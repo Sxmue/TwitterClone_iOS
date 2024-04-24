@@ -10,6 +10,8 @@ import UIKit
 protocol NotificationCellDelegate: AnyObject {
     
     func didImageTapped(_ cell: NotificationCell)
+    func didTapOnFollow(_ cell: NotificationCell,indexPath: IndexPath)
+    
 }
 
 /**
@@ -26,6 +28,8 @@ class NotificationCell: UITableViewCell {
     }
     
     weak var delegate: NotificationCellDelegate?
+    
+    var indexPath: IndexPath!
     /**
      Imagen de perfil del usuario
      */
@@ -46,6 +50,23 @@ class NotificationCell: UITableViewCell {
         return imv
     }()
     
+    /**
+     Boton para seguir al usuario
+     */
+    private lazy var followButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Loading", for: .normal)
+        button.setTitleColor(.twitterBlue, for: .normal)
+        button.backgroundColor = .white
+        button.layer.borderColor = UIColor.twitterBlue.cgColor
+        button.layer.borderWidth = 2
+        button.addTarget(self, action: #selector(handleFollowTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    /**
+     Label con el texto de la notificacion
+     */
     let notificationsLabel: UILabel = {
         let label = UILabel()
         
@@ -74,6 +95,11 @@ class NotificationCell: UITableViewCell {
         stack.centerY(inView: self)
         stack.anchor(top: topAnchor,left: leftAnchor,bottom: bottomAnchor,right: rightAnchor,paddingLeft: 12,paddingRight: 12)
         
+        contentView.addSubview(followButton)
+        followButton.setDimensions(width: 88, height: 32)
+        followButton.layer.cornerRadius = 32/2
+        followButton.centerY(inView: self)
+        followButton.anchor(right: rightAnchor,paddingRight: 12)
     }
     
     required init?(coder: NSCoder) {
@@ -91,6 +117,9 @@ class NotificationCell: UITableViewCell {
         
         notificationsLabel.attributedText = viewModel.notificationText
         
+        followButton.isHidden = viewModel.shouldHideFollowButton //Asi enseñamos el botton de follow o no dependiendo de si es una notificacion de seguimiento
+        
+        followButton.setTitle(viewModel.followButtonTitle, for: .normal)
     }
     
     //MARK: - Selectors
@@ -98,6 +127,12 @@ class NotificationCell: UITableViewCell {
     @objc func didImageTapped(){
         
         delegate?.didImageTapped(self)
+        
+    }
+    
+    @objc func handleFollowTapped(){
+        
+        delegate?.didTapOnFollow(self,indexPath: self.indexPath)
         
     }
 

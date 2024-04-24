@@ -18,9 +18,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let scene = scene as? UIWindowScene else { return }
         window = UIWindow(windowScene: scene)
+        let uid = "exampleUID"
+        let dictionary: [String: Any] = [
+            "fullname": "John Doe",
+            "email": "john@example.com",
+            "username": "johndoe",
+            "profileImage": "https://example.com/profile.jpg"
+        ]
+
+//        let testInstance = User(uid: uid, dictionary: dictionary)
+//        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
+//        feed.user = testInstance
         window?.rootViewController = UINavigationController(rootViewController: MainTabController())//El controller que pongas aqui se abrira de primeras
         window?.rootViewController?.navigationController?.navigationBar.isHidden = true
-        window?.rootViewController?.navigationController?.navigationBar.isUserInteractionEnabled = false
+        window?.rootViewController?.navigationController?.navigationBar.isUserInteractionEnabled = true
         window?.isUserInteractionEnabled = true
        
         window?.makeKeyAndVisible()

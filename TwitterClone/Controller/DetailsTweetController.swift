@@ -43,6 +43,12 @@ class DetailsTweetController: UICollectionViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.tintColor = .systemBlue
+    }
+    
     //MARK: - Helpers
     func configureCollectionView(){
         

@@ -26,10 +26,14 @@ class NotificationsController: UITableViewController{
         
         tableView.register(NotificationCell.self, forCellReuseIdentifier: "NotificationCell")
         
-        
         fetchNotifications()
 
         configureUI()
+
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        
+        navigationController?.isNavigationBarHidden = false
 
     }
 
@@ -43,20 +47,53 @@ class NotificationsController: UITableViewController{
         tableView.separatorStyle = .none
         
         tableView.rowHeight = 80
+        
+        //MUY IMPORTANTE ESTO ES NUEVOS
+        //iOS te da por defecto un objeto de control para implementar el hacer scrol hacia abajo y que se actualicen los tweets, lo tienen estructuras como el colectionView y los tableView
+        let refreshControll = UIRefreshControl()
+        tableView.refreshControl = refreshControll
+        refreshControll.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
 
 
+    }
+    
+    //MARK: - Selectors
+    
+    /**
+     Metodo encargado de refrescar las notificaciones a traves del refresh control
+     */
+    @objc func handleRefresh(){
+        fetchNotifications()
     }
     
     //MARK: - API
 
     func fetchNotifications(){
-        
+        //De esta manera nos referimos al refresh controll, podemos indicarle que empiece la ruletilla a cargar
+        refreshControl?.beginRefreshing()
         NotificationService.shared.fetchNotifications { notifications in
-            
-            print("Hemos traido \(notifications.count) notificaciones")
+           
             self.notifications = notifications
+            self.checkFollowNotifications()
+            
+            //Ya aqui dentro de esta manera te puedes referir al refresh control, y hacer que pare de cargar
+            self.refreshControl?.endRefreshing()
         }
     }
+    
+    /**
+     Metodo que se encarga de chequear en las notificaciones de tipo follow si el usuario se sigue o no
+     */
+    func checkFollowNotifications(){
+        for (index,noti) in self.notifications.enumerated() {
+            UserService.shared.checkIfUserIsFollowed(uid: noti.user.uid) { bool in
+                if noti.type == .follow{
+                    self.notifications[index].user.isFollowed = bool
+                }
+            }
+        }
+    }
+    
     
     
     //MARK: - TableViewDatasource
@@ -71,6 +108,8 @@ class NotificationsController: UITableViewController{
         cell.notification = notifications[indexPath.row]
         
         cell.delegate = self
+        
+        cell.indexPath = indexPath
                 
         return cell
     }
@@ -78,26 +117,66 @@ class NotificationsController: UITableViewController{
     //MARK: - TableViewDelegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("celda pulsada")
+        
+        let notification = notifications[indexPath.row]
+        
+        guard let tweetID = notification.tweetID else {return } //Si le damos en la clase notificacion, un valor por defecto al tweetID, el guard let no funciona porque nunca recibe nil siempre recibe algo, hay que cambiar eso
+        
+        TweetService.shared.fetchTweet(withTweetID: tweetID) { tweet in
+            
+            self.navigationController?.pushViewController(DetailsTweetController(tweet: tweet), animated: true)
+            
+        }
+    
     }
     
 }
 
+
+//MARK: - NotificationsCell delegate
+
 extension NotificationsController: NotificationCellDelegate {
     
-    func didImageTapped(_ cell: NotificationCell) {
-        
-        print("DEBUG: Deberiamos ir al perfil del usuario")
+    func didTapOnFollow(_ cell: NotificationCell,indexPath: IndexPath) {
         
         guard let user = cell.notification?.user else {return }
         
-        navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+        
+        if user.isFollowed{
+                
+                UserService.shared.unfollowUser(uid: user.uid) { error, ref in
+                    
+                    self.notifications[indexPath.row].user.isFollowed = false
+                    self.tableView.reloadData()
+                    
+                }
+                
+            }else{
+                
+                UserService.shared.followUser(uid: user.uid) { error, ref in
+                                        
+                    self.notifications[indexPath.row].user.isFollowed = true
+                    self.tableView.reloadData()
+                }
+                
+            }
+        }
         
         
+        
+        func didImageTapped(_ cell: NotificationCell) {
+            
+            print("DEBUG: Deberiamos ir al perfil del usuario")
+            
+            guard let user = cell.notification?.user else {return }
+            
+            navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+            
+        }
     }
     
     
-}
+
 
 
 

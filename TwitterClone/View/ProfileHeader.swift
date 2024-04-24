@@ -158,7 +158,6 @@ class ProfileHeader: UICollectionReusableView {
         backgroundColor = .white
         isUserInteractionEnabled = true
         
-                        
         filter.delegate = self
         
         //Contenedor azul arriba

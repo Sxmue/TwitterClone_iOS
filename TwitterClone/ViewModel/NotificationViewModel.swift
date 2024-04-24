@@ -61,8 +61,22 @@ struct NotificationViewModel {
         
     }
     
+    var followButtonTitle: String {
+        var text = ""
+        if notification.user.isFollowed{
+            text = "Following"
+        }else {
+            text = "Follow"
+        }
+        return text
+    }
+    
     var profileImageUrl: URL? {
         return notification.user.profileImageURL
+    }
+    
+    var shouldHideFollowButton: Bool{
+        return type != .follow
     }
     
     //MARK: - Lifecycle

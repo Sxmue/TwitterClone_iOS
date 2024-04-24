@@ -21,6 +21,9 @@ class UserProfileController: UICollectionViewController{
     
     
     
+    
+    
+    
     //MARK: - Lifecyrcle
     
     init(user: User) {
@@ -42,6 +45,8 @@ class UserProfileController: UICollectionViewController{
         collectionView.backgroundColor = .white
 
         definesPresentationContext = false
+        
+
 
         
         configureCollectionView()
@@ -55,13 +60,12 @@ class UserProfileController: UICollectionViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+                
+        navigationController?.isNavigationBarHidden = true
         
-        navigationController?.navigationBar.isHidden = true
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .white
-        navigationController?.navigationBar.standardAppearance = appearance;
+
+                
+//        self.navigationController?.preferredStatusBarStyle = .darkContent;
 
         
     }
@@ -116,6 +120,10 @@ class UserProfileController: UICollectionViewController{
         
         //Para que el collection view ocupe toda la pantalla y no se quede en el safelayout, hay que usar esto
         collectionView.contentInsetAdjustmentBehavior = .never
+//        view.safeAreaLayoutGuide.layoutFrame.inset(by: UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0))
+//        additionalSafeAreaInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
+        
+        
 
         
     }
@@ -154,6 +162,9 @@ extension UserProfileController {
         
         //Al igual que con una celda, hay un metodo para añadir una vista supplementaria con identificador, el cual hemos implementado antes, ahora y simplemente se personaliza igual que si fuera una celd
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind , withReuseIdentifier: "ProfileHeader", for: indexPath) as! ProfileHeader
+        
+        collectionView.superview?.bringSubviewToFront(header)
+
         
         header.delegate = self
         
@@ -230,4 +241,6 @@ extension UserProfileController: ProfileHeaderDelegate {
     
     
 }
+
+
 

@@ -58,6 +58,11 @@ class MainTabController: UITabBarController {
         
         self.tabBar.tintColor = .twitterBlue
         
+        self.view.isUserInteractionEnabled = true
+        
+      
+
+        
         self.tabBar.backgroundColor = .white
         self.view.backgroundColor = .white
 
@@ -101,7 +106,6 @@ class MainTabController: UITabBarController {
             
             fetchUser()
         }
-        
         
     }
     
@@ -176,7 +180,7 @@ class MainTabController: UITabBarController {
         nav1.tabBarItem.image = UIImage(named: "home_unselected") //Como ahora a nuestra vista la agrupa un navigationController, es la vista "root", le ponemos al navigation el icono, igual en los demas
         
         nav1.navigationBar.isUserInteractionEnabled = true
-        
+                
         
        
         //Los demas los hacemos con la funcion que nos hemos creado
@@ -201,7 +205,6 @@ class MainTabController: UITabBarController {
         nav.tabBarItem.image = image
         nav.navigationBar.tintColor = .white
         
-        nav.navigationBar.isUserInteractionEnabled = true
         return nav
     }
     

@@ -8,9 +8,14 @@
 import UIKit
 import SDWebImage
 
+
+
 class FeedController: UICollectionViewController{
     
     //MARK: - Propiedades
+
+
+
     
     var user:  User?{
         didSet {
@@ -37,7 +42,6 @@ class FeedController: UICollectionViewController{
         fetchTweets()
         
         
-        
         collectionView.register(TweetCollectionViewCell.self, forCellWithReuseIdentifier: "TweetCell")
         
         collectionView.delegate = self
@@ -47,8 +51,8 @@ class FeedController: UICollectionViewController{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.navigationBar.isHidden = false
-        
+        navigationController?.isNavigationBarHidden = false
+
         collectionView.reloadData()
         
         
@@ -260,10 +264,12 @@ extension FeedController: TweetCellDelegate {
         
         guard let user = cell.tweet?.user else {return }
         
-        
         navigationController?.pushViewController(UserProfileController(user: user), animated: true)
         
     }
+    
+    
+    
     
 }
 

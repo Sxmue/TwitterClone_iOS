@@ -59,7 +59,6 @@ struct NotificationService {
         DB_NOTIFICATIONS.child(uid).observe(.childAdded) { snapshot,arg in
             
             guard let dictionary = snapshot.value as? [String:Any] else {return }
-            
             guard let uid = dictionary["uid"] as? String else {return }
             
             UserService.shared.fetchUser(uid: uid) { user in
