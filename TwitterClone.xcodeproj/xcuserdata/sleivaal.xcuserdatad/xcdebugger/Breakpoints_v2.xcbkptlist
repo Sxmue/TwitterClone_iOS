@@ -14,8 +14,8 @@
             filePath = "TwitterClone/Controller/FeedController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "223"
-            endingLineNumber = "223"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "likeTapped(_:_:)"
             landmarkType = "7">
             <Locations>
@@ -78,6 +78,21 @@
                   startingLineNumber = "223"
                   endingLineNumber = "223"
                   offsetFromSymbolStart = "767">
+               </Location>
+               <Location
+                  uuid = "7851BC3D-2975-4E28-AA11-447AFCB4A622 - aa8880a1b16caccd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.FeedController.likeTapped(TwitterClone.TweetCollectionViewCell, Swift.Optional&lt;Foundation.IndexPath&gt;) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/FeedController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "225"
+                  endingLineNumber = "225"
+                  offsetFromSymbolStart = "830">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -156,6 +171,21 @@
                   startingLineNumber = "96"
                   endingLineNumber = "96"
                   offsetFromSymbolStart = "317">
+               </Location>
+               <Location
+                  uuid = "9A9ABA2F-D9AA-4D26-99E2-31D3EF48E355 - 2f872e7e990fde79"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (TwitterClone.Tweet) -&gt; () in TwitterClone.NotificationsController.tableView(_: __C.UITableView, didSelectRowAt: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/NotificationsController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "124"
+                  endingLineNumber = "124"
+                  offsetFromSymbolStart = "247">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -250,6 +280,21 @@
                   endingLineNumber = "115"
                   offsetFromSymbolStart = "314">
                </Location>
+               <Location
+                  uuid = "03934B2F-DFCC-47D1-A30F-E0DD3FB01ABC - ede92d4f20fb4358"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Error&gt;, __C.FIRDatabaseReference) -&gt; () in TwitterClone.NotificationsController.didTapOnFollow(_: TwitterClone.NotificationCell, indexPath: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/NotificationsController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "142"
+                  endingLineNumber = "142"
+                  offsetFromSymbolStart = "169">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -283,6 +328,86 @@
             endingLineNumber = "149"
             landmarkName = "didTapOnFollow(_:indexPath:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6CBB82AD-4C52-4F9C-8B4A-1696BC2FAB1D - f672c39d9d3962f4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.NotificationsController.didTapOnFollow(_: TwitterClone.NotificationCell, indexPath: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/NotificationsController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "149"
+                  endingLineNumber = "149"
+                  offsetFromSymbolStart = "780">
+               </Location>
+               <Location
+                  uuid = "6CBB82AD-4C52-4F9C-8B4A-1696BC2FAB1D - 89afb73f3a141530"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Swift.Optional&lt;Swift.Error&gt;, __C.FIRDatabaseReference) -&gt; () in TwitterClone.NotificationsController.didTapOnFollow(_: TwitterClone.NotificationCell, indexPath: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/NotificationsController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "151"
+                  endingLineNumber = "151"
+                  offsetFromSymbolStart = "169">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A709FED7-2280-47EE-BC1B-FA2C6FC5F144"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/View/ProfileHeader.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "animateSelector(_:didSelect:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A709FED7-2280-47EE-BC1B-FA2C6FC5F144 - 578566315d656090"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in TwitterClone.ProfileHeader.animateSelector(_: TwitterClone.ProfileFilterView, didSelect: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "268"
+                  endingLineNumber = "268"
+                  offsetFromSymbolStart = "242">
+               </Location>
+               <Location
+                  uuid = "A709FED7-2280-47EE-BC1B-FA2C6FC5F144 - 578566315d656090"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in TwitterClone.ProfileHeader.animateSelector(_: TwitterClone.ProfileFilterView, didSelect: Foundation.IndexPath) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "268"
+                  endingLineNumber = "268"
+                  offsetFromSymbolStart = "618">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -10,11 +10,11 @@ import UIKit
 class UserTableViewCell: UITableViewCell {
 
     var user: User? {
-        didSet{
+        didSet {
             configure()
         }
     }
-    
+
     /**
      Imagen de perfil del usuario
      */
@@ -27,54 +27,47 @@ class UserTableViewCell: UITableViewCell {
         imv.backgroundColor = .twitterBlue
         return imv
     }()
-    
+
     /**
      Label de username
      */
     private let usernameLabel: UILabel = {
         let caption = UILabel()
-        
+
         caption.font = UIFont.boldSystemFont(ofSize: 14)
         caption.text = "Username"
         return caption
     }()
-    
+
     /**
      label de Fullname
      */
     private let fullnameLabel: UILabel = {
         let caption = UILabel()
-        
+
         caption.font = UIFont.systemFont(ofSize: 14)
         caption.text = "Fullname"
         return caption
     }()
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         backgroundColor = .white
-        
+
         addSubview(profileImageView)
-        
-        //Con la plantilla le hacemos constraint a la izquierday centrado en el eje y
-        profileImageView.centerY(inView: self,leftAnchor: leftAnchor,paddingLeft: 12)
-        
-        let stack = UIStackView(arrangedSubviews: [usernameLabel,fullnameLabel])
+
+        // Con la plantilla le hacemos constraint a la izquierday centrado en el eje y
+        profileImageView.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 12)
+
+        let stack = UIStackView(arrangedSubviews: [usernameLabel, fullnameLabel])
         stack.axis = .vertical
         stack.spacing = 2
         addSubview(stack)
-        stack.centerY(inView: profileImageView,leftAnchor: profileImageView.rightAnchor,paddingLeft: 12)
-        
-        
+        stack.centerY(inView: profileImageView, leftAnchor: profileImageView.rightAnchor, paddingLeft: 12)
+
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-    func configure(){
+    func configure() {
         guard let user = user else {return }
         profileImageView.sd_setImage(with: user.profileImageURL)
         usernameLabel.text = user.username

@@ -7,18 +7,17 @@
 
 import UIKit
 
-
 struct NotificationViewModel {
-    
-    //MARK: - Properties
-    
+
+    // MARK: - Properties
+
     let notification: Notification
-    
-    let type : NotificationType
-    
+
+    let type: NotificationType
+
     var notificationMessage: String {
-        
-        switch type{
+
+        switch type {
         case .follow:
             return " te ha seguido "
         case .like:
@@ -31,67 +30,58 @@ struct NotificationViewModel {
             return " te ha mencionado "
         }
     }
-    
+
     var notificationText: NSAttributedString {
-        
+
         let attributed = NSMutableAttributedString(string: notification.user.username, attributes: [.font: UIFont.boldSystemFont(ofSize: 14)])
-        
-        
+
         let append = NSAttributedString(string: notificationMessage, attributes: [.font: UIFont.systemFont(ofSize: 14)])
-        
+
         attributed.append(append)
-        
+
         let timestamp = NSAttributedString(string: timestamptText, attributes: [.font: UIFont.systemFont(ofSize: 14),
                                                                              .foregroundColor: UIColor.lightGray])
         attributed.append(timestamp)
-        
+
         return attributed
     }
-    
+
     var timestamptText: String {
-        
-        //Hacemos timestamp de esta manera, para ver la diferencia entre la notificacion y ahora en tiempo
-        
+
+        // Hacemos timestamp de esta manera, para ver la diferencia entre la notificacion y ahora en tiempo
+
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.second,.minute,.hour,.day,.weekOfMonth]
+        formatter.allowedUnits = [.second, .minute, .hour, .day, .weekOfMonth]
         formatter.maximumUnitCount = 1
         formatter.unitsStyle = .abbreviated
         let now = Date()
         return formatter.string(from: notification.timestamp, to: now) ?? "0m"
-        
+
     }
-    
+
     var followButtonTitle: String {
         var text = ""
-        if notification.user.isFollowed{
+        if notification.user.isFollowed {
             text = "Following"
-        }else {
+        } else {
             text = "Follow"
         }
         return text
     }
-    
+
     var profileImageUrl: URL? {
         return notification.user.profileImageURL
     }
-    
-    var shouldHideFollowButton: Bool{
+
+    var shouldHideFollowButton: Bool {
         return type != .follow
     }
-    
-    //MARK: - Lifecycle
-    
+
+    // MARK: - Lifecycle
+
     init(notification: Notification) {
         self.notification = notification
         self.type = notification.type
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
