@@ -21,6 +21,8 @@ let DB_USER_TWEETS = DB_REF.child("user-tweets") // Referencia directa a los twe
 
 let DB_USER_LIKES = DB_REF.child("user-likes") // Referencia directa a los likes del usuario
 
+let DB_USER_REPLIES = DB_REF.child("user-replies") // Referencia directa a los likes del usuario
+
 let DB_TWEET_LIKES = DB_REF.child("tweet-likes") // Referencia directa a los likes del tweet
 
 let DB_TWEET_REPLIES = DB_REF.child("tweet-replies") // Referencia directa a las respuestas a los tweet
