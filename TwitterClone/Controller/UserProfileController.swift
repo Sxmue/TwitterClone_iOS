@@ -63,6 +63,8 @@ class UserProfileController: UICollectionViewController {
         configureCollectionView()
 
         fetchUserTweets()
+        
+        fetchUserLikes()
 
         checkIfUserIsFollowed()
 
@@ -89,6 +91,14 @@ class UserProfileController: UICollectionViewController {
             self.tweets = tweet
             self.collectionView.reloadData()
         }
+    }
+    
+    func fetchUserLikes(){
+        TweetService.shared.fetchLikes(forUser: user) { tweets in
+            print("DEBUG: Se han traido \(tweets.count) likes")
+            self.likedTweets = tweets
+        }
+        
     }
 
     func checkIfUserIsFollowed() {
@@ -122,6 +132,13 @@ class UserProfileController: UICollectionViewController {
         collectionView.contentInsetAdjustmentBehavior = .never
 //        view.safeAreaLayoutGuide.layoutFrame.inset(by: UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0))
 //        additionalSafeAreaInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
+        
+        
+        //Estas dos lineas de aqui sirven para que el collectionView empiece justo por encima del tab bar, algo asi como anclarlo por abajo pero de otra manera
+        //Esto permite que cuando estemos abajo del todo de los tweets se quede justo el borde del ultimo tweet por encima del tab bar
+        guard let height = tabBarController?.tabBar.frame.height else {return }
+        
+        collectionView.contentInset.bottom = height
 
     }
 
