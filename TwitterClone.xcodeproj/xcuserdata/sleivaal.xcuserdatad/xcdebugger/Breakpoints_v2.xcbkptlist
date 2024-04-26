@@ -362,53 +362,5 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A709FED7-2280-47EE-BC1B-FA2C6FC5F144"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "TwitterClone/View/ProfileHeader.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
-            landmarkName = "animateSelector(_:didSelect:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A709FED7-2280-47EE-BC1B-FA2C6FC5F144 - 578566315d656090"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in TwitterClone.ProfileHeader.animateSelector(_: TwitterClone.ProfileFilterView, didSelect: Foundation.IndexPath) -&gt; ()"
-                  moduleName = "TwitterClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "268"
-                  endingLineNumber = "268"
-                  offsetFromSymbolStart = "242">
-               </Location>
-               <Location
-                  uuid = "A709FED7-2280-47EE-BC1B-FA2C6FC5F144 - 578566315d656090"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in TwitterClone.ProfileHeader.animateSelector(_: TwitterClone.ProfileFilterView, didSelect: Foundation.IndexPath) -&gt; ()"
-                  moduleName = "TwitterClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/View/ProfileHeader.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "268"
-                  endingLineNumber = "268"
-                  offsetFromSymbolStart = "618">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

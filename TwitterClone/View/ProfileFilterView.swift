@@ -10,7 +10,6 @@ import UIKit
 // Delegado para que cuando se seleccione una celda se haga algo concreto exteriormente, en este caso la animacion del cambio de barrita
 protocol ProfileFilterViewDelegate: AnyObject {
 
-    func animateSelector(_ view: ProfileFilterView, didSelect indexpath: IndexPath)
     func optionSelected(option: ProfileFilterOptions,didSelect indexpath: IndexPath)
 }
 
@@ -30,6 +29,16 @@ class ProfileFilterView: UIView {
     }()
 
     weak var delegate: ProfileFilterViewDelegate? // Delegado para la funcionalidad de animacion del seleccionado
+    
+    lazy var barSelection: UIView = {
+        let view = UIView()
+
+        view.backgroundColor = .twitterBlue
+
+        view.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 1)
+
+        return view
+    }()
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -43,7 +52,20 @@ class ProfileFilterView: UIView {
         // Ahora queremos que se seleccione siempre por defecto la primera opcion, eso se hace de esta manera
         // Tienen esta pripiedad los collection view para dejar seleccionado el que quieras
         collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .left)
+        
+        
 
+    }
+    /**
+     Esta funcion se encarga de colocar las subviews de esta vista una vez se haya inicializado el frame
+     */
+    override func layoutSubviews() {
+        
+        // Barrita para el filtro seleccionado
+        addSubview(barSelection)
+        
+        //Como necesitamos el "frame.width" necesitamos anclarla en este metodo, porque si lo hacemos arriba el frame no estara inicializado
+        barSelection.anchor(left: leftAnchor, bottom: bottomAnchor, width: frame.width/3, height: 1)
     }
 
     required init?(coder: NSCoder) {
@@ -87,8 +109,14 @@ extension ProfileFilterView: UICollectionViewDataSource {
 extension ProfileFilterView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-        // Y ahora en el did select ejecutamos la funcion del delegado, para que la clase exterior pueda ejecutar la animacion de cambio
-        delegate?.animateSelector(self, didSelect: indexPath)
+    
+        // De esta manera sacamos la celda en un metodo dentro del mismo collection view, la instanciamos
+        let cell = collectionView.cellForItem(at: indexPath)
+        let position = cell?.frame.origin.x ?? 0
+        //Pasamos la animacion de la barra de filtro a esta vista
+        UIView.animate(withDuration: 0.3) {
+            self.barSelection.frame.origin.x = position
+        }
 
         guard let option = ProfileFilterOptions(rawValue: indexPath.row) else {return }
         delegate?.optionSelected(option: option, didSelect: indexPath)

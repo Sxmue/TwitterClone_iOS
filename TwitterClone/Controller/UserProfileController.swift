@@ -15,7 +15,7 @@ class UserProfileController: UICollectionViewController {
     
     private var selectedFilter: ProfileFilterOptions = .tweets{
         didSet {
-//            collectionView.reloadData()
+            collectionView.reloadData()
         }
         
     }

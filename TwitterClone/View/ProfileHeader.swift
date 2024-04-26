@@ -46,15 +46,6 @@ class ProfileHeader: UICollectionReusableView {
         return view
     }()
 
-    lazy var barSelection: UIView = {
-        let view = UIView()
-
-        view.backgroundColor = .twitterBlue
-
-        view.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 1)
-
-        return view
-    }()
 
     private lazy var backButton: UIButton = {
         let button = UIButton(type: .system)
@@ -181,9 +172,6 @@ class ProfileHeader: UICollectionReusableView {
         addSubview(filter)
         filter.anchor(left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, height: 50)
 
-        // Barrita para el filtro seleccionado
-        addSubview(barSelection)
-        barSelection.anchor(left: leftAnchor, bottom: bottomAnchor, width: frame.width/3, height: 1)
 
         // stack para los seguidores/siguiente
         let followStack = UIStackView(arrangedSubviews: [followingLabel, followersLabel])
@@ -255,20 +243,5 @@ extension ProfileHeader: ProfileFilterViewDelegate {
     func optionSelected(option: ProfileFilterOptions, didSelect indexpath: IndexPath) {
         delegate?.didSelectFilter(filter: option)
     }
-    
-
-    func animateSelector(_ view: ProfileFilterView, didSelect indexpath: IndexPath) {
-
-        // Ahora esto es muy importante, el metodo celll for Item at normalmente nunca lo llamamos se hace automaticamente, pero ese metodo se puede llamar para obtener la celda de vuelta sin problema
-        // De esta manera sacamos la celda de vuelta, ya tenemos este metodo rellenado devolviendo la celda que queremos y el index path te devuelve la que esta seleccionada
-        guard let cell = view.collectionView.cellForItem(at: indexpath) as? ProfileFilterCell else {return }
-
-        UIView.animate(withDuration: 0.3) {
-            print("\(cell.frame.origin.x)")
-            self.barSelection.frame.origin.x = cell.frame.origin.x
-        }
-
-    }
-    
 
 }
