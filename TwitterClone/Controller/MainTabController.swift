@@ -65,6 +65,27 @@ class MainTabController: UITabBarController {
         authenticateUserAndConfigureUI()
 
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = true
+        
+        if navigationController?.viewControllers.last is UserProfileController {
+            
+            print("DEBUG: Cambiando estilo de la barra ")
+            navigationController?.navigationBar.barStyle = .black
+        }
+        
+        navigationController?.navigationBar.barStyle = .black
+
+        
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle{
+        return .darkContent
+    }
+    
 
     // MARK: - API
 
@@ -161,7 +182,7 @@ class MainTabController: UITabBarController {
 
         let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout()) // Muy importante ya que va a ser un colecction view
 
-        let nav1 = UINavigationController(rootViewController: feed) // De esta manera hacemos "Embeed" a cada vista con el navigationController
+        let nav1 = NavigationController(rootViewController: feed) // De esta manera hacemos "Embeed" a cada vista con el navigationController
 
         nav1.tabBarItem.image = UIImage(named: "home_unselected") // Como ahora a nuestra vista la agrupa un navigationController, es la vista "root", le ponemos al navigation el icono, igual en los demas
 

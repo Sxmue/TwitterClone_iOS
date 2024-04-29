@@ -26,7 +26,8 @@ struct TweetService {
         
         // Creamos un diccionario con los valores que vamos a guardar
         // De esta manera se hace un timeStamp
-        let values = ["uid": uid,
+        //Es var porque en el caso de que sea reply añadiremos un campo nuevo
+        var values = ["uid": uid,
                       "timestamp": Int(NSDate().timeIntervalSince1970),
                       "likes": 0,
                       "retweets": 0,
@@ -57,6 +58,9 @@ struct TweetService {
             
         case .reply(let tweet):
             
+            //Le añadimos al tweet el username de la persona a la que responde, y asi lo tenemos almacenado
+            values["replyingTo"] = tweet.user.username
+            
             // Igual que arriba pero en otra ruta, ese tweet existira solo en la seccion de replies
             DB_TWEET_REPLIES.child(tweet.tweetID).childByAutoId().updateChildValues(values) { error, ref in
                 //al ser una reply, pues sacamos el id que le ha puesto automaticamente firebase
@@ -75,35 +79,48 @@ struct TweetService {
     /**
      Metodo que se encarga de traer los tweets de la bbdd
      
-     Vamos a traer todos los tweets, asi que por eso el completion devuelve un array de tweets, y por eso esta en el completion para devolverlos una vez los haya traido
+     Vamos a traer los tweets de los usuarios a los que sigamos y los nuestros, asi que por eso el completion devuelve un array de tweets, y por eso esta en el completion para devolverlos una vez los haya traido
      */
     func fetchTweets(completion: @escaping([Tweet]) -> Void) {
         
+        guard let uid = Auth.auth().currentUser?.uid else {return }
+        
         var tweets = [Tweet]() // declaramos nuestro array de tweets para devolverlo
         
-        // De esta manera te traes los datos con un observe, este metodo trae los datos una vez y automaticamente los vuelve a traer cuando haya un cambio, se ejecuta en la db ref directamente
-        // El observe monitoriza una ref de la base de datos, y .childaded es un Data event el cual le indica al observe que mire cuando se añada a esa referencia
-        DB_TWEETS.observe(.childAdded) { snapshot  in
+        //sacamos los id de la gente que seguimos
+        DB_USER_FOLLOWING.child(uid).observe(.childAdded) { snapshot in
             
-            // En snapshot.key obtenemos el id unico del objeto que nos hayamos traido, en este caso el id que la bbdd ha puesto automaticamente a nuestro tweet
+            let userUid = snapshot.key
             
-            // Si en snapshot.key tenemos la key de los tweets, lo logico habria sido pensar que para cada key habria que recorrerlas con un for each y dentro crear cada tweet y añadirlo, pero NO, se hace automaticamente
-            
-            // Casteamos el array de valores de vuelta a diccionario
-            guard let dictionary = snapshot.value as? [String: Any] else {return }
-            
-            // consumimos el servicio de usuarios,para traer el user al que pertenece el tweet y traerlo de la bbdd
-            guard let uid = dictionary["uid"] as? String else {return }
-            
-            UserService.shared.fetchUser(uid: uid) { user in
+            //para cada id con el listener buscamos en los tweets de cada usuario
+            DB_USER_TWEETS.child(userUid).observe(.childAdded) { snapshot in
                 
-                let tweet = Tweet(user: user, tweetID: snapshot.key, dictionary: dictionary) // con la key y con el diccionario inicializamos
-                
-                tweets.append(tweet) // añadimos a nuestro array
-                
-                completion(tweets) // llamamos al completion
+                //traemos cada tweet a traves de los id que tenemos
+                self.fetchTweet(withTweetID: snapshot.key) { tweet in
+                    
+                    //Los traemos ya sabiendo si el usuario logueado les ha dado like o no
+                    isTweetLiked(tweet: tweet) { bool in
+                        var tweet = tweet
+                        tweet.didLike = bool
+                        tweets.append(tweet)
+                        completion(tweets)
+                    }
+                    
+                }
             }
+        }
+        
+        //Repetimos proceso pero exclusivamente con los tweets propios
+        DB_USER_TWEETS.child(uid).observe(.childAdded) { snapshot in
             
+            fetchTweet(withTweetID: snapshot.key) { tweet in
+                isTweetLiked(tweet: tweet) { bool in
+                    var tweet = tweet
+                    tweet.didLike = bool
+                    tweets.append(tweet)
+                    completion(tweets)
+                }
+            }
         }
     }
     
@@ -162,14 +179,13 @@ struct TweetService {
         //Primero entramos en user replies con el uid del usuaerio
         DB_USER_REPLIES.child(user.uid).observe(.childAdded) { snapshot in
             
-             let tweetID = snapshot.key
+            let tweetID = snapshot.key
             guard let replyId = snapshot.value as? String else {return }
             
             //Ahora que tenemos la key del tweet al que pertecene la reply, y la key de la reply
             //Nos vamos al servicio de replies, con la id de ese tweet, buscamos el id de la reply y traemos todo
             DB_TWEET_REPLIES.child(tweetID).child(replyId).observeSingleEvent(of: .value) { snapshot in
                 
-                print(snapshot.key)
                 //Cogemos toda esa reply
                 guard let dictionary = snapshot.value as? [String: Any] else {return }
                 guard let userID = dictionary["uid"] as? String else {return }
@@ -177,7 +193,7 @@ struct TweetService {
                 //Le asignamos su usuario
                 UserService.shared.fetchUser(uid: userID) { user in
                     
-                    let tweet = Tweet(user: user, tweetID: tweetID, dictionary: dictionary)
+                    let tweet = Tweet(user: user, tweetID: replyId, dictionary: dictionary)
                     
                     // la añadimos a la devolucion
                     replies.append(tweet)
@@ -261,8 +277,11 @@ struct TweetService {
     }
     
     func isTweetLiked(tweet: Tweet, completion: @escaping (Bool) -> Void ) {
+        
         guard let uid = Auth.auth().currentUser?.uid else { return }
+        
         DB_USER_LIKES.child(uid).child(tweet.tweetID).observeSingleEvent(of: .value) { snapshot in
+            
             completion(snapshot.exists())
         }
     }

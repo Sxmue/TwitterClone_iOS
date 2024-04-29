@@ -75,11 +75,11 @@ class UserProfileController: UICollectionViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+                
 
-        navigationController?.isNavigationBarHidden = true
-
-//        self.navigationController?.preferredStatusBarStyle = .darkContent;
-
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .darkContent
     }
 
     // MARK: - Selectors
@@ -152,6 +152,17 @@ class UserProfileController: UICollectionViewController {
 
     }
 
+}
+
+// MARK: - UICollectionView Datasource
+
+extension UserProfileController{
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let tweet = dataSource[indexPath.row]
+        
+        navigationController?.pushViewController(DetailsTweetController(tweet: tweet), animated: true)
+    }
 }
 
 // MARK: - UICollectionView Datasource

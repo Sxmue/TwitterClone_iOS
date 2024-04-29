@@ -53,6 +53,14 @@ class TweetViewModel {
         return attributedText(withValue: tweet.likes, text: " Likes")
 
     }
+    
+    var shouldHideReply: Bool {
+        return !tweet.isReply
+    }
+    
+    var replyText: String {
+        return "→ replying to \(tweet.replyingTo ?? "")"
+    }
 
     lazy var userInfoText: NSAttributedString = {
         let title = NSMutableAttributedString(string: "\(self.tweet.user.fullname)",

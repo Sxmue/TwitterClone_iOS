@@ -23,7 +23,6 @@ class FeedController: UICollectionViewController{
             //Cuando se haya asignado correctamente, podemos llamar al metodo que pone la imagen de la izquierda
             configureLeftProfileImage()
         }
-        
     }
     
     var tweets = [Tweet]() {
@@ -63,12 +62,13 @@ class FeedController: UICollectionViewController{
     
     func fetchTweets(){
         
+        collectionView.refreshControl?.beginRefreshing()
         //Primero los traemos
         TweetService.shared.fetchTweets { tweets in
+            self.collectionView.refreshControl?.endRefreshing()
             
-            self.tweets = tweets
-            
-            self.checkIfUserLikedTweets(tweets)
+            //De esta manera ordenamos los tweets que nos traemos segun el timestamp
+            self.tweets = tweets.sorted(by: {$0.timestamp > $1.timestamp})
         }
     }
     
@@ -85,21 +85,7 @@ class FeedController: UICollectionViewController{
         
     }
     
-    fileprivate func checkIfUserLikedTweets(_ tweets: [Tweet]) {
-        
-        //Despues en local, con este for el cual te permite tambien tener el indice por el que va
-        //Comprobamos para cada tweet si se le ha dado me gusta o no
-        //Necesitas este for con el indice porque sino no puedes hacer bien referencia al array desde el completion
-        
-        for (index,tweet) in tweets.enumerated() {
-            TweetService.shared.isTweetLiked(tweet: tweet) { result in
-                guard result == true else { return }
-                self.tweets[index].didLike = result
-                
-                print("DEBUG: \(self.tweets[index])")
-            }
-        }
-    }
+
     
     
     //MARK: - Funciones de ayuda
@@ -125,6 +111,13 @@ class FeedController: UICollectionViewController{
         imageView.setDimensions(width: 44, height: 44) //De esta manera le damos un tamaño fijo, lo que hara que no se mueva a la derecha cuando aparezca la imagen del usuario
         navigationItem.titleView = imageView //La propiedad titleView añade al centro de la barrita de navegacion una vista que hayamos creado, en este caso nuestra imagen
         
+        let refresh = UIRefreshControl()
+        
+        refresh.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+
+        collectionView.refreshControl = refresh
+        
+        
     }
     
     /**
@@ -145,6 +138,14 @@ class FeedController: UICollectionViewController{
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
         
     }
+    
+    //MARK: - Selectors
+    
+    @objc func handleRefresh(){
+        fetchTweets()
+        
+    }
+
     
     
 }
@@ -258,12 +259,12 @@ extension FeedController: TweetCellDelegate {
         
     }
     
-    
-    
     func toUserProfile(_ cell: TweetCollectionViewCell) {
         
         guard let user = cell.tweet?.user else {return }
         
+        navigationController?.isNavigationBarHidden = true
+
         navigationController?.pushViewController(UserProfileController(user: user), animated: true)
         
     }

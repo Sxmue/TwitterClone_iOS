@@ -19,7 +19,13 @@ struct Tweet {
     let uid: String
     var timestamp: Date! // hay que inicializarlo asi sino dara ruido al ser campo calculado
     var user: User
-    var didLike: Bool = false // aqui almacenaremos si el usuario le ha dado like al tweet o no 
+    var replyingTo: String? //String que almacenara el arroba de la persona a la que respondemos, si es una respuesta
+    var didLike: Bool = false // aqui almacenaremos si el usuario le ha dado like al tweet o no
+    
+    //Este booleano nos indicara si es una reply o no devolviendo si la variable replyingTo esta nula o no
+    var isReply: Bool {
+        return replyingTo != nil
+    }
 
     init(user: User, tweetID: String, dictionary: [String: Any]) {
 
@@ -35,6 +41,11 @@ struct Tweet {
             // Como ves muy facilito
             self.timestamp = Date(timeIntervalSince1970: timestamp)
         }
+        
+        if let replyingTo = dictionary["replyingTo"] as? String {
+            self.replyingTo = replyingTo
+        }
+        
         self.user = user
 
     }

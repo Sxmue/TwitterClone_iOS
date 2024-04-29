@@ -76,6 +76,16 @@ class TweetCollectionViewCell: UICollectionViewCell {
 
         return imv
     }()
+    
+    private let replyLabel: UILabel = {
+        let label = UILabel()
+        
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .lightGray
+        label.text = "→ replying to @Messi"
+        
+        return label
+    }()
 
     private let captionLabel: UILabel = {
         let caption = UILabel()
@@ -119,27 +129,38 @@ class TweetCollectionViewCell: UICollectionViewCell {
 
         backgroundColor = .white
 
-        // Añadimos la imagen de perfil del usuario a la celda
-        addSubview(profileImageView)
-        profileImageView.anchor(top: topAnchor, left: leftAnchor,
-                                paddingTop: 8, paddingLeft: 8)
 
         // Ahora los dos textos de la celda vamos a meterlos en una stack view
-        let stack = UIStackView(arrangedSubviews: [infoLabel, captionLabel])
+        let captionStack = UIStackView(arrangedSubviews: [infoLabel, captionLabel])
+        captionStack.axis = .vertical
+        captionStack.spacing = 4
+        captionStack.distribution = .fillProportionally
+        
+        //Juntamos la imagen, con los label de la derecha en un stackView
+        //Un stack con otro dentro
+        let imageCaptionStack = UIStackView(arrangedSubviews: [profileImageView,captionStack])
+        imageCaptionStack.axis = .horizontal
+        imageCaptionStack.spacing = 12
+        imageCaptionStack.distribution = .fillProportionally
+        imageCaptionStack.alignment = .leading
+        
+        //Ahora que tenemos la imagen y los dos label al ladito vamos a meter todo en oootro estack view, pero con el texto de replying de arriba
+        
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionStack])
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = 8
         stack.distribution = .fillProportionally
-        infoLabel.text = "Leonel Messi @messi"
-
+        
         addSubview(stack)
-
+        // Si anclo de abajo y de arriba la vista no se queda bien anclada, solo de arriba es lo correcto
+        stack.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 4,paddingLeft: 12, paddingRight: 12 )
+        
+        
+        //La linea separadora de abajo
         let underline = UIView()
         underline.backgroundColor = .lightGray
         addSubview(underline)
         underline.anchor(left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, height: 0.5)
-
-        // Si anclo de abajo y de arriba la vista no se queda bien anclada, solo de arriba es lo correcto
-        stack.anchor(top: profileImageView.topAnchor, left: profileImageView.rightAnchor, right: rightAnchor, paddingLeft: 12, paddingRight: 12 )
 
         // Ahora un stackView para los 4 botones de like retweet...
 
@@ -213,6 +234,10 @@ class TweetCollectionViewCell: UICollectionViewCell {
         likeButton.tintColor = viewModel.likeTintColor // Con tint color se cambia el fondo de un boton
 
         likeButton.setImage(viewModel.likeButtonImage, for: .normal)
+        
+        replyLabel.isHidden = viewModel.shouldHideReply
+        
+        replyLabel.text = viewModel.replyText
 
     }
 }

@@ -137,6 +137,16 @@ class TweetDetailsHeader: UICollectionReusableView {
         label.text = "0 Retweets"
         return label
     }()
+    
+    private let replyLabel: UILabel = {
+        let label = UILabel()
+        
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .lightGray
+        label.text = "→ replying to @Messi"
+        
+        return label
+    }()
 
     private lazy var likesLabel: UILabel = {
         let label = UILabel()
@@ -155,9 +165,14 @@ class TweetDetailsHeader: UICollectionReusableView {
         labelStack.axis = .vertical
         labelStack.spacing = -6
 
-        let stack = UIStackView(arrangedSubviews: [profileImageView, labelStack])
-        stack.axis = .horizontal
-        stack.spacing = 12
+        let imageCaptionStack = UIStackView(arrangedSubviews: [profileImageView, labelStack])
+        imageCaptionStack.axis = .horizontal
+        imageCaptionStack.spacing = 12
+        
+        let stack = UIStackView(arrangedSubviews: [replyLabel,imageCaptionStack])
+        stack.axis = .vertical
+        stack.spacing = 8
+        stack.distribution = .fillProportionally
 
         addSubview(stack)
         stack.anchor(top: topAnchor, left: leftAnchor, paddingTop: 16, paddingLeft: 16)
@@ -209,6 +224,9 @@ class TweetDetailsHeader: UICollectionReusableView {
         likeButton.tintColor = viewModel.likeTintColor // Con tint color se cambia el fondo de un boton
 
         likeButton.imageView?.image = viewModel.likeButtonImage
+        
+        replyLabel.isHidden = viewModel.shouldHideReply
+        replyLabel.text = viewModel.replyText
 
     }
 
