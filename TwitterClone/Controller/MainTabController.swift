@@ -37,6 +37,12 @@ class MainTabController: UITabBarController {
         }
 
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
+    
+
 
     // Esta es una nueva manera de instanciar un elemento de manera programatica, añadiendole llaves despues del igual como las propiedades calculadas
     let actionButton: UIButton = {
@@ -48,6 +54,8 @@ class MainTabController: UITabBarController {
         return button
 
     }()
+    
+   
 
     // MARK: - Lifecycle
 
@@ -60,6 +68,8 @@ class MainTabController: UITabBarController {
 
         self.tabBar.backgroundColor = .white
         self.view.backgroundColor = .white
+        
+        
 
 //        logout()
         authenticateUserAndConfigureUI()
@@ -69,21 +79,10 @@ class MainTabController: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.isNavigationBarHidden = true
-        
-        if navigationController?.viewControllers.last is UserProfileController {
-            
-            print("DEBUG: Cambiando estilo de la barra ")
-            navigationController?.navigationBar.barStyle = .black
-        }
-        
         navigationController?.navigationBar.barStyle = .black
 
-        
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle{
-        return .darkContent
+        navigationController?.isNavigationBarHidden = true
+                
     }
     
 
@@ -240,7 +239,12 @@ class MainTabController: UITabBarController {
         actionButton.layer.cornerRadius = 56/2
 
         actionButton.addTarget(self, action: #selector(actionButtonTap), for: .touchUpInside) // Manualmente le añadimos el listener al boton el target, con su metodo que esta mas abajo
-
     }
 
+}
+
+extension NavigationController {
+    open override var childForStatusBarStyle: UIViewController? {
+        return topViewController
+    }
 }

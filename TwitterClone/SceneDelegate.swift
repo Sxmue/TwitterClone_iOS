@@ -22,11 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        feed.user = testInstance
         guard let scene = scene as? UIWindowScene else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = UINavigationController(rootViewController: MainTabController())//El controller que pongas aqui se abrira de primeras
-        window?.rootViewController?.navigationController?.navigationBar.isHidden = true
+        window?.rootViewController = NavigationController(rootViewController: MainTabController())//El controller que pongas aqui se abrira de primeras
+        window?.backgroundColor = .twitterBlue
         window?.rootViewController?.navigationController?.navigationBar.isUserInteractionEnabled = true
-        window?.isUserInteractionEnabled = true
-       
         window?.makeKeyAndVisible()
     }
 

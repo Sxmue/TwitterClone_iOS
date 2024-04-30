@@ -14,7 +14,9 @@ class FeedController: UICollectionViewController{
     
     //MARK: - Propiedades
 
-
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .darkContent
+    }
 
     
     var user:  User?{
@@ -30,6 +32,7 @@ class FeedController: UICollectionViewController{
             collectionView.reloadData()
         }
     }
+    
     
     
     //MARK: -Lifecycle
@@ -264,15 +267,16 @@ extension FeedController: TweetCellDelegate {
         guard let user = cell.tweet?.user else {return }
         
         navigationController?.isNavigationBarHidden = true
-
+        
+        
         navigationController?.pushViewController(UserProfileController(user: user), animated: true)
         
     }
-    
-    
-    
+        
     
 }
+
+
 
 
 

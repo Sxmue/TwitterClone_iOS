@@ -11,6 +11,9 @@ class UserProfileController: UICollectionViewController {
 
    // MARK: - Properties
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
     private var user: User
     
     private var selectedFilter: ProfileFilterOptions = .tweets{
@@ -37,7 +40,7 @@ class UserProfileController: UICollectionViewController {
         }
         
     }
-
+    
     // MARK: - Lifecyrcle
 
     init(user: User) {
@@ -53,6 +56,9 @@ class UserProfileController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setNeedsStatusBarAppearanceUpdate()
+
 
         collectionView.isUserInteractionEnabled = true
 
@@ -75,12 +81,13 @@ class UserProfileController: UICollectionViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-                
 
+//        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
+
+        navigationController?.isNavigationBarHidden = true
     }
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        .darkContent
-    }
+   
+    
 
     // MARK: - Selectors
 
@@ -199,7 +206,7 @@ extension UserProfileController {
         collectionView.superview?.bringSubviewToFront(header)
 
         header.delegate = self
-
+        
         header.isUserInteractionEnabled = true
         header.user = user
 
@@ -239,7 +246,9 @@ extension UserProfileController: ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
 
         if user.isCurrentUser {
-
+            let nav = NavigationController(rootViewController: EditProfileController(user: user))
+            nav.modalPresentationStyle = .fullScreen
+            present(nav,animated: true)
             print("Aun hay que implementar la vista de editar usuario")
             return
         }
@@ -276,3 +285,4 @@ extension UserProfileController: ProfileHeaderDelegate {
     }
 
 }
+
