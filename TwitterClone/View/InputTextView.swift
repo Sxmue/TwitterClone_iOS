@@ -12,7 +12,7 @@ import UIKit
  
  En la vista de enviar tweet necesitamos un campo de text con placeholder, en iOS los textView no tienen placeholder asi que necesitamos personalizarlo
  */
-class CaptionTextView: UITextView {
+class InputTextView: UITextView {
 
     // Para personalizar nuestro text view, creamos esta clase y a continuacion los componentes necesario
 

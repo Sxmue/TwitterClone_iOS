@@ -62,7 +62,7 @@ class UploadTwitController: UIViewController {
     /**
      Text Field para escribir un tweet
      */
-    private let captionTextView = CaptionTextView()
+    private let captionTextView = InputTextView()
 
     // MARK: - Lifecyrcle
 
