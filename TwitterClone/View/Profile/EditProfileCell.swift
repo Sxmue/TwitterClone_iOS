@@ -7,13 +7,20 @@
 
 import UIKit
 
+protocol EditProfileCellDelegate: AnyObject{
+    func didUserInfoChange(_ cell: EditProfileCell)
+    
+}
+
 class EditProfileCell: UITableViewCell{
     
-    var option: EditProfileOptions?{
+    var vm: EditProfileViewModel?{
         didSet{
             configure()
         }
     }
+    
+    weak var delegate: EditProfileCellDelegate?
     
     let titleLabel: UILabel = {
        let label = UILabel()
@@ -28,7 +35,7 @@ class EditProfileCell: UITableViewCell{
         tf.font = UIFont.systemFont(ofSize: 14)
         tf.textAlignment = .left
         tf.textColor = .twitterBlue
-        tf.addTarget(self, action: #selector(handleUpdateUserInfo), for: .touchUpInside)
+        tf.delegate = self
         return tf
     }()
     
@@ -44,6 +51,24 @@ class EditProfileCell: UITableViewCell{
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        //Para que no se seleccione la celda visulmente cuando pulsemos
+        selectionStyle = .none
+        
+//        infoTextField.addTarget(self, action: #selector(handleUpdateUserInfo), for: .touchUpInside)
+
+        contentView.isUserInteractionEnabled = true
+       
+        addSubview(titleLabel)
+        titleLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        titleLabel.anchor(top: topAnchor,left: leftAnchor,paddingTop: 12,paddingLeft: 16)
+        
+        addSubview(infoTextField)
+        infoTextField.anchor(top: topAnchor,left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 4,paddingLeft: 16,paddingRight: 8)
+        
+        contentView.addSubview(bioTextView)
+        bioTextView.anchor(top: topAnchor,left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 4,paddingLeft: 16,paddingRight: 8)
+        
        
     }
     
@@ -52,25 +77,28 @@ class EditProfileCell: UITableViewCell{
     }
     
     func configure(){
-        
-        
-        //Para que no se seleccione la celda visulmente cuando pulsemos
-        selectionStyle = .none
-        guard let option = option else {return }
-        titleLabel.text = option.description
-        
+        guard let vm = vm else {return  }
        
-        addSubview(titleLabel)
-        titleLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        titleLabel.anchor(top: topAnchor,left: leftAnchor,paddingTop: 8,paddingLeft: 10)
+        infoTextField.isHidden = vm.shouldHideInfoTextView
+        bioTextView.isHidden = vm.shouldHideBioTextView
+        
+        titleLabel.text = vm.titleText
+        
+        infoTextField.text = vm.textFieldData
+        
+        bioTextView.text = vm.textFieldData
         
         
     }
     
+}
+
+//MARK: - TextFieldDelegate
+extension EditProfileCell: UITextFieldDelegate {
     
-    @objc func handleUpdateUserInfo(){
+    func textFieldDidEndEditing(_ textField: UITextField) {
         
-        
+        delegate?.didUserInfoChange(self)
         
     }
 }

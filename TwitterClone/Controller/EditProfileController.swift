@@ -10,13 +10,16 @@ import UIKit
 /**
  Vista encargada de editar el perfil de usuario
  */
-class EditProfileController: UITableViewController,UINavigationControllerDelegate,UIImagePickerControllerDelegate {
+class EditProfileController: UITableViewController{
     
     
     //MARK: - Properties
     
     //usuario del perfil
-    let user: User
+    var user: User
+    
+    let picker = UIImagePickerController()
+
         
     
     //Importante el lazy aqui, porque asi nos aseguraremos de que el user este inicializado antes que esta vista
@@ -31,7 +34,6 @@ class EditProfileController: UITableViewController,UINavigationControllerDelegat
 
     init(user: User) {
         self.user = user
-//        self.options = EditProfileOptions(rawValue: <#Int#>)
         super.init(style: .plain)
     }
     
@@ -40,8 +42,11 @@ class EditProfileController: UITableViewController,UINavigationControllerDelegat
     }
     
     override func viewDidLoad() {
+        
         configureNavigsationBar()
         configureTableView()
+        configureImagePicker()
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = false
@@ -115,6 +120,12 @@ class EditProfileController: UITableViewController,UINavigationControllerDelegat
         
     }
     
+    func configureImagePicker(){
+        picker.delegate = self
+        picker.allowsEditing = true
+
+    }
+    
     
     
 }
@@ -125,15 +136,9 @@ class EditProfileController: UITableViewController,UINavigationControllerDelegat
  */
 extension EditProfileController: EditProfileHeaderDelegate{
     func didChangeImage(_ header: EditProfileHeader) {
-        let picker = UIImagePickerController()
-        
-        picker.isEditing = true
         
         present(picker,animated: true)
     }
-    
-    
-    
     
 }
 
@@ -147,11 +152,13 @@ extension EditProfileController{
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: indexPath) as! EditProfileCell
         
-        guard let option = EditProfileOptions(rawValue: indexPath.row) else {return cell}
-        cell.option = option
+        guard let option = EditProfileOptions(rawValue: indexPath.row) else {return UITableViewCell()}
         
-        print(cell.option?.description)
+        let vm = EditProfileViewModel(option: option, user: user)
         
+        cell.vm = vm
+        cell.delegate = self
+                
         return cell
     }
     
@@ -167,6 +174,66 @@ extension EditProfileController {
         //Si es bio la celda medira 100, sino 48
         return option == .bio ? 100 : 48
     }
+}
+
+//MARK: - EditProfileCellDelegate
+
+extension EditProfileController: EditProfileCellDelegate{
+    
+    func didUserInfoChange(_ cell: EditProfileCell) {
+        
+        guard let vm = cell.vm else {return }
+        
+        switch vm.option {
+            
+        case .fullname:
+            
+            print("DEBUG: update user fullname")
+            
+            guard let fullname = cell.infoTextField.text else {return }
+            
+            user.fullname = fullname
+        case .username:
+            
+            print("DEBUG: update user username")
+            
+            guard let username = cell.infoTextField.text else {return }
+
+             
+             user.username = username
+            
+        case .bio:
+            
+            print("DEBUG: update bio")
+            
+        }
+        
+        print("DEBUG: el full name es \(user.fullname)")
+        print("DEBUG: el username es \(user.username)")
+
+        
+    }
+    
+    
+}
+
+
+
+//MARK: - ImagePickerDelegate
+
+extension EditProfileController: UINavigationControllerDelegate,UIImagePickerControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let img = info[.editedImage] as? UIImage else {return }
+        
+        headerView.profileImageView.image = img
+        
+        dismiss(animated: true)
+    }
+    
+    
+    
 }
 
 
