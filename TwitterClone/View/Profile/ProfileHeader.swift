@@ -232,6 +232,8 @@ class ProfileHeader: UICollectionReusableView {
         profileImage.sd_setImage(with: user.profileImageURL)
 
         ProfileFollowButton.setTitle(viewModel.buttonTittle, for: .normal)
+        
+        bioLabel.text = user.bio
 
     }
 

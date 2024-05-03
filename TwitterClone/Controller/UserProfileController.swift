@@ -60,7 +60,6 @@ class UserProfileController: UICollectionViewController {
         
         setNeedsStatusBarAppearanceUpdate()
 
-
         collectionView.isUserInteractionEnabled = true
 
         collectionView.backgroundColor = .white
@@ -82,9 +81,6 @@ class UserProfileController: UICollectionViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-//        UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
-
         navigationController?.isNavigationBarHidden = true
     }
    
@@ -148,10 +144,7 @@ class UserProfileController: UICollectionViewController {
 
         // Para que el collection view ocupe toda la pantalla y no se quede en el safelayout, hay que usar esto
         collectionView.contentInsetAdjustmentBehavior = .never
-//        view.safeAreaLayoutGuide.layoutFrame.inset(by: UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0))
-//        additionalSafeAreaInsets = UIEdgeInsets(top: -30, left: 0, bottom: 0, right: 0)
-        
-        
+
         //Estas dos lineas de aqui sirven para que el collectionView empiece justo por encima del tab bar, algo asi como anclarlo por abajo pero de otra manera
         //Esto permite que cuando estemos abajo del todo de los tweets se quede justo el borde del ultimo tweet por encima del tab bar
         guard let height = tabBarController?.tabBar.frame.height else {return }
@@ -222,7 +215,11 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
     // Este delegado tiene una cosa nueva, y es que los Collection view tienen un header el cual nos permite hacer la parte de arriba de una vista, de esta manera se implementa
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        //TODO: Cambiar ese tamaño dinamicamente segun la biografia
+        
         return CGSize(width: view.frame.width, height: 350)
+        
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -247,7 +244,10 @@ extension UserProfileController: ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
 
         if user.isCurrentUser {
-            let nav = NavigationController(rootViewController: EditProfileController(user: user))
+            let controller = EditProfileController(user: user)
+            controller.delegate = self
+            let nav = NavigationController(rootViewController: controller)
+            
             nav.modalPresentationStyle = .fullScreen
             present(nav,animated: true)
             print("Aun hay que implementar la vista de editar usuario")
@@ -258,6 +258,7 @@ extension UserProfileController: ProfileHeaderDelegate {
         // asi que lo cogemos de ahi directamente
 
         if user.isFollowed {
+            
             UserService.shared.unfollowUser(uid: user.uid) { _, _ in
 
                 // Cuando cambiamos alguna de las propiedades del usuario, hay que recargar el collection view, eso permitira llamar a las funciones de nuevo y que el boton cambie
@@ -285,5 +286,19 @@ extension UserProfileController: ProfileHeaderDelegate {
         navigationController?.popViewController(animated: true)
     }
 
+}
+
+// MARK: - EditProfileControllerDelegate
+
+extension UserProfileController: EditProfileControllerDelegate {
+    func controller(_ controller: EditProfileController, wantsToUpdate user: User, withimage image: UIImage?) {
+        self.user = user
+        
+        
+        //importante el reload data que sino no se ve
+        self.collectionView.reloadData()
+    }
+    
+    
 }
 

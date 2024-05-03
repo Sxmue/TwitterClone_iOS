@@ -66,8 +66,9 @@ class EditProfileCell: UITableViewCell{
         addSubview(infoTextField)
         infoTextField.anchor(top: topAnchor,left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 4,paddingLeft: 16,paddingRight: 8)
         
-        contentView.addSubview(bioTextView)
-        bioTextView.anchor(top: topAnchor,left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 4,paddingLeft: 16,paddingRight: 8)
+        addSubview(bioTextView)
+        bioTextView.anchor(top: topAnchor,left: titleLabel.rightAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 4,paddingLeft: 12,paddingRight: 8)
+        
         
        
     }
@@ -88,17 +89,35 @@ class EditProfileCell: UITableViewCell{
         
         bioTextView.text = vm.textFieldData
         
+        bioTextView.placeholder.isHidden = vm.shouldHideBioPlaceholder
+
+        
+        bioTextView.delegate = self
         
     }
     
 }
 
 //MARK: - TextFieldDelegate
+
 extension EditProfileCell: UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
+        
         delegate?.didUserInfoChange(self)
         
     }
+}
+
+//MARK: - TextViewDelegate
+
+extension EditProfileCell: UITextViewDelegate{
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        
+        delegate?.didUserInfoChange(self)
+
+    }
+    
 }

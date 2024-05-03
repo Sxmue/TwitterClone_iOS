@@ -46,7 +46,7 @@ class InputTextView: UITextView {
                            left: leftAnchor,
                            paddingTop: 8,
                            paddingLeft: 4)
-
+        
         // Ahora vamos a hacer que cuando escribas se quite el placeholcer y viceversa
         // Esto lo hacemos añadiendo un listener, un observador como en javaFX al notificationCenter
         NotificationCenter.default.addObserver(self, selector: #selector(handleInputChange), name: UITextView.textDidChangeNotification, object: nil)

@@ -279,10 +279,122 @@
             filePath = "TwitterClone/View/Profile/EditProfileCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
             landmarkName = "configure()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B0376FE5-49CD-4803-A6FA-4DF6F8751FC5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/ViewModel/EditProfileViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "textFieldData"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/Controller/UserProfileController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
+            landmarkName = "controller(_:wantsToUpdate:withimage:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251 - dbb769abda1bb45"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.UserProfileController.controller(_: TwitterClone.EditProfileController, wantsToUpdate: TwitterClone.User) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/UserProfileController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "291"
+                  endingLineNumber = "291"
+                  offsetFromSymbolStart = "105">
+               </Location>
+               <Location
+                  uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251 - 6a3caf13f44525bf"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.UserProfileController.controller(_: TwitterClone.EditProfileController, wantsToUpdate: TwitterClone.User, withimage: Swift.Optional&lt;__C.UIImage&gt;) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/UserProfileController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "290"
+                  endingLineNumber = "290"
+                  offsetFromSymbolStart = "125">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9AB293CE-92C6-4036-877B-2EDFC4287F70"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/Controller/EditProfileController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "updateProfileImage()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9AB293CE-92C6-4036-877B-2EDFC4287F70 - 8aab3ab630ffd61e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.String) -&gt; () in TwitterClone.EditProfileController.updateProfileImage() -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/EditProfileController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "125">
+               </Location>
+               <Location
+                  uuid = "9AB293CE-92C6-4036-877B-2EDFC4287F70 - 8aab3ab630ffd61e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.String) -&gt; () in TwitterClone.EditProfileController.updateProfileImage() -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/EditProfileController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "176">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

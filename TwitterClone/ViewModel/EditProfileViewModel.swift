@@ -62,6 +62,10 @@ struct EditProfileViewModel {
         return option != .bio 
     }
     
+    var shouldHideBioPlaceholder: Bool {
+        return user.bio != nil
+    }
+    
     init(option: EditProfileOptions, user: User) {
         self.option = option
         self.user = user

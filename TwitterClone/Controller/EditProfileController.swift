@@ -8,6 +8,14 @@
 import UIKit
 
 /**
+ Protocolo para abstraer al usuario updateado a el resto de controllers
+ */
+protocol EditProfileControllerDelegate: AnyObject {
+    func controller(_ controller: EditProfileController, wantsToUpdate user: User, withimage image: UIImage?)
+}
+
+
+/**
  Vista encargada de editar el perfil de usuario
  */
 class EditProfileController: UITableViewController{
@@ -19,8 +27,18 @@ class EditProfileController: UITableViewController{
     var user: User
     
     let picker = UIImagePickerController()
-
-        
+    
+    weak var delegate: EditProfileControllerDelegate?
+    
+    var didImageChanged: Bool = false
+    
+    var didUserDataChanged: Bool = false
+    
+    var newImage: UIImage?{
+        didSet{
+            didImageChanged = true
+        }
+    }
     
     //Importante el lazy aqui, porque asi nos aseguraremos de que el user este inicializado antes que esta vista
     private lazy var headerView = EditProfileHeader(user: user)
@@ -29,9 +47,9 @@ class EditProfileController: UITableViewController{
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-
+    
     //MARK: - Lifecycle
-
+    
     init(user: User) {
         self.user = user
         super.init(style: .plain)
@@ -53,7 +71,40 @@ class EditProfileController: UITableViewController{
     }
     
     //MARK: - API
+    
+    func updateUserData(){
+        
+        //Hay que distinguir entre los distintos casos ya que no queremos subir la imagen constantemente repetida
+        if didImageChanged && !didUserDataChanged{
+            
+            updateProfileImage()
+            
+        } else if !didImageChanged && didUserDataChanged{
+            
+            UserService.shared.saveUserData(user: user) { error, ref in
+                
+            }
+            
+        }else if didImageChanged && didUserDataChanged{
+            UserService.shared.saveUserData(user: user) { error, ref in
+                self.updateProfileImage()
+            }
+            
+        }
+    }
+    
+    func updateProfileImage(){
+        guard let img = headerView.profileImageView.image else {return }
+        
+        UserService.shared.updateUserProfileImage(image: img) { result in
+            self.user.profileImage = result
+            self.user.profileImageURL = URL(string: result)
+            self.delegate?.controller(self, wantsToUpdate: self.user,withimage: self.newImage)
 
+            
+        }
+        
+    }
     
     
     //MARK: - Selectors
@@ -64,12 +115,16 @@ class EditProfileController: UITableViewController{
     }
     
     @objc func handleDone(){
+        guard didImageChanged || didUserDataChanged else {return }
         
+        updateUserData()
+        navigationController?.dismiss(animated: true)
+        delegate?.controller(self, wantsToUpdate: user,withimage: newImage)
         
     }
     
     //MARK: - Helpers
-
+    
     /**
      Metodo encargado de cambiar nuestra navigation bar
      */
@@ -82,7 +137,7 @@ class EditProfileController: UITableViewController{
         
         //Tint color para que los botones sean blancos
         navigationController?.navigationBar.tintColor = .white
-
+        
         //Quitamos que sea traslucida
         navigationController?.navigationBar.isTranslucent = false
         
@@ -97,13 +152,13 @@ class EditProfileController: UITableViewController{
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
-        
-        navigationItem.rightBarButtonItem?.isEnabled = false
-
+                
     }
     
     /**
+     
      Configurcion de nuestro tableView
+     
      */
     func configureTableView(){
         
@@ -114,7 +169,7 @@ class EditProfileController: UITableViewController{
         //Posicion 0,0 que es donde va el header, el ancho de la vista, y 180 de alto
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 180)
         
-//        tableView.tableFooterView = UIView()
+        //        tableView.tableFooterView = UIView()
         
         tableView.register(EditProfileCell.self, forCellReuseIdentifier: "EditProfileCell")
         
@@ -123,7 +178,7 @@ class EditProfileController: UITableViewController{
     func configureImagePicker(){
         picker.delegate = self
         picker.allowsEditing = true
-
+        
     }
     
     
@@ -158,7 +213,7 @@ extension EditProfileController{
         
         cell.vm = vm
         cell.delegate = self
-                
+        
         return cell
     }
     
@@ -182,35 +237,32 @@ extension EditProfileController: EditProfileCellDelegate{
     
     func didUserInfoChange(_ cell: EditProfileCell) {
         
+        didUserDataChanged = true
         guard let vm = cell.vm else {return }
-        
+                
         switch vm.option {
             
         case .fullname:
             
-            print("DEBUG: update user fullname")
-            
             guard let fullname = cell.infoTextField.text else {return }
             
             user.fullname = fullname
+            
         case .username:
             
-            print("DEBUG: update user username")
             
             guard let username = cell.infoTextField.text else {return }
-
-             
-             user.username = username
+            
+            
+            user.username = username
             
         case .bio:
             
-            print("DEBUG: update bio")
+            guard let bio = cell.bioTextView.text else {return }
+            
+            user.bio = bio
             
         }
-        
-        print("DEBUG: el full name es \(user.fullname)")
-        print("DEBUG: el username es \(user.username)")
-
         
     }
     
@@ -228,6 +280,8 @@ extension EditProfileController: UINavigationControllerDelegate,UIImagePickerCon
         guard let img = info[.editedImage] as? UIImage else {return }
         
         headerView.profileImageView.image = img
+        
+        newImage = img
         
         dismiss(animated: true)
     }
