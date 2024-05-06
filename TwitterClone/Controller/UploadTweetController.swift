@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 class UploadTwitController: UIViewController {
 
@@ -51,11 +52,12 @@ class UploadTwitController: UIViewController {
         return imv
     }()
 
-    private let replyLabel: UILabel = {
-        let label = UILabel()
+    private let replyLabel: ActiveLabel = {
+        //Hacemos uso de active label para configurar las menciones
+        let label = ActiveLabel()
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .lightGray
-        label.text = "Probando cosas"
+        label.mentionColor = .twitterBlue //menciones azules
         return label
     }()
 
@@ -80,7 +82,9 @@ class UploadTwitController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.tintColor = .twitterBlue
       configureUI()
+        configureMetionTapped()
 
         switch config {
         case .tweet:
@@ -133,7 +137,7 @@ class UploadTwitController: UIViewController {
         }
     }
 
-    // MARK: - Functions
+    // MARK: - Helpers
 
     /**
      Metodo que se encarga de configurar la vista
@@ -177,6 +181,15 @@ class UploadTwitController: UIViewController {
 
         replyLabel.text = replytext
 
+    }
+    
+    /**
+     Metodo encargado de configurar las menciones
+     */
+    func configureMetionTapped(){
+        replyLabel.handleMentionTap { user in
+            print("DEBUG: Has pulsado en la mencion del usuario \(user)")
+        }
     }
 
 }

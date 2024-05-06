@@ -82,11 +82,15 @@ class UserProfileController: UICollectionViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
+        collectionView.reloadData()
     }
    
     
 
     // MARK: - Selectors
+    
+    
+    
 
     // MARK: - API
 
@@ -217,8 +221,12 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         //TODO: Cambiar ese tamaño dinamicamente segun la biografia
+
+        let viewModel = ProfileHeaderViewModel(user: user)
+
+        let height = viewModel.size(forWidth: view.frame.width).height
         
-        return CGSize(width: view.frame.width, height: 350)
+        return CGSize(width: view.frame.width, height: height + 300)
         
     }
 
@@ -235,6 +243,7 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - ProfileHeaderDelegate
+
 extension UserProfileController: ProfileHeaderDelegate {
     func didSelectFilter(filter option: ProfileFilterOptions) {
         print("DEBUG: \(option)")

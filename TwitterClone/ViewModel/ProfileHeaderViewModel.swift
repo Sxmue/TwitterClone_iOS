@@ -76,5 +76,21 @@ struct ProfileHeaderViewModel {
 
         return attributedTitle
     }
+    
+    
+    func size(forWidth width: CGFloat) -> CGSize{
+        
+        let testLabel = UILabel()
+        testLabel.text = user.bio
+        testLabel.numberOfLines = 0
+        testLabel.lineBreakMode = .byWordWrapping
+
+        testLabel.translatesAutoresizingMaskIntoConstraints = false
+        testLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+
+
+        
+        return testLabel.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+    }
 
 }

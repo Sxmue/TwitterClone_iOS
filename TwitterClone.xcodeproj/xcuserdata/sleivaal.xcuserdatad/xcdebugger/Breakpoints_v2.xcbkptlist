@@ -305,34 +305,19 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TwitterClone/Controller/UserProfileController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "controller(_:wantsToUpdate:withimage:)"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251 - dbb769abda1bb45"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "TwitterClone.UserProfileController.controller(_: TwitterClone.EditProfileController, wantsToUpdate: TwitterClone.User) -&gt; ()"
-                  moduleName = "TwitterClone"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/UserProfileController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "291"
-                  endingLineNumber = "291"
-                  offsetFromSymbolStart = "105">
-               </Location>
-               <Location
-                  uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251 - 6a3caf13f44525bf"
+                  uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251 - 6a3caf13f44523ee"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -342,8 +327,23 @@
                   urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/UserProfileController.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "290"
-                  endingLineNumber = "290"
+                  startingLineNumber = "307"
+                  endingLineNumber = "307"
+                  offsetFromSymbolStart = "143">
+               </Location>
+               <Location
+                  uuid = "757C669C-EE2D-49A3-8657-7EB6EA99B251 - 6a3caf13f445234d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.UserProfileController.controller(_: TwitterClone.EditProfileController, wantsToUpdate: TwitterClone.User, withimage: Swift.Optional&lt;__C.UIImage&gt;) -&gt; ()"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/UserProfileController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "304"
+                  endingLineNumber = "304"
                   offsetFromSymbolStart = "125">
                </Location>
             </Locations>
@@ -395,6 +395,70 @@
                   offsetFromSymbolStart = "176">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "84D0AD10-0CE6-4819-81FC-7C46AF89AF7E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/Controller/UserProfileController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "collectionView(_:layout:referenceSizeForHeaderInSection:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "84D0AD10-0CE6-4819-81FC-7C46AF89AF7E - f3cf4be03f097039"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.UserProfileController.collectionView(_: __C.UICollectionView, layout: __C.UICollectionViewLayout, referenceSizeForHeaderInSection: Swift.Int) -&gt; __C.CGSize"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/UserProfileController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "228"
+                  endingLineNumber = "228"
+                  offsetFromSymbolStart = "605">
+               </Location>
+               <Location
+                  uuid = "84D0AD10-0CE6-4819-81FC-7C46AF89AF7E - f3cf4be03f0970de"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TwitterClone.UserProfileController.collectionView(_: __C.UICollectionView, layout: __C.UICollectionViewLayout, referenceSizeForHeaderInSection: Swift.Int) -&gt; __C.CGSize"
+                  moduleName = "TwitterClone"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sleivaal/proyects/TwitterClone/TwitterClone/Controller/UserProfileController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "227"
+                  endingLineNumber = "227"
+                  offsetFromSymbolStart = "276">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4B28FDD7-2817-4861-8AD0-9E14E74E9422"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TwitterClone/ViewModel/ProfileHeaderViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "size(forWidth:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

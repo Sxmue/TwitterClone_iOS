@@ -164,7 +164,7 @@ class ProfileHeader: UICollectionReusableView {
         // Biografia
         let stack = UIStackView(arrangedSubviews: [fullnameLabel, usernameLabel, bioLabel])
         stack.axis = .vertical
-        stack.spacing = 4
+        stack.spacing = 6
 
         addSubview(stack)
         stack.anchor(top: profileImage.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 12, paddingRight: 12)
@@ -178,7 +178,7 @@ class ProfileHeader: UICollectionReusableView {
         followStack.axis = .horizontal
         followStack.spacing = 8
         addSubview(followStack)
-        followStack.anchor(top: stack.bottomAnchor, left: leftAnchor, paddingTop: 4, paddingLeft: 12)
+        followStack.anchor(top: stack.bottomAnchor, left: leftAnchor, paddingTop: 6, paddingLeft: 12)
 
         addSubview(backButton)
         backButton.anchor(top: topAnchor, left: leftAnchor, paddingTop: 10, paddingLeft: 16)
