@@ -6,11 +6,15 @@
 //
 
 import UIKit
+import ActiveLabel
 
 protocol TweetDetailsDelegate: AnyObject {
 
     func showActionSheet()
     func handleComment()
+    
+    func didMentionTapped(withUsername username: String,_ header: UICollectionReusableView)
+
 
 }
 
@@ -22,6 +26,7 @@ class TweetDetailsHeader: UICollectionReusableView {
     var tweet: Tweet? {
         didSet {
             configure()
+            configureMentionsHandler()
         }
     }
 
@@ -81,12 +86,14 @@ class TweetDetailsHeader: UICollectionReusableView {
         return  button
     }()
 
-    private let captionLabel: UILabel = {
-        let caption = UILabel()
+    private let captionLabel: ActiveLabel = {
+        let caption = ActiveLabel()
 
         caption.font = UIFont.systemFont(ofSize: 20)
         caption.numberOfLines = 0
         caption.text = "Texto de prueba"
+        caption.mentionColor = .twitterBlue
+        caption.hashtagColor = .twitterBlue
         return caption
     }()
 
@@ -138,13 +145,12 @@ class TweetDetailsHeader: UICollectionReusableView {
         return label
     }()
     
-    private let replyLabel: UILabel = {
-        let label = UILabel()
+    private let replyLabel: ActiveLabel = {
+        let label = ActiveLabel()
         
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .lightGray
-        label.text = "→ replying to @Messi"
-        
+        label.mentionColor = .twitterBlue
         return label
     }()
 
@@ -228,6 +234,13 @@ class TweetDetailsHeader: UICollectionReusableView {
         replyLabel.isHidden = viewModel.shouldHideReply
         replyLabel.text = viewModel.replyText
 
+    }
+    
+    func configureMentionsHandler(){
+        captionLabel.handleMentionTap { username in
+            self.delegate?.didMentionTapped(withUsername: username, self)
+        }
+        
     }
 
     // MARK: - Selectors

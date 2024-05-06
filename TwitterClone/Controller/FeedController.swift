@@ -138,10 +138,25 @@ class FeedController: UICollectionViewController{
         //Ahora con la libreria que hemos añadido SDWEBIMAGE podemos asignar la imagen y hacer el fetch en el momento
         profileImageView.sd_setImage(with: user.profileImageURL, completed: nil)
         
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleSideMenuOpen))
+
+        
+        profileImageView.addGestureRecognizer(tap)
+
+        profileImageView.isUserInteractionEnabled = true
+
+        
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
+        
         
     }
     
+    
+   @objc func handleSideMenuOpen() {
+        print("DEBUG: SideMenu Pulsado")
+       guard let user = user else {return }
+        navigationController?.pushViewController(SideMenuController(user: user), animated: true)
+    }
     //MARK: - Selectors
     
     @objc func handleRefresh(){
@@ -212,6 +227,15 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 
 //A Traves de la adopcion de este protocolo, abstraigo el metodo que quiero ejecutar de la celda a esta vista, lo que me permite usar el NavigationController que tengo aqui
 extension FeedController: TweetCellDelegate {
+    
+    func didMentionTapped(withUsername username: String, _ cell: TweetCollectionViewCell) {
+        
+        UserService.shared.fetchUser(withUsername: username.lowercased()) { user in
+            DispatchQueue.main.async {
+                self.navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+            }
+        }
+    }
     
     
     func likeTapped(_ cell: TweetCollectionViewCell,_ indexPath: IndexPath?) {

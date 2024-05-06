@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 // ESTO ES MUY MUY IMPORTANTE
 
@@ -28,6 +29,8 @@ protocol TweetCellDelegate: AnyObject {
     // Ahora pasamos a la propiedad
 
     func likeTapped(_ cell: TweetCollectionViewCell, _ indexPath: IndexPath?)
+    
+    func didMentionTapped(withUsername username: String,_ cell: TweetCollectionViewCell)
 }
 
 /**
@@ -77,22 +80,24 @@ class TweetCollectionViewCell: UICollectionViewCell {
         return imv
     }()
     
-    private let replyLabel: UILabel = {
-        let label = UILabel()
+    private let replyLabel: ActiveLabel = {
+        let label = ActiveLabel()
         
         label.font = UIFont.systemFont(ofSize: 12)
         label.textColor = .lightGray
         label.text = "→ replying to @Messi"
-        
+        label.mentionColor = .twitterBlue
         return label
     }()
 
-    private let captionLabel: UILabel = {
-        let caption = UILabel()
+    private let captionLabel: ActiveLabel = {
+        let caption = ActiveLabel()
 
         caption.font = UIFont.systemFont(ofSize: 14)
         caption.numberOfLines = 0
         caption.text = "Texto de prueba"
+        caption.mentionColor = .twitterBlue
+        caption.hashtagColor = .twitterBlue
         return caption
     }()
 
@@ -171,6 +176,8 @@ class TweetCollectionViewCell: UICollectionViewCell {
         actionStack.centerX(inView: self) // con el metodo de la extension que creamos al principio, se centra facilmente
 
         actionStack.anchor(bottom: underline.topAnchor, paddingBottom: 8)
+        
+        configureMentionHandler()
 
     }
 
@@ -239,5 +246,12 @@ class TweetCollectionViewCell: UICollectionViewCell {
         
         replyLabel.text = viewModel.replyText
 
+    }
+    
+    func configureMentionHandler(){
+        captionLabel.handleMentionTap { username in
+            //No se hacen llamadas a la api en una View, asi que solo pasamos el username y se gestiona todo en el delegate
+            self.delegate?.didMentionTapped(withUsername: username, self)
+        }
     }
 }

@@ -133,6 +133,14 @@ extension DetailsTweetController: UICollectionViewDelegateFlowLayout {
 // MARK: - TweetDetailsHeaderDelegate
 
 extension DetailsTweetController: TweetDetailsDelegate {
+    func didMentionTapped(withUsername username: String, _ header: UICollectionReusableView) {
+        UserService.shared.fetchUser(withUsername: username.lowercased()) { user in
+            DispatchQueue.main.async {
+                self.navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+            }
+        }
+    }
+    
     func handleComment() {
         let nav = UINavigationController(rootViewController: UploadTwitController(user: tweet.user, config: .reply(tweet)))
         nav.modalPresentationStyle = .fullScreen

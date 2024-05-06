@@ -59,7 +59,7 @@ class TweetViewModel {
     }
     
     var replyText: String {
-        return "→ replying to \(tweet.replyingTo ?? "")"
+        return "→ replying to @\(tweet.replyingTo ?? "")"
     }
 
     lazy var userInfoText: NSAttributedString = {
