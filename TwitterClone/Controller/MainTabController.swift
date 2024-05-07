@@ -82,9 +82,8 @@ class MainTabController: UITabBarController {
         navigationController?.navigationBar.barStyle = .black
 
         navigationController?.isNavigationBarHidden = true
-                
+        
     }
-    
 
     // MARK: - API
 

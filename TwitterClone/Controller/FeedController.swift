@@ -7,6 +7,8 @@
 
 import UIKit
 import SDWebImage
+import FirebaseAuth
+
 
 
 
@@ -198,6 +200,8 @@ class FeedController: UICollectionViewController{
        
        blackView.frame = window.frame
        
+       sideMenu.delegate = self
+       
        self.sideMenu.frame = CGRect(x:-500, y: 0, width: 300, height: window.frame.height)
        
        window.addSubview(sideMenu)
@@ -367,6 +371,41 @@ extension FeedController: TweetCellDelegate {
     
 }
 
+
+
+//MARK: - SideMenuDelegate
+
+extension FeedController: SideMenuDelegate {
+    
+    func didSelectProfileOption(_ sideMenu: SideMenu) {
+        
+        guard let user = user else {return }
+        handleDismiss()
+        navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+        
+    }
+    
+    func didSelectLogout(_ sideMenu: SideMenu) {
+        
+        guard let user = user else {return }
+        handleDismiss()
+        do {
+            try Auth.auth().signOut()
+        } catch let error {
+            
+        }
+        
+        navigationController?.pushViewController(LoginController(), animated: true)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+}
 
 
 

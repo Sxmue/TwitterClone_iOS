@@ -8,6 +8,14 @@
 import UIKit
 
 
+protocol SideMenuDelegate: AnyObject{
+    
+    func didSelectProfileOption(_ sideMenu: SideMenu)
+    
+    func didSelectLogout(_ sideMenu: SideMenu)
+
+}
+
 class SideMenu: UIView{
     
     //MARK: - Properties
@@ -20,6 +28,8 @@ class SideMenu: UIView{
         
     
     var tableView = UITableView()
+    
+    weak var delegate: SideMenuDelegate?
     
     
     private lazy var profileImageView: UIImageView = {
@@ -172,7 +182,20 @@ extension SideMenu: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        guard let option = SideMenuOptions(rawValue: indexPath.row) else {return }
         
+        switch option {
+        case .profile:
+            
+            delegate?.didSelectProfileOption(self)
+            
+        case .list: break
+            
+        case .logout:
+            
+            delegate?.didSelectLogout(self)
+
+        }
         
     }
     
