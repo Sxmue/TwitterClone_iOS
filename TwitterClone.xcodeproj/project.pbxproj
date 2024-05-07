@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E1309932BEA3A840002908A /* SideMenuCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1309922BEA3A840002908A /* SideMenuCell.swift */; };
 		6E21B0F32BC7D794005B68EF /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E21B0F22BC7D794005B68EF /* TweetViewModel.swift */; };
 		6E21B0F72BC7EF77005B68EF /* UserProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E21B0F62BC7EF77005B68EF /* UserProfileController.swift */; };
 		6E21B0F92BC81370005B68EF /* ProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E21B0F82BC81370005B68EF /* ProfileHeader.swift */; };
@@ -89,6 +90,7 @@
 
 /* Begin PBXFileReference section */
 		1F4A0273318EE3DC3F749112 /* Pods_TwitterClone.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterClone.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E1309922BEA3A840002908A /* SideMenuCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuCell.swift; sourceTree = "<group>"; };
 		6E21B0F22BC7D794005B68EF /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
 		6E21B0F62BC7EF77005B68EF /* UserProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileController.swift; sourceTree = "<group>"; };
 		6E21B0F82BC81370005B68EF /* ProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeader.swift; sourceTree = "<group>"; };
@@ -317,6 +319,7 @@
 				6EAD1B1A2BD24D9E0048ACCC /* ActionSheetCell.swift */,
 				6EC05AB72BD7A48700290659 /* NotificationCell.swift */,
 				6E5B198C2BE8FB7100FC99C0 /* SideMenu.swift */,
+				6E1309922BEA3A840002908A /* SideMenuCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -515,6 +518,7 @@
 			files = (
 				6E58E5132BBECD6800100A9F /* Package.swift in Sources */,
 				6E5B19892BE8F20400FC99C0 /* SideMenuController.swift in Sources */,
+				6E1309932BEA3A840002908A /* SideMenuCell.swift in Sources */,
 				6E34FB3D2BDFC5D900FDBEAB /* EditProfileController.swift in Sources */,
 				6E21B0F72BC7EF77005B68EF /* UserProfileController.swift in Sources */,
 				6E8EA8E62BE0F39C005880C7 /* EditProfileHeader.swift in Sources */,

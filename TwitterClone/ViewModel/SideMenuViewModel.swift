@@ -8,6 +8,7 @@
 import UIKit
 
 enum SideMenuOptions: Int,CaseIterable {
+    
     case profile
     case list
     case logout
@@ -55,27 +56,7 @@ struct SideMenuViewModel {
     var usernameText: String{
         return "@\(user.username)"
     }
-    
-    var followingText: NSMutableAttributedString {
-        guard let stats = user.stats else { return NSMutableAttributedString()}
-        let attributed = NSMutableAttributedString(string: "\(stats.following)", attributes: [.font: UIFont.boldSystemFont(ofSize: 16),.foregroundColor: UIColor.white])
-        
-        let append = NSMutableAttributedString(string: " following", attributes: [.font: UIFont.systemFont(ofSize: 14),.foregroundColor: UIColor.white])
-        attributed.append(append)
-        
-        return attributed
-    }
-    
-    var followersText: NSMutableAttributedString {
-        guard let stats = user.stats else { return NSMutableAttributedString()}
-        let attributed = NSMutableAttributedString(string: "\(stats.followers)", attributes: [.font: UIFont.boldSystemFont(ofSize: 16),.foregroundColor: UIColor.white])
-        
-        let append = NSMutableAttributedString(string: " followers", attributes: [.font: UIFont.systemFont(ofSize: 14),.foregroundColor: UIColor.white])
-        attributed.append(append)
-        
-        return attributed
-    }
-    
+  
     var statsString: NSMutableAttributedString {
         
         guard let stats = user.stats else { return NSMutableAttributedString()}

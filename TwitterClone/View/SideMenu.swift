@@ -8,7 +8,7 @@
 import UIKit
 
 
-class SideMenu: UIView {
+class SideMenu: UIView{
     
     //MARK: - Properties
     
@@ -17,9 +17,7 @@ class SideMenu: UIView {
             configure()
         }
     }
-    
-    var viewModel: SideMenuViewModel?
-    
+        
     
     var tableView = UITableView()
     
@@ -78,6 +76,13 @@ class SideMenu: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        tableView.register(SideMenuCell.self, forCellReuseIdentifier: "SideMenuCell")
+
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.rowHeight = 80
+        tableView.backgroundColor = .twitterBlue
+        tableView.separatorStyle = .none
         configure()
         
     }
@@ -91,6 +96,8 @@ class SideMenu: UIView {
     
     
     
+    
+    
     //MARK: - Helpers
 
     func configure(){
@@ -101,8 +108,7 @@ class SideMenu: UIView {
         
         guard let user = user else {return }
         
-        viewModel = SideMenuViewModel(user: user)
-        guard let viewModel = viewModel else {return }
+        let viewModel = SideMenuViewModel(user: user)
         
         addSubview(profileImageView)
         profileImageView.anchor(top: safeAreaLayoutGuide.topAnchor,left: leftAnchor,paddingTop: 0,paddingLeft: 12)
@@ -124,10 +130,12 @@ class SideMenu: UIView {
         
         usernameLabel.text = viewModel.usernameText
         
-        
-        addSubview(profileButton)
-        profileButton.anchor(top: statsLabel.bottomAnchor,left: leftAnchor,paddingTop: 30,paddingLeft: 12)
 
+        addSubview(tableView)
+        
+        tableView.frame = frame
+
+        tableView.anchor(top: statsLabel.bottomAnchor,left: leftAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 30,paddingLeft: 12)
         
         
     }
@@ -140,18 +148,32 @@ class SideMenu: UIView {
     
 }
 
-//extension SideMenu: UITableViewDataSource{
-//    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return 0
-//    }
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        <#code#>
-//    }
-//    
-//    
-//    
-//    
-//    
-//}
+extension SideMenu: UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return SideMenuOptions.allCases.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuCell", for: indexPath) as! SideMenuCell 
+        
+        cell.selectionStyle = .none
+        cell.option = SideMenuOptions(rawValue: indexPath.row)
+        
+        return cell
+    }
+    
+    
+}
+
+extension SideMenu: UITableViewDelegate{
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        
+    }
+    
+}
