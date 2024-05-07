@@ -18,6 +18,11 @@ class SideMenu: UIView {
         }
     }
     
+    var viewModel: SideMenuViewModel?
+    
+    
+    var tableView = UITableView()
+    
     
     private lazy var profileImageView: UIImageView = {
         let imv = UIImageView()
@@ -50,6 +55,23 @@ class SideMenu: UIView {
         return label
     }()
     
+    let statsLabel: UILabel = {
+        let label = UILabel()
+        
+        return label
+    }()
+    
+    let profileButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        button.setImage(UIImage(named: "ic_person_outline_white_2x"), for: .normal)
+        
+        button.setDimensions(width: 60, height: 60)
+        
+        return button
+    }()
+    
+    
     
     //MARK: - Lifecycle
 
@@ -78,7 +100,9 @@ class SideMenu: UIView {
         tintColor = .white
         
         guard let user = user else {return }
-        let viewModel = SideMenuViewModel(user: user)
+        
+        viewModel = SideMenuViewModel(user: user)
+        guard let viewModel = viewModel else {return }
         
         addSubview(profileImageView)
         profileImageView.anchor(top: safeAreaLayoutGuide.topAnchor,left: leftAnchor,paddingTop: 0,paddingLeft: 12)
@@ -91,9 +115,18 @@ class SideMenu: UIView {
         addSubview(stack)
         stack.anchor(top: profileImageView.bottomAnchor,left: leftAnchor,paddingTop: 8,paddingLeft: 12)
         
+        addSubview(statsLabel)
+        statsLabel.anchor(top: stack.bottomAnchor,left: leftAnchor,paddingTop: 10,paddingLeft: 12)
+        
+        statsLabel.attributedText = viewModel.statsString
+        
         fullnameLabel.text = viewModel.fullnameText
         
         usernameLabel.text = viewModel.usernameText
+        
+        
+        addSubview(profileButton)
+        profileButton.anchor(top: statsLabel.bottomAnchor,left: leftAnchor,paddingTop: 30,paddingLeft: 12)
 
         
         
@@ -106,3 +139,19 @@ class SideMenu: UIView {
     }
     
 }
+
+//extension SideMenu: UITableViewDataSource{
+//    
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return 0
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        <#code#>
+//    }
+//    
+//    
+//    
+//    
+//    
+//}

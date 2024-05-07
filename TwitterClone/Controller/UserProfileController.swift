@@ -132,6 +132,8 @@ class UserProfileController: UICollectionViewController {
 
             self.user.stats = data
             self.collectionView.reloadData()
+            
+            
         }
 
     }

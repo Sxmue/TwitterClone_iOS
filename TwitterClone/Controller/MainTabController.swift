@@ -130,15 +130,16 @@ class MainTabController: UITabBarController {
 
         // Consumo del servicio de usuario para el fetch de datos
         UserService.shared.fetchUser(uid: uid) { user in
-
-            print("DEBUG: Main user tab is \(user.username)")
-
-            // Asignacion a variable de clase para poder usar los datos
-            self.user = user
+            UserService.shared.fetchUserStats(uid: user.uid) { data in
+                var userAux:User? = user
+                userAux?.stats = data
+                self.user = userAux
+            }
 
         }
 
     }
+    
 
     // Vamos a hacer una funcion rapida para desloguearnos hasta que añadamos el boton y poder probar bien la funcion de arriba
     func logout() {

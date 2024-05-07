@@ -17,6 +17,10 @@ class FeedController: UICollectionViewController{
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .darkContent
     }
+    
+    var sideMenu = SideMenu()
+
+    private var window: UIWindow?
 
     
     var user:  User?{
@@ -24,6 +28,10 @@ class FeedController: UICollectionViewController{
             print("DEBUG: Usuario asignado en FeedController")
             //Cuando se haya asignado correctamente, podemos llamar al metodo que pone la imagen de la izquierda
             configureLeftProfileImage()
+            
+            guard let user = user else{return }
+            sideMenu.user = user
+            
         }
     }
     
@@ -33,6 +41,24 @@ class FeedController: UICollectionViewController{
         }
     }
     
+    lazy var blackView: UIView = {
+        let view = UIView()
+
+        // Va a ser una view con este constructor, es decir con el white a 0 y el alpha (opacidad= a la mitad
+        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        view.alpha = 0
+
+        // Le añadimos un gesture tap para nada mas que se pulse en lo negro se vuelva a la pantalla anterior
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleDismiss))
+
+        // Y aqui lo añadimos al image view
+        view.addGestureRecognizer(tap) // listo
+
+        view.isUserInteractionEnabled = true // importante para que funcione nuestro reconocimiento de gestos
+
+        return view
+    }()
+    
     
     
     //MARK: -Lifecycle
@@ -41,8 +67,7 @@ class FeedController: UICollectionViewController{
         super.viewDidLoad()
         //Lo primero que vamos a hacer es llamar a un metodo que configure la UI
         configureUI()
-        fetchTweets()
-        
+        fetchTweets()        
         
         collectionView.register(TweetCollectionViewCell.self, forCellWithReuseIdentifier: "TweetCell")
         
@@ -54,14 +79,21 @@ class FeedController: UICollectionViewController{
         super.viewWillAppear(animated)
         
         navigationController?.isNavigationBarHidden = false
+        
+        view.isUserInteractionEnabled = true
 
         collectionView.reloadData()
         
         
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.isUserInteractionEnabled = true
+
+    }
     //MARK: - API
     
-   
     
     func fetchTweets(){
         
@@ -153,9 +185,44 @@ class FeedController: UICollectionViewController{
     
     
    @objc func handleSideMenuOpen() {
-        print("DEBUG: SideMenu Pulsado")
-       guard let user = user else {return }
-        navigationController?.pushViewController(SideMenuController(user: user), animated: true)
+       
+       let scenes = UIApplication.shared.connectedScenes
+
+       let windowScene = scenes.first as? UIWindowScene
+
+       guard let window = windowScene?.windows.first(where: {$0.isKeyWindow}) else {return }
+
+       self.window = window
+       
+       window.addSubview(blackView)
+       
+       blackView.frame = window.frame
+       
+       self.sideMenu.frame = CGRect(x:-500, y: 0, width: 300, height: window.frame.height)
+       
+       window.addSubview(sideMenu)
+              
+       UIView.animate(withDuration: 0.5) {
+           
+           self.sideMenu.frame = CGRect(x:0, y: 0, width: window.frame.width * 0.70, height: window.frame.height)
+           self.blackView.alpha = 1
+
+       }
+    }
+    
+    @objc func handleDismiss(){
+        
+        // Con animacion tambien para quitarla
+        UIView.animate(withDuration: 0.5) {
+            
+            // Le quitamos la opacidad completamente
+            self.blackView.alpha = 0
+            
+            self.sideMenu.frame.origin.x -= 500
+
+            
+        }
+        
     }
     //MARK: - Selectors
     

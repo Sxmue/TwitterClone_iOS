@@ -13,6 +13,9 @@ class SideMenuController: UIViewController{
     
     var sideMenu = SideMenu()
     
+    private var window: UIWindow?
+
+    
     var user: User{
         didSet{
             configure()
@@ -37,11 +40,7 @@ class SideMenuController: UIViewController{
         return view
     }()
     
-    init( user: User) {
-        self.user = user
-        self.sideMenu.user = user
-        super.init(nibName: nil, bundle: nil)
-    }
+
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -56,21 +55,7 @@ class SideMenuController: UIViewController{
 
     override func viewDidLoad() {
         
-        view.addSubview(blackView)
-        blackView.frame = view.frame
-        
-        
-        
-        view.addSubview(sideMenu)
-        sideMenu.setDimensions(width: 300, height: view.frame.height)
-        sideMenu.anchor(top: view.topAnchor,left: view.leftAnchor,bottom: view.bottomAnchor)
-        
-        
-        UIView.animate(withDuration: 0.5) {
-
-            self.blackView.alpha = 1
-
-        }
+    
         
     }
     
@@ -86,7 +71,16 @@ class SideMenuController: UIViewController{
     
     @objc func handleDismiss(){
         
-        navigationController?.popViewController(animated: true)
+        // Con animacion tambien para quitarla
+        UIView.animate(withDuration: 0.5) {
+            
+            // Le quitamos la opacidad completamente
+            self.blackView.alpha = 0
+            
+            self.sideMenu.frame.origin.x -= 500
+
+            
+        }
         
     }
     

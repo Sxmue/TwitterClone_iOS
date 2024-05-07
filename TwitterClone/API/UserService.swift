@@ -25,9 +25,7 @@ struct UserService {
             // snapshot tiene dentro un diccionario de datos con los datos de nuestro usuario
             
             guard let dictionary = snapshot.value as? [String: Any] else {return }
-            
-            print("DEBUG: El diccionario es \(dictionary)")
-            
+                        
             // Asi tenemos nuestro usuario unicializado con los datos del diccionario
             let user = User(uid: uid, dictionary: dictionary)
             
@@ -115,11 +113,9 @@ struct UserService {
             
             // de esta manera se accede a todos los resultados del snapshot en array, y cogemos el count
             let followers = snapshot.children.allObjects.count
-            print("DEBUG: followers: \(followers)")
             
             DB_USER_FOLLOWING.child(uid).observeSingleEvent(of: .value) { snapshot in
                 let following = snapshot.children.allObjects.count
-                print("DEBUG: following: \(following)")
                 completion(userFollowFollowingStats(followers: followers, following: following))
                 
             }
