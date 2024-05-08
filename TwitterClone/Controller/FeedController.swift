@@ -10,7 +10,9 @@ import SDWebImage
 import FirebaseAuth
 
 
-
+protocol FeedControllerDelegate: AnyObject {
+    func didUserLogout(_ controller: FeedController)
+}
 
 class FeedController: UICollectionViewController{
     
@@ -19,6 +21,8 @@ class FeedController: UICollectionViewController{
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .darkContent
     }
+    
+    weak var delegate: FeedControllerDelegate?
     
     var sideMenu = SideMenu()
 
@@ -387,15 +391,10 @@ extension FeedController: SideMenuDelegate {
     
     func didSelectLogout(_ sideMenu: SideMenu) {
         
-        guard let user = user else {return }
         handleDismiss()
-        do {
-            try Auth.auth().signOut()
-        } catch let error {
-            
-        }
         
-        navigationController?.pushViewController(LoginController(), animated: true)
+        delegate?.didUserLogout(self)
+        
     }
     
     

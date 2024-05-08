@@ -19,7 +19,7 @@ class SideMenuCell: UITableViewCell{
     lazy var  image: UIImageView = {
         let imv = UIImageView()
         
-        imv.setDimensions(width: 60, height: 60)
+        imv.setDimensions(width: 40, height: 40)
         
         return imv
     }()
