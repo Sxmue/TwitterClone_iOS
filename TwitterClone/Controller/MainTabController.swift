@@ -171,10 +171,19 @@ class MainTabController: UITabBarController {
     @objc func actionButtonTap() {
         guard let user = user else { return } // Hacemos unwrap del user que esta optional
         
+        var controller: UIViewController
+        switch buttonConfig {
+        case .tweet:
+            controller = UploadTwitController(user: user, config: .tweet)
+        case .message:
+            controller = ExploreController(config: .messages)
+        }
+        
         // Necesitamos que sea un navigation controller, para volver atras cuando se escriba el twit
-        let nav = UINavigationController(rootViewController: UploadTwitController(user: user, config: .tweet))
+        let nav = UINavigationController(rootViewController: controller)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
+        
     }
     
     // MARK: - Funciones de ayuda
@@ -204,7 +213,7 @@ class MainTabController: UITabBarController {
         // Los UITabBarContollers tienen esta propiedad la cual cual te permite añadir todos los view controllers de golpe al tabBar
         // Ahora aqui le pasamos los consiguientes view controllers
         viewControllers = [nav1, // Este lo dejo de ejemplo para ver el funcionamiento interno
-                           templateNavigationController(image: UIImage(named: "search_unselected")!, root: ExploreController()),
+                           templateNavigationController(image: UIImage(named: "search_unselected")!, root: ExploreController(config: .userSearch)),
                            templateNavigationController(image: UIImage(named: "like_unselected")!, root: NotificationsController()),
                            templateNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1")!, root: MessagesController())]
         
@@ -293,6 +302,11 @@ extension MainTabController: UITabBarControllerDelegate {
         //Aqui tenemos entonces el view controller dentro de cada tab
         let index = viewControllers?.firstIndex(of: viewController)
         
+        let imageName = index == 3 ? "mail" : "new_tweet"
+        
+        actionButton.setImage(UIImage(named: imageName), for: .normal)
+        
+        buttonConfig = index == 3 ? .message : .tweet
         
     }
 }

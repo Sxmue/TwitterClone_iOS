@@ -31,6 +31,10 @@ let DB_TWEET_REPLIES = DB_REF.child("tweet-replies") // Referencia directa a las
 
 let DB_NOTIFICATIONS = DB_REF.child("notifications") // Referencia directa a las notificaciones
 
+let DB_USER_MESSAGES = DB_REF.child("user-messages") // Referencia directa a los mensajes
+
+let DB_MESSAGES = DB_REF.child("messages") // Referencia directa a los mensajes
+
 let STORAGE_REF = Storage.storage().reference() // Referencia directa a storage
 
 let STORAGE_PROFILE_IMAGES = STORAGE_REF.child("profile_images") // Referencia directa a las images de usuario

@@ -212,7 +212,7 @@ class FeedController: UICollectionViewController{
               
        UIView.animate(withDuration: 0.5) {
            
-           self.sideMenu.frame = CGRect(x:0, y: 0, width: window.frame.width * 0.70, height: window.frame.height)
+           self.sideMenu.frame = CGRect(x:0, y: 0, width: window.frame.width * 0.85, height: window.frame.height)
            self.blackView.alpha = 1
 
        }

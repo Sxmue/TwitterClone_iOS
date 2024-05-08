@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum ExploreConfiguration{
+    case messages
+    case userSearch
+}
+
 class ExploreController: UITableViewController {
 
     // MARK: - Propiedades
@@ -16,6 +21,8 @@ class ExploreController: UITableViewController {
             tableView.reloadData()
         }
     }
+    
+    private var config: ExploreConfiguration
 
     // Array suplementario para almacenar el filtro de los usuarios
     private var filteredUsers = [User]() {
@@ -33,6 +40,18 @@ class ExploreController: UITableViewController {
     private let searchController = UISearchController(searchResultsController: nil)
 
     // MARK: - Lifecycle
+    
+    
+    init(config: ExploreConfiguration){
+        self.config = config
+
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,8 +83,11 @@ class ExploreController: UITableViewController {
 
         view.backgroundColor = .white // Fondito blanco
 
-        navigationItem.title = "Explore"
+        navigationItem.title = config == .messages ? "New Message" : "Explore"
 
+        if config == .messages {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target:self, action: #selector(handleCancel))
+        }
     }
 
     /**
@@ -106,6 +128,15 @@ class ExploreController: UITableViewController {
         }
 
     }
+    
+    // MARK: - Selectors
+    
+    @objc func handleCancel(){
+    
+        dismiss(animated: true)
+    }
+
+
 
 }
 
@@ -132,9 +163,23 @@ extension ExploreController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         // Tenemos el usuario en la row del index path asi que copiamos la linea de arriba
         let user = inSearchMode ? filteredUsers[indexPath.row] : users[indexPath.row]
-        navigationController?.pushViewController(UserProfileController(user: user), animated: true)
+        var controller: UIViewController
+        
+        switch config{
+            
+        case .messages:
+            
+            controller = ChatController(user: user)
+            
+        case .userSearch:
+            
+            controller = UserProfileController(user: user)
+            
+        }
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
 
