@@ -311,8 +311,8 @@
             filePath = "TwitterClone/Controller/UserProfileController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "306"
-            endingLineNumber = "306"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "controller(_:wantsToUpdate:withimage:)"
             landmarkType = "7">
             <Locations>
@@ -407,8 +407,8 @@
             filePath = "TwitterClone/Controller/UserProfileController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "229"
-            endingLineNumber = "229"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "collectionView(_:layout:referenceSizeForHeaderInSection:)"
             landmarkType = "7">
             <Locations>

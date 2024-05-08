@@ -222,8 +222,6 @@ extension UserProfileController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        //TODO: Cambiar ese tamaño dinamicamente segun la biografia
-
         let viewModel = ProfileHeaderViewModel(user: user)
 
         let height = viewModel.size(forWidth: view.frame.width).height

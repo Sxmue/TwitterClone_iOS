@@ -11,6 +11,9 @@ class ChatController: UITableViewController{
     
     let user: User
     
+    let messages = [Message]()
+    
+    
     init(user: User) {
         
         self.user = user
@@ -24,10 +27,29 @@ class ChatController: UITableViewController{
     }
     
     override func viewDidLoad() {
-        view.backgroundColor = .systemPink
+        
+        tableView.register(MessageCell.self, forCellReuseIdentifier: "MessageCell")
+        
+        tableView.rowHeight = 100
+        
 
     }
     
+    
+    
+    //MARK: - TableView Datasource
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell") as! MessageCell
+        
+        
+        return cell
+    }
     
     
 }
