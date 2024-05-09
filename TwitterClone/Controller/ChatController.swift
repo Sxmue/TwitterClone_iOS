@@ -7,12 +7,18 @@
 
 import UIKit
 
-class ChatController: UITableViewController{
+class ChatController: UIViewController{
+    
+    
+    //MARK: - Properties
     
     let user: User
     
-    let messages = [Message]()
+    let footer = ChatFooterView()
     
+    var messages = [Message]()
+    
+    let chat = UITableView()
     
     init(user: User) {
         
@@ -26,30 +32,85 @@ class ChatController: UITableViewController{
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Lifecycle
+
     override func viewDidLoad() {
+        view.backgroundColor = .white
+        view.addSubview(chat)
+        view.addSubview(footer)
+        footer.setDimensions(width: view.frame.width, height: 60)
+        footer.anchor(left: view.leftAnchor,bottom: view.bottomAnchor,right: view.rightAnchor,paddingLeft: 20,paddingBottom: 25,paddingRight: 20)
+        chat.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.leftAnchor,bottom: footer.topAnchor,right: view.rightAnchor,paddingBottom: 4)
         
-        tableView.register(MessageCell.self, forCellReuseIdentifier: "MessageCell")
+        configureTableView()
         
-        tableView.rowHeight = 100
+        fetchMessages()
         
 
     }
     
-    
-    
-    //MARK: - TableView Datasource
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    //MARK: - Helpers
+
+    func configureTableView(){
         
-        return 3
+        chat.delegate = self
+        chat.backgroundColor = .white
+        chat.register(MessageCell.self, forCellReuseIdentifier: "MessageCell")
+        
+        chat.separatorStyle = .none
+        
+        chat.rowHeight = 100
+                
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    //MARK: - API
+    
+    func fetchMessages(){
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell") as! MessageCell
+        MessageService.shared.fetchMessages(withUser: user.uid) { messages in
+            self.messages = messages
+        }
+    }
+    
+    func sendMessage(){
+        MessageService.shared
         
-        
-        return cell
+    }
+
+    
+}
+
+//MARK: - TableViewDelegate
+
+extension ChatController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
     }
     
     
 }
+
+//MARK: - TableView Datasource
+
+extension ChatController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell") as! MessageCell
+        
+        let message = messages[indexPath.row]
+        
+        cell.selectionStyle = .none
+        
+        cell.message = message
+        
+        return cell
+    }
+    
+
+}
+

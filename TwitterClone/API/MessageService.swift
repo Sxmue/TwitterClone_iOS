@@ -38,28 +38,31 @@ struct MessageService{
     }
     
     
-}
-
-
-
-func saveMessage(content: String ,toUser destinationUid: String,completion: @escaping(Error?, DatabaseReference) -> Void){
-    
-    guard let uid = Auth.auth().currentUser?.uid else {return }
-    
-    let values = ["timestamp": Int(NSDate().timeIntervalSince1970),
-                  "content": content,
-                  "fromUser": uid,
-                  "toUser": destinationUid] as [String : Any]
-    
-    DB_MESSAGES.childByAutoId().updateChildValues(values) { error, ref in
-        guard let messageID = ref.key else {return }
+    func saveMessage(content: String ,toUser destinationUid: String,completion: @escaping(Error?, DatabaseReference) -> Void){
         
-        DB_USER_MESSAGES.child(uid).child(destinationUid).updateChildValues([messageID:1]) { error, ref in
-            completion(error,ref)
+        guard let uid = Auth.auth().currentUser?.uid else {return }
+        
+        let values = ["timestamp": Int(NSDate().timeIntervalSince1970),
+                      "content": content,
+                      "fromUser": uid,
+                      "toUser": destinationUid] as [String : Any]
+        
+        DB_MESSAGES.childByAutoId().updateChildValues(values) { error, ref in
+            guard let messageID = ref.key else {return }
+            
+            DB_USER_MESSAGES.child(uid).child(destinationUid).updateChildValues([messageID:1]) { error, ref in
+                completion(error,ref)
+            }
         }
+        
     }
     
+    
 }
+
+
+
+
 
 
 

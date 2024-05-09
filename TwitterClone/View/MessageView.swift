@@ -14,13 +14,17 @@ class MessageView: UIView{
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .white
+        label.text = "Texto de prueba por defecto hola hola hola"
+        label.numberOfLines = 10
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(text)
-        text.centerX(inView: self)
+        text.centerY(inView: self)
+        text.anchor(paddingLeft: 4,paddingRight: 4)
         backgroundColor = .systemBlue
     }
     

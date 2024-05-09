@@ -9,18 +9,18 @@ import UIKit
 
 class MessageCell: UITableViewCell {
     
-    let message = MessageView()
+    let messageView = MessageView()
+    
+    var message: Message?{
+        didSet{
+            configure()
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-    
         
-        message.setDimensions(width: 150, height: 40)
-        message.layer.cornerRadius = 40/2
-        addSubview(message)
-        message.centerY(inView: self)
-        message.anchor(right: rightAnchor,paddingRight: 4)
-        
+        backgroundColor = .systemPink
         
     }
     
@@ -28,8 +28,21 @@ class MessageCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
-    
-    
+    func configure(){
+        
+        guard let message = message else {return }
+        
+        let viewModel = MessageCellViewModel(message: message)
+        
+        let height = viewModel.size(forWidth: 250).height + 20
+        
+        messageView.setDimensions(width: 250, height: height)
+        
+        messageView.layer.cornerRadius = height/2
+        addSubview(messageView)
+        messageView.centerY(inView: self)
+        messageView.anchor(right: rightAnchor,paddingRight: 4)
+        
+    }
+     
 }
