@@ -20,11 +20,11 @@ class MessageCellViewModel {
     
     func size(forWidth width: CGFloat) -> CGSize {
         let view = MessageView()
-        view.text.text = message.content
-        view.text.numberOfLines = 0
-        view.text.lineBreakMode = .byWordWrapping
-        view.text.translatesAutoresizingMaskIntoConstraints = false
-        view.text.widthAnchor.constraint(equalToConstant: width).isActive = true
-        return view.text.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        view.content.text = message.content
+        view.content.numberOfLines = 0
+        view.content.lineBreakMode = .byWordWrapping
+        view.content.translatesAutoresizingMaskIntoConstraints = false
+        view.content.widthAnchor.constraint(equalToConstant: width).isActive = true
+        return view.content.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 }

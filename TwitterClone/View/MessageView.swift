@@ -10,21 +10,21 @@ import UIKit
 class MessageView: UIView{
     
     
-    let text: UILabel = {
+    var content: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .white
         label.text = "Texto de prueba por defecto hola hola hola"
-        label.numberOfLines = 10
+        label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addSubview(text)
-        text.centerY(inView: self)
-        text.anchor(paddingLeft: 4,paddingRight: 4)
+        addSubview(content)
+        content.center(inView: self)
+        content.anchor(top: topAnchor,left: leftAnchor,bottom: bottomAnchor,right: rightAnchor,paddingTop: 4,paddingLeft: 12,paddingBottom: 4,paddingRight: 4)
         backgroundColor = .systemBlue
     }
     

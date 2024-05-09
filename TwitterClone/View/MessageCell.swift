@@ -19,9 +19,7 @@ class MessageCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        backgroundColor = .systemPink
-        
+                
     }
     
     required init?(coder: NSCoder) {
@@ -32,16 +30,32 @@ class MessageCell: UITableViewCell {
         
         guard let message = message else {return }
         
+        print("DEBUG: El mensaje en esta celda es : \(message.content)")
+
         let viewModel = MessageCellViewModel(message: message)
         
-        let height = viewModel.size(forWidth: 250).height + 20
+        messageView.content.text = viewModel.message.content
         
-        messageView.setDimensions(width: 250, height: height)
         
-        messageView.layer.cornerRadius = height/2
+        //TODO: - Refactorizar esto al viewModel
         addSubview(messageView)
         messageView.centerY(inView: self)
+        let size = messageView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        messageView.setDimensions(width: size.width + 8, height: size.height + 30)
+        messageView.layer.cornerRadius =  ( size.height + 30 ) / 2
         messageView.anchor(right: rightAnchor,paddingRight: 4)
+        let screenPercent = frame.width * 0.40
+        messageView.leftAnchor.constraint(greaterThanOrEqualTo: leftAnchor, constant: screenPercent).isActive = true
+                
+
+//        let size = viewModel.size(forWidth: 400)
+//        
+//        messageView.setDimensions(width: 400, height: size.height + 20)
+//        
+//        messageView.layer.cornerRadius = (size.height + 20 ) / 2
+//        addSubview(messageView)
+//        messageView.centerY(inView: self)
+//        messageView.anchor(right: rightAnchor,paddingRight: 4)
         
     }
      

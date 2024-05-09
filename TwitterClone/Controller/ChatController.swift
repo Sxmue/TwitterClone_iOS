@@ -17,6 +17,8 @@ class ChatController: UIViewController{
     let footer = ChatFooterView()
     
     var messages = [Message]()
+       
+    var viewModel: ChatViewModel?
     
     let chat = UITableView()
     
@@ -36,6 +38,7 @@ class ChatController: UIViewController{
 
     override func viewDidLoad() {
         view.backgroundColor = .white
+        footer.delegate = self
         view.addSubview(chat)
         view.addSubview(footer)
         footer.setDimensions(width: view.frame.width, height: 60)
@@ -54,6 +57,7 @@ class ChatController: UIViewController{
     func configureTableView(){
         
         chat.delegate = self
+        chat.dataSource = self
         chat.backgroundColor = .white
         chat.register(MessageCell.self, forCellReuseIdentifier: "MessageCell")
         
@@ -70,11 +74,21 @@ class ChatController: UIViewController{
         
         MessageService.shared.fetchMessages(withUser: user.uid) { messages in
             self.messages = messages
+            
+            UIView.animate(withDuration: 0.5) {
+                self.chat.reloadData()
+
+            }
         }
     }
     
-    func sendMessage(){
-        MessageService.shared
+    func sendMessage(message: String){
+        MessageService.shared.saveMessage(content: footer.textView.text, toUser: user.uid) { error, ref in
+            UIView.animate(withDuration: 0.5) {
+                self.chat.reloadData()
+
+            }
+        }
         
     }
 
@@ -86,7 +100,8 @@ class ChatController: UIViewController{
 extension ChatController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        
+        return 200
     }
     
     
@@ -108,9 +123,25 @@ extension ChatController: UITableViewDataSource {
         
         cell.message = message
         
+        
         return cell
     }
     
 
+}
+
+extension ChatController: ChatFooterDelegate {
+    
+    func didTappedSend(_ footer: ChatFooterView, content: String) {
+        
+        print("DEBUG: se ha pulsado enviar, el mensaje es \(content)")
+        
+        sendMessage(message: content)
+        
+    }
+    
+    
+    
+    
 }
 
