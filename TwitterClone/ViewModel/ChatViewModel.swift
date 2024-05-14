@@ -17,6 +17,16 @@ class ChatViewModel {
         return message.content
     }
     
+    var mode: MessageCellMode {
+        
+        if message.isSended{
+            return .send
+        }else {
+            return .recive
+        }
+        
+    }
+    
     init(message: Message) {
         self.message = message
     }

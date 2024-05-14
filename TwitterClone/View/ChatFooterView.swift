@@ -38,7 +38,7 @@ class ChatFooterView: UIView {
         
         let stack = UIStackView(arrangedSubviews: [textView,button])
         addSubview(stack)
-        stack.addConstraintsToFillView(self)
+        stack.anchor(top: topAnchor,left: leftAnchor,bottom: bottomAnchor,right: rightAnchor)
         stack.axis = .horizontal
         stack.alignment = .leading
         

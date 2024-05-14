@@ -21,13 +21,15 @@ struct MessageService{
         guard let uid = Auth.auth().currentUser?.uid else {return }
         
         DB_USER_MESSAGES.child(uid).child(destinationUid).observe(.childAdded) { snapshot in
-            
+                            
             let messageUid = snapshot.key
             
             DB_MESSAGES.child(messageUid).observeSingleEvent(of: .value) { snapshot in
                 guard let dictionary = snapshot.value as? [String: Any] else {return }
                 
-                let message = Message(messageId: messageUid, dictionary: dictionary)
+                var message = Message(messageId: messageUid, dictionary: dictionary)
+                
+                message.isSended = message.fromUser == uid ? true : false
                 
                 messages.append(message)
                 completion(messages)
@@ -51,7 +53,10 @@ struct MessageService{
             guard let messageID = ref.key else {return }
             
             DB_USER_MESSAGES.child(uid).child(destinationUid).updateChildValues([messageID:1]) { error, ref in
-                completion(error,ref)
+                
+                DB_USER_MESSAGES.child(destinationUid).child(uid).updateChildValues([messageID:1]) { error, ref in
+                    completion(error,ref)
+                }
             }
         }
         

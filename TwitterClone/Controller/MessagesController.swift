@@ -8,10 +8,11 @@
 
 import UIKit
 
-class MessagesController: UIViewController{
+class MessagesController: UITableViewController{
     
     //MARK: - Propiedades
     
+    let chats = [Chat]()
     
     //MARK: -Lifecycle
 

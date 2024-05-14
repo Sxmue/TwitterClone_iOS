@@ -20,6 +20,8 @@ struct Message {
     
     var toUser: String
     
+    var isSended: Bool = false
+    
     
     
     init(messageId: String,dictionary: [String: Any]){

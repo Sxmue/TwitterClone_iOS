@@ -7,15 +7,26 @@
 
 import UIKit
 
+enum MessageCellMode {
+    
+    case send
+    case recive
+    
+}
+
+
 class MessageCellViewModel {
     
     let message: Message
     
-    init(message: Message) {
+    let mode: MessageCellMode
+    
+
+    
+    init(message: Message, mode: MessageCellMode) {
         self.message = message
+        self.mode = mode
     }
-    
-    
     
     
     func size(forWidth width: CGFloat) -> CGSize {
@@ -27,4 +38,20 @@ class MessageCellViewModel {
         view.content.widthAnchor.constraint(equalToConstant: width).isActive = true
         return view.content.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
+    
+    func maxSize(forWidth width: CGFloat) -> CGFloat{
+        return width * 0.40
+    }
+    
+    func anchor(view: UIView) -> NSLayoutXAxisAnchor {
+        switch mode {
+        case .send:
+            return view.rightAnchor
+        case .recive:
+            return view.leftAnchor
+        }
+    }
+    
+    
+
 }
