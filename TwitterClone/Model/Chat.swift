@@ -11,13 +11,15 @@ struct Chat {
     
     let uid: String
     
+    
     var user: User?
     
     let message: Message
     
-    init(uid: String, message: Message) {
+    
+    init(uid: String, user: User, message: Message) {
         self.uid = uid
+        self.user = user
         self.message = message
     }
-    
 }

@@ -21,6 +21,8 @@
 		6E4367852BC68685009848C2 /* TweetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4367842BC68685009848C2 /* TweetService.swift */; };
 		6E4367872BC697B4009848C2 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4367862BC697B4009848C2 /* Tweet.swift */; };
 		6E4367892BC6A63A009848C2 /* TweetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4367882BC6A63A009848C2 /* TweetCollectionViewCell.swift */; };
+		6E51AE842BF4CB52001CAC62 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E51AE832BF4CB52001CAC62 /* ChatCell.swift */; };
+		6E51AE862BF4CB9E001CAC62 /* ChatCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E51AE852BF4CB9E001CAC62 /* ChatCellViewModel.swift */; };
 		6E58E5092BBEC7AB00100A9F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6E58E5082BBEC7AB00100A9F /* FirebaseAnalytics */; };
 		6E58E50B2BBEC7AB00100A9F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 6E58E50A2BBEC7AB00100A9F /* FirebaseAnalyticsOnDeviceConversion */; };
 		6E58E50D2BBEC7AB00100A9F /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E58E50C2BBEC7AB00100A9F /* FirebaseAnalyticsSwift */; };
@@ -115,6 +117,8 @@
 		6E4367842BC68685009848C2 /* TweetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetService.swift; sourceTree = "<group>"; };
 		6E4367862BC697B4009848C2 /* Tweet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		6E4367882BC6A63A009848C2 /* TweetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetCollectionViewCell.swift; sourceTree = "<group>"; };
+		6E51AE832BF4CB52001CAC62 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		6E51AE852BF4CB9E001CAC62 /* ChatCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCellViewModel.swift; sourceTree = "<group>"; };
 		6E58E5122BBECD6800100A9F /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		6E58E5192BBED8CC00100A9F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6E5B198C2BE8FB7100FC99C0 /* SideMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenu.swift; sourceTree = "<group>"; };
@@ -332,6 +336,7 @@
 				6E5B198E2BE9060600FC99C0 /* SideMenuViewModel.swift */,
 				6E778EE92BECA5FC00F49568 /* MessageCellViewModel.swift */,
 				6E9601E72BEE1FBF0004D78B /* MessageViewViewModel.swift */,
+				6E51AE852BF4CB9E001CAC62 /* ChatCellViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -351,6 +356,7 @@
 				6EF5E5722BEBA43F006935BF /* MessageView.swift */,
 				6E778EEB2BECAF1100F49568 /* ChatFooterView.swift */,
 				6EF25EC92BF33DB9001DF6B6 /* MessageSendCell.swift */,
+				6E51AE832BF4CB52001CAC62 /* ChatCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -549,6 +555,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E51AE842BF4CB52001CAC62 /* ChatCell.swift in Sources */,
 				6E58E5132BBECD6800100A9F /* Package.swift in Sources */,
 				6E1309932BEA3A840002908A /* SideMenuCell.swift in Sources */,
 				6E34FB3D2BDFC5D900FDBEAB /* EditProfileController.swift in Sources */,
@@ -582,6 +589,7 @@
 				6E4367892BC6A63A009848C2 /* TweetCollectionViewCell.swift in Sources */,
 				6EF25ECE2BF3540F001DF6B6 /* ChatService.swift in Sources */,
 				6EAD1B1D2BD27EA10048ACCC /* ActionSheetViewModel.swift in Sources */,
+				6E51AE862BF4CB9E001CAC62 /* ChatCellViewModel.swift in Sources */,
 				6E2508D12BCFEFB900AC73F9 /* TweetDetailsHeader.swift in Sources */,
 				6E73E4FE2BCEAA2000684AC1 /* UserTableViewCell.swift in Sources */,
 				6E90329E2BC578F00071B1B6 /* UploadTweetController.swift in Sources */,

@@ -33,6 +33,10 @@ let DB_NOTIFICATIONS = DB_REF.child("notifications") // Referencia directa a las
 
 let DB_USER_MESSAGES = DB_REF.child("user-messages") // Referencia directa a los mensajes
 
+let DB_CHATS = DB_REF.child("chats") // Referencia directa a los chats
+
+let DB_USER_CHATS = DB_REF.child("user-chats") // Referencia directa user_chats
+
 let DB_MESSAGES = DB_REF.child("messages") // Referencia directa a los mensajes
 
 let STORAGE_REF = Storage.storage().reference() // Referencia directa a storage

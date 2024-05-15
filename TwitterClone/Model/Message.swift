@@ -24,6 +24,7 @@ struct Message {
     
     
     
+    
     init(messageId: String,dictionary: [String: Any]){
         
         self.messageId = messageId

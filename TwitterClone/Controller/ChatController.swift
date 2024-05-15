@@ -17,7 +17,7 @@ class ChatController: UIViewController{
     let footer = ChatFooterView()
     
     var messages = [Message]()
-       
+    
     var viewModel: ChatViewModel?
     
     let chat = UITableView()
@@ -35,7 +35,7 @@ class ChatController: UIViewController{
     }
     
     //MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         view.backgroundColor = .white
         footer.delegate = self
@@ -52,11 +52,11 @@ class ChatController: UIViewController{
         
         fetchMessages()
         
-
+        
     }
     
     //MARK: - Helpers
-
+    
     func configureTableView(){
         
         chat.delegate = self
@@ -64,10 +64,10 @@ class ChatController: UIViewController{
         chat.backgroundColor = .white
         chat.register(MessageSendCell.self, forCellReuseIdentifier: "MessageSendCell")
         chat.register(MessageReciveCell.self, forCellReuseIdentifier: "MessageReciveCell")
-
+        
         chat.separatorStyle = .none
         
-                
+        
     }
     
     
@@ -79,28 +79,45 @@ class ChatController: UIViewController{
             self.messages = messages
             UIView.animate(withDuration: 0.5) {
                 self.chat.reloadData()
-
+                
             }
         }
     }
     
+    
     func sendMessage(message: String){
-        MessageService.shared.saveMessage(content: footer.textView.text, toUser: user.uid) { error, ref in
+        
+        MessageService.shared.saveMessage(content: footer.textView.text, toUser: user.uid) { error, ref, messageID in
             UIView.animate(withDuration: 0.5) {
-//                self.chat.reloadData()
+                //                self.chat.reloadData()
                 
                 let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
-
+                
                 if indexPath.row > 1 {
                     self.chat.scrollToRow(at: indexPath, at: .bottom, animated: true)
                 }
-
-
+                
             }
+            
+            self.saveChat(messageID)
+            
         }
         
+        
     }
-
+    
+    func saveChat(_ messageID: String) {
+        ChatService.shared.userHasChat(withUser: self.user.uid) { response in
+            if !response {
+                ChatService.shared.saveChat(toUser: self.user.uid, messageUid: messageID) { error, ref in
+                    
+                }
+                
+            }
+            
+        }
+    }
+    
     
 }
 
@@ -126,12 +143,12 @@ extension ChatController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let message = messages[indexPath.row]
-            
-            let cellSend = tableView.dequeueReusableCell(withIdentifier: "MessageSendCell") as! MessageSendCell
-       
-            
-           let cellRecive = tableView.dequeueReusableCell(withIdentifier: "MessageReciveCell") as! MessageReciveCell
-
+        
+        let cellSend = tableView.dequeueReusableCell(withIdentifier: "MessageSendCell") as! MessageSendCell
+        
+        
+        let cellRecive = tableView.dequeueReusableCell(withIdentifier: "MessageReciveCell") as! MessageReciveCell
+        
         
         
         if message.isSended {
@@ -156,7 +173,7 @@ extension ChatController: UITableViewDataSource {
         
     }
     
-
+    
 }
 
 extension ChatController: ChatFooterDelegate {
@@ -166,6 +183,7 @@ extension ChatController: ChatFooterDelegate {
         print("DEBUG: se ha pulsado enviar, el mensaje es \(content)")
         
         sendMessage(message: content)
+        
         
     }
     

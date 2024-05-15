@@ -40,7 +40,7 @@ struct MessageService{
     }
     
     
-    func saveMessage(content: String ,toUser destinationUid: String,completion: @escaping(Error?, DatabaseReference) -> Void){
+    func saveMessage(content: String ,toUser destinationUid: String,completion: @escaping(Error?, DatabaseReference,String) -> Void){
         
         guard let uid = Auth.auth().currentUser?.uid else {return }
         
@@ -55,10 +55,36 @@ struct MessageService{
             DB_USER_MESSAGES.child(uid).child(destinationUid).updateChildValues([messageID:1]) { error, ref in
                 
                 DB_USER_MESSAGES.child(destinationUid).child(uid).updateChildValues([messageID:1]) { error, ref in
-                    completion(error,ref)
+                    
+                    completion(error,ref,messageID)
                 }
             }
         }
+        
+    }
+    
+    func fetchMessageById(withUid uid:String, completion: @escaping(Message) -> Void){
+        
+        DB_MESSAGES.child(uid).observeSingleEvent(of: .value) { snapshot in
+            
+            guard let dictionary = snapshot.value as? [String: Any] else {return }
+            
+            let message = Message(messageId: uid, dictionary: dictionary)
+            
+            completion(message)
+        }
+        
+    }
+    
+    func updateMessage(messageUid: String,content: String,completion: @escaping(Error?, DatabaseReference) -> Void ){
+        
+        DB_MESSAGES.child(messageUid).updateChildValues(["content:": content]) { error, ref in
+            
+            completion(error,ref)
+            
+        }
+        
+        
         
     }
     
