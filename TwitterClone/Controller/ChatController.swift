@@ -16,7 +16,11 @@ class ChatController: UIViewController{
     
     let footer = ChatFooterView()
     
-    var messages = [Message]()
+    var messages = [Message](){
+        didSet{
+            updateChatLastMessage()
+        }
+    }
     
     var viewModel: ChatViewModel?
     
@@ -114,10 +118,16 @@ class ChatController: UIViewController{
                 }
                 
             }
-            
         }
     }
     
+    func updateChatLastMessage(){
+        
+//        guard let message = messages.last else {return }
+       
+        //TODO: - Actualizar el ultimo mensaje de la conversacion al chat
+        
+    }
     
 }
 

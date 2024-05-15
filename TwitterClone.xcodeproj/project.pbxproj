@@ -232,7 +232,6 @@
 		6E8EA8E72BE0FB15005880C7 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				6E4367882BC6A63A009848C2 /* TweetCollectionViewCell.swift */,
 				6E8EA8E52BE0F39C005880C7 /* EditProfileHeader.swift */,
 				6E21B0F82BC81370005B68EF /* ProfileHeader.swift */,
 				6E21B0FA2BC94417005B68EF /* ProfileFilterView.swift */,
@@ -346,6 +345,7 @@
 			children = (
 				6E8EA8E72BE0FB15005880C7 /* Profile */,
 				6E4367822BC67948009848C2 /* InputTextView.swift */,
+				6E4367882BC6A63A009848C2 /* TweetCollectionViewCell.swift */,
 				6E73E4FD2BCEAA2000684AC1 /* UserTableViewCell.swift */,
 				6E2508D02BCFEFB900AC73F9 /* TweetDetailsHeader.swift */,
 				6EAD1B1A2BD24D9E0048ACCC /* ActionSheetCell.swift */,

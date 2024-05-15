@@ -12,7 +12,7 @@ struct Chat {
     let uid: String
     
     
-    var user: User?
+    var user: User
     
     let message: Message
     
