@@ -12,7 +12,7 @@ struct Message {
     
     let messageId: String
     
-    let content: String
+    var content: String
     
     var timestamp: Date!
     

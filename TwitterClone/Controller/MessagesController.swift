@@ -8,12 +8,19 @@
 
 import UIKit
 
+protocol MessagesControllerDelegate: AnyObject {
+    func didSelectChat(_ controller: MessagesController)
+    
+}
+
 class MessagesController: UITableViewController{
     
     //MARK: - Propiedades
     
     var chats = [Chat]()
     
+    weak var delegate: MessagesControllerDelegate?
+        
     //MARK: -Lifecycle
 
     override func viewDidLoad() {
@@ -21,8 +28,14 @@ class MessagesController: UITableViewController{
 
         tableView.delegate = self
         configureUI()
-        fetchChats()
+
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        fetchChats()
+
+        }
 
     //MARK: - Funciones de ayuda
     func configureUI(){
@@ -34,6 +47,7 @@ class MessagesController: UITableViewController{
         tableView.register(ChatCell.self, forCellReuseIdentifier: "ChatCell")
 
         tableView.rowHeight = 70
+        
     }
     
     //MARK: - API
@@ -57,11 +71,41 @@ class MessagesController: UITableViewController{
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell", for: indexPath) as! ChatCell
 
         let chat = chats[indexPath.row]
+        
         let viewModel = ChatCellViewModel(chat: chat)
 
         cell.viewModel = viewModel
 
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let chat = chats[indexPath.row]
+        let controller = ChatController(user: chat.user)
+        controller.previousChat = chat
+        controller.delegate = self
+        delegate?.didSelectChat(self)
+        navigationController?.pushViewController(controller, animated: true)
+        
+    }
+    
+}
+
+
+
+extension MessagesController: ChatControllerDelegate{
+    func didChatMessageChange(_ controller: ChatController, _ previousChatID: String, _ content: String) {
+        for (index, chat) in chats.enumerated(){
+            
+            if chat.uid == previousChatID {
+                
+                chats[index].message.content = content
+                
+                tableView.reloadData()
+                
+            }
+        }
     }
     
 }

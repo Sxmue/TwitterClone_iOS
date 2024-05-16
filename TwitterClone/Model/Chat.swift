@@ -14,7 +14,7 @@ struct Chat {
     
     var user: User
     
-    let message: Message
+    var message: Message
     
     
     init(uid: String, user: User, message: Message) {

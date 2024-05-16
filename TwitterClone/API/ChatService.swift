@@ -54,11 +54,26 @@ struct ChatService {
         let values = ["toUser": toUser,
                       "messageUid": messageUid] as [String : Any]
         
+        let valuesToUser = ["toUser": currentUid,
+                            "messageUid": messageUid] as [String : Any]
+        
         DB_CHATS.childByAutoId().updateChildValues(values) { error, ref in
             
             guard let key = ref.key else {return }
             
-            DB_USER_CHATS.child(currentUid).updateChildValues([key: 1]) { error, ref in
+            DB_USER_CHATS.child(currentUid).updateChildValues([key: toUser]) { error, ref in
+                
+                completion(error,ref)
+                
+            }
+            
+        }
+        
+        DB_CHATS.childByAutoId().updateChildValues(valuesToUser) { error, ref in
+            
+            guard let key = ref.key else {return }
+            
+            DB_USER_CHATS.child(toUser).updateChildValues([key: currentUid]) { error, ref in
                 
                 completion(error,ref)
                 
@@ -72,11 +87,33 @@ struct ChatService {
         
         guard let currentUid = Auth.auth().currentUser?.uid else {return }
         
-        DB_USER_CHATS.child(currentUid).child(withUser).observeSingleEvent(of: .value) { snapshot in
-            completion(snapshot.exists())
+        DB_USER_CHATS.observeSingleEvent(of: .value) { snapshot in
+            
+            if snapshot.exists() {
+                DB_USER_CHATS.child(currentUid).observe(.childAdded) { snapshot in
+                    let chatkey = snapshot.key
+                    
+                    guard let toUser = snapshot.value as? String else {return }
+                    
+                    completion(toUser == withUser)
+                    
+                }
+            }else {
+                completion(false)
+                
+            }
+            
         }
         
+    }
+    
+    func updateChatMessage(forChat chatid: String,withID messageId: String, completion: @escaping(Error?, DatabaseReference) -> Void){
         
+        DB_CHATS.child(chatid).updateChildValues(["messageUid":messageId]) { error, ref in
+            
+            completion(error,ref)
+            
+        }
         
     }
     

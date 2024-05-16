@@ -7,6 +7,13 @@
 
 import UIKit
 
+
+protocol ChatControllerDelegate: AnyObject {
+    
+    func didChatMessageChange(_ controller: ChatController,_ chatID: String,_ content: String)
+}
+
+
 class ChatController: UIViewController{
     
     
@@ -18,9 +25,17 @@ class ChatController: UIViewController{
     
     var messages = [Message](){
         didSet{
+            
             updateChatLastMessage()
+            
         }
     }
+    
+    weak var delegate: ChatControllerDelegate?
+
+      
+    
+    var previousChat: Chat?
     
     var viewModel: ChatViewModel?
     
@@ -59,6 +74,15 @@ class ChatController: UIViewController{
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.isNavigationBarHidden = false
+        
+        navigationController?.navigationBar.tintColor = .systemBlue
+        
+    }
+    
     //MARK: - Helpers
     
     func configureTableView(){
@@ -80,7 +104,7 @@ class ChatController: UIViewController{
     func fetchMessages(){
         
         MessageService.shared.fetchMessages(withUser: user.uid) { messages in
-            self.messages = messages
+            self.messages = messages.sorted(by: {$0.timestamp < $1.timestamp})
             UIView.animate(withDuration: 0.5) {
                 self.chat.reloadData()
                 
@@ -93,7 +117,6 @@ class ChatController: UIViewController{
         
         MessageService.shared.saveMessage(content: footer.textView.text, toUser: user.uid) { error, ref, messageID in
             UIView.animate(withDuration: 0.5) {
-                //                self.chat.reloadData()
                 
                 let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
                 
@@ -104,6 +127,10 @@ class ChatController: UIViewController{
             }
             
             self.saveChat(messageID)
+            
+            guard let previousChat = self.previousChat else {return }
+            
+            self.delegate?.didChatMessageChange(self, previousChat.uid,message)
             
         }
         
@@ -123,10 +150,13 @@ class ChatController: UIViewController{
     
     func updateChatLastMessage(){
         
-//        guard let message = messages.last else {return }
-       
-        //TODO: - Actualizar el ultimo mensaje de la conversacion al chat
+        guard let message = messages.last else {return }
+        guard let previousChat = previousChat else {return }
         
+        print("DEBUG: El mensaje a actualizar es: \(message.content)")
+        ChatService.shared.updateChatMessage(forChat: previousChat.uid , withID:message.messageId) { error, ref in
+            
+        }
     }
     
 }
@@ -193,7 +223,6 @@ extension ChatController: ChatFooterDelegate {
         print("DEBUG: se ha pulsado enviar, el mensaje es \(content)")
         
         sendMessage(message: content)
-        
         
     }
     
