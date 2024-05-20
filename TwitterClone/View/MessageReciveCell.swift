@@ -49,7 +49,7 @@ class MessageReciveCell: UITableViewCell {
         
         messageView.anchor(top: topAnchor,left: leftAnchor,bottom: bottomAnchor,paddingTop: 4,paddingLeft: 4,paddingBottom: 4)
         
-        messageView.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: screenPercent).isActive = true
+        messageView.rightAnchor.constraint(lessThanOrEqualTo: rightAnchor, constant: -screenPercent).isActive = true
         
     }
 }

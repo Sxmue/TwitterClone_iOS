@@ -45,7 +45,7 @@ class MainTabController: UITabBarController {
         }
         
     }
-    
+        
     //Esta variable almacenara que imagen debe mostrarse en el boton
     private var buttonConfig: ActionButtonConfiguration = .tweet
     
@@ -74,6 +74,7 @@ class MainTabController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tabBarController?.delegate = self
         self.tabBar.tintColor = .twitterBlue
         self.delegate = self
         self.view.isUserInteractionEnabled = true
@@ -94,7 +95,7 @@ class MainTabController: UITabBarController {
         navigationController?.navigationBar.barStyle = .black
         
         navigationController?.isNavigationBarHidden = true
-        
+                
     }
     
     // MARK: - API
@@ -212,10 +213,13 @@ class MainTabController: UITabBarController {
         
         // Los UITabBarContollers tienen esta propiedad la cual cual te permite añadir todos los view controllers de golpe al tabBar
         // Ahora aqui le pasamos los consiguientes view controllers
+        let controller = MessagesController()
+        controller.delegate = self
+//        delegateMine = controller
         viewControllers = [nav1, // Este lo dejo de ejemplo para ver el funcionamiento interno
                            templateNavigationController(image: UIImage(named: "search_unselected")!, root: ExploreController(config: .userSearch)),
                            templateNavigationController(image: UIImage(named: "like_unselected")!, root: NotificationsController()),
-                           templateNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1")!, root: MessagesController())]
+                           templateNavigationController(image: UIImage(named: "ic_mail_outline_white_2x-1")!, root: controller)]
         
     }
     
@@ -310,3 +314,20 @@ extension MainTabController: UITabBarControllerDelegate {
         
     }
 }
+
+//MARK: - Extension MessagesController
+
+extension MainTabController: MessagesControllerDelegate{
+    func shouldShowActionButton(_ controller: MessagesController) {
+        actionButton.isHidden = false
+    }
+    
+    
+    func didSelectChat(_ controller: MessagesController) {
+        self.tabBarController?.tabBar.isHidden = true
+        actionButton.isHidden = true
+        
+    }
+    
+}
+

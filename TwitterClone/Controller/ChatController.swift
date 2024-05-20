@@ -25,9 +25,7 @@ class ChatController: UIViewController{
     
     var messages = [Message](){
         didSet{
-            
-            updateChatLastMessage()
-            
+            self.updateChatLastMessage()
         }
     }
     
@@ -38,7 +36,7 @@ class ChatController: UIViewController{
     var previousChat: Chat?
     
     var viewModel: ChatViewModel?
-    
+        
     let chat = UITableView()
     
     init(user: User) {
@@ -62,7 +60,6 @@ class ChatController: UIViewController{
         
         view.addSubview(footer)
         
-        //TODO: - arreglar las constraints del footer y el problema de las celdas
         footer.setDimensions(width: view.frame.width, height: 60)
         footer.anchor(top:chat.bottomAnchor,left: view.leftAnchor,bottom: view.safeAreaLayoutGuide.bottomAnchor,right: view.rightAnchor,paddingLeft: 20,paddingBottom: 25,paddingRight: 20)
         chat.anchor(top: view.safeAreaLayoutGuide.topAnchor,left: view.leftAnchor,bottom: footer.topAnchor,right: view.rightAnchor)
@@ -109,7 +106,9 @@ class ChatController: UIViewController{
                 self.chat.reloadData()
                 
             }
+
         }
+        
     }
     
     
@@ -123,11 +122,10 @@ class ChatController: UIViewController{
                 if indexPath.row > 1 {
                     self.chat.scrollToRow(at: indexPath, at: .bottom, animated: true)
                 }
-                
+                                
             }
             
             self.saveChat(messageID)
-            
             guard let previousChat = self.previousChat else {return }
             
             self.delegate?.didChatMessageChange(self, previousChat.uid,message)
@@ -140,8 +138,9 @@ class ChatController: UIViewController{
     func saveChat(_ messageID: String) {
         ChatService.shared.userHasChat(withUser: self.user.uid) { response in
             if !response {
-                ChatService.shared.saveChat(toUser: self.user.uid, messageUid: messageID) { error, ref in
+                ChatService.shared.saveChat(toUser: self.user.uid, messageUid: messageID) { chat in
                     
+                    self.previousChat = chat
                 }
                 
             }
@@ -153,8 +152,7 @@ class ChatController: UIViewController{
         guard let message = messages.last else {return }
         guard let previousChat = previousChat else {return }
         
-        print("DEBUG: El mensaje a actualizar es: \(message.content)")
-        ChatService.shared.updateChatMessage(forChat: previousChat.uid , withID:message.messageId) { error, ref in
+        ChatService.shared.updateChatMessage(forChat: previousChat.uid , withMessage:message) { error, ref in
             
         }
     }
@@ -219,11 +217,9 @@ extension ChatController: UITableViewDataSource {
 extension ChatController: ChatFooterDelegate {
     
     func didTappedSend(_ footer: ChatFooterView, content: String) {
-        
-        print("DEBUG: se ha pulsado enviar, el mensaje es \(content)")
-        
+            
         sendMessage(message: content)
-        
+                
     }
     
     
