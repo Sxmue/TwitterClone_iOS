@@ -40,7 +40,7 @@ struct MessageService{
     }
     
     
-    func saveMessage(content: String ,toUser destinationUid: String,completion: @escaping(Error?, DatabaseReference,String) -> Void){
+    func saveMessage(content: String ,toUser destinationUid: String,completion: @escaping(Error?, DatabaseReference,Message) -> Void){
         
         guard let uid = Auth.auth().currentUser?.uid else {return }
         
@@ -56,7 +56,10 @@ struct MessageService{
                 
                 DB_USER_MESSAGES.child(destinationUid).child(uid).updateChildValues([messageID:1]) { error, ref in
                     
-                    completion(error,ref,messageID)
+                    fetchMessageById(withUid: messageID) { message in
+                        completion(error,ref,message)
+
+                    }
                 }
             }
         }

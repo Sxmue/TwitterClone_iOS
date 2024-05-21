@@ -23,11 +23,7 @@ class ChatController: UIViewController{
     
     let footer = ChatFooterView()
     
-    var messages = [Message](){
-        didSet{
-            self.updateChatLastMessage()
-        }
-    }
+    var messages = [Message]()
     
     weak var delegate: ChatControllerDelegate?
 
@@ -114,7 +110,7 @@ class ChatController: UIViewController{
     
     func sendMessage(message: String){
         
-        MessageService.shared.saveMessage(content: footer.textView.text, toUser: user.uid) { error, ref, messageID in
+        MessageService.shared.saveMessage(content: footer.textView.text, toUser: user.uid) { error, ref, message in
             UIView.animate(withDuration: 0.5) {
                 
                 let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
@@ -125,10 +121,10 @@ class ChatController: UIViewController{
                                 
             }
             
-            self.saveChat(messageID)
+            self.saveChat(message.messageId)
             guard let previousChat = self.previousChat else {return }
-            
-            self.delegate?.didChatMessageChange(self, previousChat.uid,message)
+            self.updateChatLastMessage(message: message)
+            self.delegate?.didChatMessageChange(self, previousChat.uid,message.content)
             
         }
         
@@ -147,11 +143,8 @@ class ChatController: UIViewController{
         }
     }
     
-    func updateChatLastMessage(){
-        
-        guard let message = messages.last else {return }
+    func updateChatLastMessage(message: Message){
         guard let previousChat = previousChat else {return }
-        
         ChatService.shared.updateChatMessage(forChat: previousChat.uid , withMessage:message) { error, ref in
             
         }
@@ -219,7 +212,8 @@ extension ChatController: ChatFooterDelegate {
     func didTappedSend(_ footer: ChatFooterView, content: String) {
             
         sendMessage(message: content)
-                
+        
+        
     }
     
     

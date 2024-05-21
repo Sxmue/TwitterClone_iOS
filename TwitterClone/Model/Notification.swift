@@ -26,6 +26,8 @@ enum NotificationType: Int {
  */
 struct Notification {
 
+    var uid: String
+    
     var timestamp: Date! // Timestamp para calcular el tiempo de la notificacion
 
     var tweetID: String? // El id del tweet dependiendo de si es una notificacion sobre un tweet o no, asi que es Optional
@@ -36,12 +38,13 @@ struct Notification {
 
     var type: NotificationType! // El tipo de nuestra notificacion, que sera de nuestro enumerado, importante el force unwrapp
 
-    init(user: User, tweet: Tweet?, dictionary: [String: Any]) {
+    init(uid: String ,user: User, tweet: Tweet?, dictionary: [String: Any]) {
 
         if let tweetId = dictionary["TweetID"] as? String {
             self.tweetID = tweetId
         }
 
+        self.uid = uid
         self.tweet = tweet
 
         self.user = user

@@ -28,7 +28,7 @@ struct NotificationService {
 
         // Seteamos el diccionario con los valores comunes a todas las notificaciones, el uid del usuario, el type y el timestamp
         var values: [String: Any] = ["timestamp": Int(NSDate().timeIntervalSince1970),
-                                     "uid": uid,
+                                     "userUid": uid,
                                      "type": type.rawValue]
 
         // Si tenemos un tweet
@@ -56,18 +56,47 @@ struct NotificationService {
 
         DB_NOTIFICATIONS.child(uid).observe(.childAdded) { snapshot, _ in
 
+            let key = snapshot.key
             guard let dictionary = snapshot.value as? [String: Any] else {return }
-            guard let uid = dictionary["uid"] as? String else {return }
+            guard let uid = dictionary["userUid"] as? String else {return }
 
             UserService.shared.fetchUser(uid: uid) { user in
 
-                let notification = Notification(user: user, tweet: nil, dictionary: dictionary)
+                let notification = Notification(uid: key,user: user, tweet: nil, dictionary: dictionary)
                 notifications.append(notification)
                 completion(notifications)
 
             }
 
         }
+    }
+    
+    func deleteNotification(uid: String,completion: @escaping(Error?,DatabaseReference) -> Void){
+        
+        DB_NOTIFICATIONS.child(uid).removeValue { error, ref in
+            completion(error,ref)
+        }
+        
+    }
+    
+    func deleteFollowNotification(toUser: String,completion: @escaping(Error?,DatabaseReference) -> Void){
+        guard let uid = Auth.auth().currentUser?.uid else {return }
+
+        //TODO: - Arreglar las notificaciones
+        DB_NOTIFICATIONS.child(toUser).observe(.childAdded) { snapshot in
+            let key = snapshot.key
+            guard let dictionary = snapshot.value as? [String: Any] else {return }
+            guard let type = dictionary["type"] as? Int else {return }
+            guard let user = dictionary["userUid"] as? String else {return }
+
+            if (user == uid) && type == 0 {
+                DB_NOTIFICATIONS.child(toUser).child(key).removeValue { error, ref in
+                    completion(error,ref)
+                }
+            }
+            
+        }
+        
     }
 
 }
