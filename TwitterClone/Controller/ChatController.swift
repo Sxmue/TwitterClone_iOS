@@ -161,7 +161,6 @@ extension ChatController: UITableViewDelegate {
         return UITableView.automaticDimension
     }
     
-    
 }
 
 //MARK: - TableView Datasource
